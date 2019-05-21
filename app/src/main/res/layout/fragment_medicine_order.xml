@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragments.MedicineOrderFragment">
+
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+        <RelativeLayout
+                android:layout_weight="1"
+                android:id="@+id/layout_container"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="0dp">
+
+            <LinearLayout
+                    android:id="@+id/no_orders_placed_linear_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:id="@+id/no_orders_imv"
+                        android:src="@drawable/no_order_placed"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="75dp"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"/>
+
+                <TextView
+                        android:text="No orders placed yet"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="50dp"
+                        android:padding="5dp"
+                        android:id="@+id/no_order_txv"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/place_order_txv"
+                        android:text="Place your first order now."
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/order_placed_linear_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                <android.support.v7.widget.RecyclerView
+                        android:id="@+id/medicine_order_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <Button
+                android:id="@+id/place_order_button"
+                android:text="Order Medicines"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                android:layout_margin="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+
+        />
+        </LinearLayout>
+
+
+
+
+</ScrollView>
