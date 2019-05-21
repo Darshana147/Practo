@@ -6,12 +6,15 @@ import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.practo.Adapters.SliderAdapter
+import com.example.practo.InterfaceListeners.PharmacyListener
 
 
 import com.example.practo.R
@@ -25,6 +28,11 @@ class HomeFragment : Fragment() {
     private lateinit var textList:ArrayList<String>
     private lateinit var imageList:ArrayList<Int>
     private lateinit var handler:Handler
+    private lateinit var doctorCardView:CardView
+    private lateinit var pharmacyCardView: CardView
+    private lateinit var chatCardView: CardView
+    private lateinit var diagnosticCardView: CardView
+    private lateinit var mPharmacyListener: PharmacyListener
 
 
 
@@ -34,10 +42,10 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_home, container, false)
-        viewPager = rootView.findViewById(R.id.viewPager)
-        indicator = rootView.findViewById(R.id.indicator)
+        initViews()
         handler = Handler()
         setSlider()
+        setListeners()
         return rootView
     }
 
@@ -65,9 +73,41 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-            },5000)
+            },4000)
         }
 
+    }
+
+    fun initViews(){
+        viewPager = rootView.findViewById(R.id.viewPager)
+        indicator = rootView.findViewById(R.id.indicator)
+        doctorCardView = rootView.findViewById(R.id.doctor_card_view)
+        chatCardView = rootView.findViewById(R.id.chat_card_view)
+        pharmacyCardView = rootView.findViewById(R.id.pharmacy_card_view)
+        diagnosticCardView = rootView.findViewById(R.id.diagnostic_card_view)
+    }
+
+    fun setListeners(){
+        doctorCardView.setOnClickListener {
+            Toast.makeText(context,"Doctor Clicked",Toast.LENGTH_SHORT).show()
+        }
+
+        chatCardView.setOnClickListener {
+            Toast.makeText(context,"Chat Clicked",Toast.LENGTH_SHORT).show()
+        }
+
+        pharmacyCardView.setOnClickListener {
+            Toast.makeText(context,"Pharmacy Clicked",Toast.LENGTH_SHORT).show()
+            mPharmacyListener.onPharmacyClicked()
+        }
+
+        diagnosticCardView.setOnClickListener {
+            Toast.makeText(context,"Diagnostic Clicked",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun setPharmacyListener(mPharmacyListener: PharmacyListener){
+        this.mPharmacyListener = mPharmacyListener
     }
 
 }

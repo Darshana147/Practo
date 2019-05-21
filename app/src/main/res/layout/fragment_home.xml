@@ -42,6 +42,7 @@
                 android:layout_height="match_parent">
 
             <android.support.v7.widget.CardView
+                    android:id="@+id/doctor_card_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:backgroundTint="#ECE9E9"
@@ -85,6 +86,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                    android:id="@+id/pharmacy_card_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_columnWeight="1"
@@ -128,6 +130,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                    android:id="@+id/chat_card_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_columnWeight="1"
@@ -171,6 +174,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                    android:id="@+id/diagnostic_card_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_columnWeight="1"

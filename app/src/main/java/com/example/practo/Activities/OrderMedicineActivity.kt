@@ -35,6 +35,22 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
         customizeToolbar()
     }
 
+    override fun onResume() {
+        super.onResume()
+        Toast.makeText(this, "onResumeOrderMedicine", Toast.LENGTH_SHORT).show()
+        var intent = intent
+        if(intent.hasExtra("fragment")) {
+            var fragment = intent.extras.getString("fragment")
+        when(fragment){
+            "searchMedicineFragment" -> {
+                setFragmentTransition(searchMedicinesFragment)
+            }
+        }
+
+        }
+
+    }
+
     fun setFragmentListeners(){
         medicineOrderFragment.setMedicineOrderButtonListener(this)
         searchMedicinesFragment.setViewCartListener(this)

@@ -10,18 +10,15 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.Toast
-import com.example.practo.Fragments.HealthArticleDescriptionFragment
-import com.example.practo.Fragments.HomeFragment
+import com.example.practo.Fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
-import com.example.practo.Fragments.ReadAboutHealthFragment
-import com.example.practo.Fragments.ReminderFragment
+import com.example.practo.InterfaceListeners.PharmacyListener
 import com.example.practo.InterfaceListeners.ReadAboutHealthFragmentListener
 import com.example.practo.R
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ReadAboutHealthFragmentListener {
-
+    ReadAboutHealthFragmentListener,PharmacyListener {
     private lateinit var fragmentManager: FragmentManager
     private lateinit var toggle: ActionBarDrawerToggle
 
@@ -36,6 +33,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(activity_main_toolbar)
         initFragmentManager()
         initFragments()
+        setFragmentListeners()
         readAboutHealthFragment.setReadAboutHealthFragmentListener(this)
         syncNavigationView()
 
@@ -92,7 +90,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
         }
-        //drawer_layout.closeDrawer(GravityCompat.START)
         drawer_layout.closeDrawers()
         return true
     }
@@ -103,17 +100,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentTransaction.commit()
     }
 
-//    fun setDefaultHomeFragment(fragment: Fragment) {
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.replace(R.id.fragment_container, fragment)
-//        fragmentTransaction.commit()
-//    }
-
     override fun onReadAboutHealthFragmentListener(adapterPosition: Int) {
         setFragmentTransaction(HealthArticleDescriptionFragment())
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.replace(R.id.fragment_container, HealthArticleDescriptionFragment())
-//        fragmentTransaction.commit()
+    }
+
+    override fun onPharmacyClicked() {
+       var intent = Intent(this,OrderMedicineActivity::class.java)
+        intent.putExtra("fragment","searchMedicineFragment")
+        startActivity(intent)
+    }
+
+    fun setFragmentListeners(){
+        homeFragment.setPharmacyListener(this)
     }
 
 

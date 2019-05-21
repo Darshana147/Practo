@@ -84,22 +84,24 @@ class ViewCartFragment : Fragment() {
         }
     }
 
-    fun addItemToCart(medicine: Medicine){
-        var medicineCartItem:MedicineCart
-        var flag=0
-        var index=0
-//        cartItemList.add(medicine) //every time added need to add to recycler view and notify recycler view,add to db
-//        addItemToMedicineCart()
-        //if(medicineCartItems.isEmpty()){
-            medicineCartItem = MedicineCart(medicine,1,medicine.medicinePrice)
+    fun addItemToCart(medicine: Medicine) {
+        var flag = 0
+        var medicineCartItem: MedicineCart
+
+        for (item in medicineCartItems) {
+            if (item.medicine.medicineId == medicine.medicineId) {
+                flag = 1
+                var index = medicineCartItems.indexOf(item)
+                medicineCartItem = MedicineCart(medicine, item.medicineQuantity + 1, medicine.medicinePrice)
+                medicineCartItems.set(index, medicineCartItem)
+                break
+            }
+        }
+        if (flag == 0) {
+            medicineCartItem = MedicineCart(medicine, 1, medicine.medicinePrice)
             medicineCartItems.add(medicineCartItem)
-//        } else {
-//            for(item in medicineCartItems){
-//                if(item.medicine.medicineId == medicine.medicineId){
-//                    medicineCartItems.
-//                }
-//            }
-//        }
+        }
+
     }
 
 
