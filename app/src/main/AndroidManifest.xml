@@ -12,6 +12,7 @@
         <activity android:name=".Activities.OrderMedicineActivity">
         </activity>
         <activity android:name=".Activities.MainActivity"
+                  android:windowSoftInputMode="adjustPan"
         android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

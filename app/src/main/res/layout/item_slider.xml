@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <ImageView
             android:id="@+id/slider_imgView"
@@ -17,7 +17,8 @@
             android:id="@+id/slider_txv"
             android:layout_gravity="center"
             android:textColor="#ffffff"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:textStyle="bold"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
             android:text="Get Medicines at Door Step"
