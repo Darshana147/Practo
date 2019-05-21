@@ -6,15 +6,11 @@ import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toolbar
-import com.example.practo.Adapters.GridSpacingItemDecoration
-import com.example.practo.Adapters.HomeFragmentRecyclerAdapter
 import com.example.practo.Adapters.SliderAdapter
 
 
@@ -29,12 +25,7 @@ class HomeFragment : Fragment() {
     private lateinit var textList:ArrayList<String>
     private lateinit var imageList:ArrayList<Int>
     private lateinit var handler:Handler
-    private lateinit var recyclerView:RecyclerView
-    private lateinit var recyclerViewAdapter:HomeFragmentRecyclerAdapter
-    private lateinit var layoutManager:GridLayoutManager
-    private lateinit var gridImageList:ArrayList<Int>
-    private lateinit var gridTextList:ArrayList<String>
-    private lateinit var gridRecyclerSpacing:GridSpacingItemDecoration
+
 
 
     override fun onCreateView(
@@ -46,32 +37,10 @@ class HomeFragment : Fragment() {
         viewPager = rootView.findViewById(R.id.viewPager)
         indicator = rootView.findViewById(R.id.indicator)
         handler = Handler()
-        initRecyclerView()
-        initLayoutManager()
-        bindRecyclerViewWithAdapter()
         setSlider()
         return rootView
     }
 
-
-    fun initRecyclerView(){
-        recyclerView = rootView.findViewById<RecyclerView>(R.id.home_fragment_recycler_view)
-        recyclerView.setHasFixedSize(true);
-    }
-
-    fun initLayoutManager(){
-        layoutManager = GridLayoutManager(activity,2)
-    }
-
-    fun bindRecyclerViewWithAdapter(){
-        gridRecyclerSpacing = GridSpacingItemDecoration(2,60,true)
-        gridImageList = arrayListOf(R.drawable.pharmacy,R.drawable.doctor,R.drawable.chat,R.drawable.diagnostic)
-        gridTextList= arrayListOf("Pharmacy","Doctors","Online Consultancy","Diagnostics")
-        recyclerView.layoutManager = layoutManager
-        recyclerViewAdapter = HomeFragmentRecyclerAdapter(this.context!!,gridTextList,gridImageList)
-        recyclerView.addItemDecoration(gridRecyclerSpacing)
-        recyclerView.adapter = recyclerViewAdapter
-    }
 
     fun setSlider(){
 
