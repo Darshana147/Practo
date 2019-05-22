@@ -84,7 +84,7 @@ class ViewCartFragment : Fragment() {
         }
     }
 
-    fun addItemToCart(medicine: Medicine) {
+    fun addItemToCart(medicine: Medicine,qty:Int) {
         var flag = 0
         var medicineCartItem: MedicineCart
 
@@ -92,13 +92,13 @@ class ViewCartFragment : Fragment() {
             if (item.medicine.medicineId == medicine.medicineId) {
                 flag = 1
                 var index = medicineCartItems.indexOf(item)
-                medicineCartItem = MedicineCart(medicine, item.medicineQuantity + 1, medicine.medicinePrice)
+                medicineCartItem = MedicineCart(medicine, qty, medicine.medicinePrice)
                 medicineCartItems.set(index, medicineCartItem)
                 break
             }
         }
         if (flag == 0) {
-            medicineCartItem = MedicineCart(medicine, 1, medicine.medicinePrice)
+            medicineCartItem = MedicineCart(medicine, qty, medicine.medicinePrice)
             medicineCartItems.add(medicineCartItem)
         }
 

@@ -1,14 +1,20 @@
 package com.example.practo.Adapters
 
 import android.content.Context
+import android.content.DialogInterface
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ImageView
+import com.example.practo.Fragments.AddToCartDialogFragment
 import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 import com.example.practo.Model.Medicine
 import com.example.practo.R
+import kotlinx.android.synthetic.main.add_to_cart_custom_dialog_layout.view.*
 import kotlinx.android.synthetic.main.search_medicine_card_layout.view.*
 
 class SearchMedicineRecyclerAdaptor(var context: Context,var medList:ArrayList<Medicine>,val listener: OnAddToCartSelectedListener):RecyclerView.Adapter<SearchMedicineRecyclerAdaptor.MyViewHolder>() {
@@ -45,7 +51,7 @@ class SearchMedicineRecyclerAdaptor(var context: Context,var medList:ArrayList<M
         }
 
         init {
-           itemView.setOnClickListener {
+           itemView.add_to_cart_txv.setOnClickListener {
                var medId = medicineList.get(adapterPosition).medicineId
                var medName = medicineList.get(adapterPosition).medicineName
                var medDescription = medicineList.get(adapterPosition).medicineDescription

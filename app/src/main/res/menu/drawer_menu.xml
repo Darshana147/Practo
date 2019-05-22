@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none"
            android:id="@+id/activitiesGroup">
+        <item android:id="@+id/homeMenuItem"
+              android:icon="@drawable/home"
+              android:title="Home">
+
+        </item>
         <item android:id="@+id/orderMedicineMenuItem"
               android:icon="@drawable/medicine_order"
               android:title="Medicine Orders">

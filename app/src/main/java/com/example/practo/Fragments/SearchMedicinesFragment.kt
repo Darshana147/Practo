@@ -1,13 +1,16 @@
 package com.example.practo.Fragments
 
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
+import android.widget.Toast
 import com.example.practo.Adapters.HealthArticleRecylerAdapter
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
 import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
@@ -21,7 +24,7 @@ import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineSupplier
 
 
-class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener {
+class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCartDialogFragment.OnInputSelected{
 
     private lateinit var rootView:View
     private lateinit var searcItem:MenuItem
@@ -31,6 +34,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener {
     private lateinit var recyclerViewAdaptor:SearchMedicineRecyclerAdaptor
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var mSearchMedicinesFragmentListener:SearchMedicinesFragmentListener
+    private lateinit var medicine:Medicine
 
     fun setViewCartListener(mViewCartListener: OnViewCartListener){
         this.mViewCartListener = mViewCartListener
@@ -130,7 +134,18 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener {
     }
 
     override fun onAddToCartClicked(medicine: Medicine) {
-        mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine)
+        var dialog = AddToCartDialogFragment()
+        var args:Bundle = Bundle()
+        args.putStringArrayList("qty",arrayListOf<String>("1","2","3","4","5","6","7","8","9"))//get the count from the db
+        dialog.arguments = args
+        dialog.setTargetFragment(this,1)
+        dialog.show(fragmentManager,"AddToCartFragment")
+        this.medicine = medicine
+    }
+
+    override fun sendInput(input: String) {
+        //to-do
+        mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
     }
 
 

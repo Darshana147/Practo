@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //default Fragment
         setFragmentTransaction(homeFragment)
-        //setDefaultHomeFragment(homeFragment)
         nav_view.setNavigationItemSelectedListener(this)
 
     }
@@ -78,6 +77,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
+            R.id.homeMenuItem-> setFragmentTransaction(homeFragment)
+
             R.id.readAboutHealthMenuItem -> setFragmentTransaction(readAboutHealthFragment)
 
             R.id.reminderMenuItem -> setFragmentTransaction(reminderFragment)

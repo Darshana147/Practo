@@ -91,9 +91,8 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
         setFragmentTransitionWithAddToBackStack(viewCartFragment)
     }
 
-    override fun onAddToCartFromSearchMedicinesListener(medicine:Medicine) {
-        Toast.makeText(applicationContext,medicine.medicineName+"\n"+medicine.medicineDescription,Toast.LENGTH_SHORT).show()
-        viewCartFragment.addItemToCart(medicine)
+    override fun onAddToCartFromSearchMedicinesListener(medicine:Medicine,qty:Int) {
+        viewCartFragment.addItemToCart(medicine,qty)
     }
 
 
