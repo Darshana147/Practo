@@ -4,11 +4,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal"
-        app:cardCornerRadius="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        app:cardElevation="10dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="3dp"
+        app:cardElevation="5dp"
         android:layout_height="wrap_content">
 
     <LinearLayout
@@ -18,16 +18,15 @@
 
 
     <ImageView
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:id="@+id/medicine_imv"
             android:src="@mipmap/ic_launcher"
             android:layout_width="wrap_content"
             android:layout_height="50dp"/>
 
     <LinearLayout
-            android:padding="10dp"
             android:orientation="vertical"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,7 +37,7 @@
                 android:gravity="start"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                 android:textSize="17sp"
-                android:layout_height="40dp"/>
+                android:layout_height="30dp"/>
 
         <TextView
                 android:text="Medicine Description"

@@ -92,6 +92,7 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
     }
 
     override fun onAddToCartFromSearchMedicinesListener(medicine:Medicine,qty:Int) {
+        Toast.makeText(applicationContext,"Item Added To Cart",Toast.LENGTH_SHORT).show()
         viewCartFragment.addItemToCart(medicine,qty)
     }
 

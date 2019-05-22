@@ -5,7 +5,8 @@
             android:title="view cart"
             android:id="@+id/view_cart_menu_item"
             android:icon="@drawable/ic_shopping_cart"
-            app:showAsAction="ifRoom"
+            app:actionLayout="@layout/custom_action_item_layout"
+            app:showAsAction="always"
     >
     </item>
 

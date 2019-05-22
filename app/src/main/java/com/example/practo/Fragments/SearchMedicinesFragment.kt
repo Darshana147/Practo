@@ -4,12 +4,16 @@ package com.example.practo.Fragments
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.example.practo.Adapters.HealthArticleRecylerAdapter
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
@@ -35,6 +39,8 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var mSearchMedicinesFragmentListener:SearchMedicinesFragmentListener
     private lateinit var medicine:Medicine
+    private lateinit var cartCount:TextView
+    private var mCartItemCount:Int=0
 
     fun setViewCartListener(mViewCartListener: OnViewCartListener){
         this.mViewCartListener = mViewCartListener
@@ -83,6 +89,18 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.search_medicine_toolbar_actions_menu,menu)
+        //cart badge layout
+        var item:MenuItem = menu!!.findItem(R.id.view_cart_menu_item)
+        var actionView = item.actionView
+        cartCount = actionView.findViewById<TextView>(R.id.cart_badge_txv)
+        setUpBadge()
+        actionView.setOnClickListener(object:View.OnClickListener{
+            override fun onClick(v: View?) {
+                onOptionsItemSelected(item)
+            }
+
+        })
+
         //search bar
         searcItem = menu!!.findItem(R.id.search_menu_item)
         searchView = searcItem.actionView as SearchView
@@ -103,8 +121,22 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    fun setUpBadge(){
+        if (cartCount != null) {
+            if (mCartItemCount == 0) {
+                if (cartCount.getVisibility() != View.GONE) {
+                    cartCount.setVisibility(View.GONE);
+                }
+            } else {
+                cartCount.setText(mCartItemCount.toString());
+                if (cartCount.getVisibility() != View.VISIBLE) {
+                    cartCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
           R.id.view_cart_menu_item -> {
               mViewCartListener.onViewCartClicked()
@@ -145,6 +177,8 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     override fun sendInput(input: String) {
         //to-do
+        mCartItemCount = input.toInt()
+        setUpBadge()
         mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
     }
 
