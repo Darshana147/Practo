@@ -10,26 +10,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.example.practo.Adapters.MedicineCartRecyclerAdaptor
 import com.example.practo.InterfaceListeners.MedicineCartListener
 import com.example.practo.InterfaceListeners.OnChangeCartItemQtyListener
 import com.example.practo.Model.Medicine
-import com.example.practo.Model.MedicineCart
+import com.example.practo.Model.MedicineCartItem
 import com.example.practo.R
 
 
 class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogFragment.OnInputSelected{
     private lateinit var rootView:View
-    //private var cartItemList:ArrayList<Medicine> = ArrayList()
-    private var medicineCartItems:ArrayList<MedicineCart> = ArrayList()
+    private var medicineCartItems:ArrayList<MedicineCartItem> = ArrayList()
     private lateinit var emptyCartView:LinearLayout
     private lateinit var cartNotEmptyView:LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdaptor:MedicineCartRecyclerAdaptor
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var mMedicineCartListener:MedicineCartListener
+    private lateinit var medicineCartTotalItemCountTxv:TextView
+    private lateinit var medicineCartTotalAmountTxv:TextView
     private var medicineId:Int=0
-    private var medicineCartQuantity:Int = 0
+    private var medicineCartItemTotalQuantity:Int = 0
+    private var medicineCartTotalAmount:Double=0.0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +52,10 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     fun initViews(){
         emptyCartView = rootView.findViewById(R.id.cart_emtpy_view)
         cartNotEmptyView = rootView.findViewById(R.id.cart_not_empty_view)
+        medicineCartTotalItemCountTxv = rootView.findViewById(R.id.cart_total_item_count)
+        medicineCartTotalAmountTxv = rootView.findViewById<TextView>(R.id.cart_total_amount)
     }
+
 
     fun customizeToolbar(){
         var activity = getActivity() as AppCompatActivity
@@ -81,27 +88,30 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         } else {
             emptyCartView.visibility = View.GONE
             bindRecyclerViewWithAdapter()
+            applyChangesInCartTotalItemCount()
+            applyChangesInCartTotalAmount()
             cartNotEmptyView.visibility= View.VISIBLE
         }
     }
 
     fun addItemToCart(medicine: Medicine,qty:Int) {
         var flag = 0
-        var medicineCartItem: MedicineCart
+        var medicineCartItem: MedicineCartItem
 
         for (item in medicineCartItems) {
             if (item.medicine.medicineId == medicine.medicineId) {
                 flag = 1
                 var index = medicineCartItems.indexOf(item)
-                medicineCartItem = MedicineCart(medicine, qty, medicine.medicinePrice)
+                medicineCartItem = MedicineCartItem(medicine, qty) //change
                 medicineCartItems.set(index, medicineCartItem)
                 break
             }
         }
         if (flag == 0) {
-            medicineCartItem = MedicineCart(medicine, qty, medicine.medicinePrice)
+            medicineCartItem = MedicineCartItem(medicine, qty)//change
             medicineCartItems.add(medicineCartItem)
         }
+        setMedicineCartTotalAmount()
         setMedicineCartQuantity()
     }
 
@@ -122,14 +132,17 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
                 break
             }
         }
+        setMedicineCartTotalAmount()
         setMedicineCartQuantity()
+        applyChangesInCartTotalAmount()
+        applyChangesInCartTotalItemCount()
         recyclerViewAdaptor.setChangedCartItemList(medicineCartItems)
     }
 
 
     override fun sendItemQtyInputFromCartDialogFragment(input: String) {
         var index=0
-        lateinit var changedCartItem:MedicineCart
+        lateinit var changedCartItem:MedicineCartItem
         for(cartItem in medicineCartItems){
             if(cartItem.medicine.medicineId == medicineId){
                 changedCartItem = cartItem
@@ -139,27 +152,45 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
             }
         }
         medicineCartItems.set(index,changedCartItem)
+        setMedicineCartTotalAmount()
         setMedicineCartQuantity()
+        applyChangesInCartTotalAmount()
+        applyChangesInCartTotalItemCount()
         recyclerViewAdaptor.setChangedCartItemList(medicineCartItems)
     }
 
+    fun applyChangesInCartTotalItemCount(){
+        medicineCartTotalItemCountTxv.text = medicineCartItemTotalQuantity.toString()+" Items"
+    }
+
+    fun applyChangesInCartTotalAmount(){
+        medicineCartTotalAmountTxv.text = medicineCartTotalAmount.toString()
+    }
+
     fun setMedicineCartQuantity(){
-        medicineCartQuantity=0
+        medicineCartItemTotalQuantity=0
         for(cartItem in medicineCartItems){
-            medicineCartQuantity+=cartItem.medicineQuantity
+            medicineCartItemTotalQuantity+=cartItem.medicineQuantity
         }
         checkViewDisplayState()
         sendMedicineCartChanges()
     }
 
+    fun setMedicineCartTotalAmount(){
+        medicineCartTotalAmount=0.0
+        for(cartItem in medicineCartItems){
+            medicineCartTotalAmount+=(cartItem.medicine.medicinePrice*cartItem.medicineQuantity)
+        }
+    }
+
     fun checkViewDisplayState(){
-        if(medicineCartQuantity==0){
+        if(medicineCartItemTotalQuantity==0){
             viewDisplay()
         }
     }
 
     fun sendMedicineCartChanges(){
-        mMedicineCartListener.sendMedicineCartQuantity(medicineCartQuantity)
+        mMedicineCartListener.sendMedicineCartQuantity(medicineCartItemTotalQuantity)
     }
 
     fun setMedicineCartListener(mMedicineCartListener: MedicineCartListener){
