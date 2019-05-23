@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.example.practo.Fragments.MedicineOrderFragment
 import com.example.practo.Fragments.SearchMedicinesFragment
 import com.example.practo.Fragments.ViewCartFragment
+import com.example.practo.InterfaceListeners.MedicineCartListener
 import com.example.practo.InterfaceListeners.OnPlaceMedicineOrderListener
 import com.example.practo.InterfaceListeners.OnViewCartListener
 import com.example.practo.InterfaceListeners.SearchMedicinesFragmentListener
@@ -20,8 +21,7 @@ import com.example.practo.Model.Medicine
 import kotlinx.android.synthetic.main.activity_order_medicine.*
 
 
-class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,OnViewCartListener,SearchMedicinesFragmentListener{
-
+class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,OnViewCartListener,SearchMedicinesFragmentListener,MedicineCartListener{
     private lateinit var medicineOrderFragment: MedicineOrderFragment
     private lateinit var searchMedicinesFragment: SearchMedicinesFragment
     private lateinit var viewCartFragment: ViewCartFragment
@@ -55,6 +55,7 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
         medicineOrderFragment.setMedicineOrderButtonListener(this)
         searchMedicinesFragment.setViewCartListener(this)
         searchMedicinesFragment.setSearchMedicinesFragmentListener(this)
+        viewCartFragment.setMedicineCartListener(this)
     }
 
     fun initFragments(){
@@ -94,6 +95,9 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
     override fun onAddToCartFromSearchMedicinesListener(medicine:Medicine,qty:Int) {
         Toast.makeText(applicationContext,"Item Added To Cart",Toast.LENGTH_SHORT).show()
         viewCartFragment.addItemToCart(medicine,qty)
+    }
+    override fun sendMedicineCartQuantity(cartQuantity: Int) {
+        searchMedicinesFragment.setMedicineCartItemCount(cartQuantity)
     }
 
 

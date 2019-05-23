@@ -175,11 +175,16 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
         this.medicine = medicine
     }
 
-    override fun sendInput(input: String) {
+    override fun sendItemQtyInputFromCartDialogFragment(input: String) {
         //to-do
         mCartItemCount = input.toInt()
-        setUpBadge()
+        //setUpBadge() //no need here as addToCart sends back the changes
         mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
+    }
+
+    fun setMedicineCartItemCount(mCartItemCount:Int){
+        this.mCartItemCount = mCartItemCount
+        setUpBadge()
     }
 
 

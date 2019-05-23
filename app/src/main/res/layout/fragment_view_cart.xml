@@ -20,6 +20,11 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#AAA4A4" />
+
 
         <Button
                 android:id="@+id/CheckOut"

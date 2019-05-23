@@ -1,6 +1,5 @@
 package com.example.practo.Fragments
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -11,14 +10,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
-import android.widget.Toast
 import com.example.practo.R
 import java.lang.ClassCastException
 
 class AddToCartDialogFragment:DialogFragment() {
 
     interface OnInputSelected{
-        fun sendInput(input:String)
+        fun sendItemQtyInputFromCartDialogFragment(input:String)
     }
     private lateinit var mOnInputSelected:OnInputSelected
     private lateinit var rootView:View
@@ -43,7 +41,7 @@ class AddToCartDialogFragment:DialogFragment() {
             if(value!=null&&(!value.equals("Remove Item"))) {
                 qtyArray.add(0,"Remove Item")
                 listAdapter.notifyDataSetChanged()
-                mOnInputSelected.sendInput(value)
+                mOnInputSelected.sendItemQtyInputFromCartDialogFragment(value)
             }
             dialog.dismiss()
         }

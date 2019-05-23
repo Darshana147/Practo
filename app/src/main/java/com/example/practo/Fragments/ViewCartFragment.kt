@@ -10,17 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.example.practo.Adapters.MedicineCartRecyclerAdaptor
-import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
+import com.example.practo.InterfaceListeners.MedicineCartListener
+import com.example.practo.InterfaceListeners.OnChangeCartItemQtyListener
 import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineCart
-import com.example.practo.Model.MedicineSupplier
 import com.example.practo.R
 
 
-class ViewCartFragment : Fragment() {
-
+class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogFragment.OnInputSelected{
     private lateinit var rootView:View
     //private var cartItemList:ArrayList<Medicine> = ArrayList()
     private var medicineCartItems:ArrayList<MedicineCart> = ArrayList()
@@ -29,6 +27,9 @@ class ViewCartFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdaptor:MedicineCartRecyclerAdaptor
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var mMedicineCartListener:MedicineCartListener
+    private var medicineId:Int=0
+    private var medicineCartQuantity:Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +70,7 @@ class ViewCartFragment : Fragment() {
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
         recyclerViewAdaptor = MedicineCartRecyclerAdaptor(this.context!!,
-            medicineCartItems)
+            medicineCartItems,this)
         recyclerView.adapter = recyclerViewAdaptor
     }
 
@@ -101,10 +102,68 @@ class ViewCartFragment : Fragment() {
             medicineCartItem = MedicineCart(medicine, qty, medicine.medicinePrice)
             medicineCartItems.add(medicineCartItem)
         }
+        setMedicineCartQuantity()
+    }
 
+    override fun onChangeQuantityClicked(medicineId:Int) {
+        this.medicineId = medicineId
+        var dialog = AddToCartDialogFragment()
+        var args:Bundle = Bundle()
+        args.putStringArrayList("qty",arrayListOf<String>("1","2","3","4","5","6","7","8","9"))//get the count from the db
+        dialog.arguments = args
+        dialog.setTargetFragment(this,1)
+        dialog.show(fragmentManager,"AddToCartFragment")
+    }
+
+    override fun onCartItemRemoved(medicineId: Int) {
+        for(cartItem in medicineCartItems){
+            if(cartItem.medicine.medicineId==medicineId){
+                medicineCartItems.remove(cartItem)
+                break
+            }
+        }
+        setMedicineCartQuantity()
+        recyclerViewAdaptor.setChangedCartItemList(medicineCartItems)
     }
 
 
+    override fun sendItemQtyInputFromCartDialogFragment(input: String) {
+        var index=0
+        lateinit var changedCartItem:MedicineCart
+        for(cartItem in medicineCartItems){
+            if(cartItem.medicine.medicineId == medicineId){
+                changedCartItem = cartItem
+                changedCartItem.medicineQuantity = input.toInt()
+                index = medicineCartItems.indexOf(cartItem)
+                break
+            }
+        }
+        medicineCartItems.set(index,changedCartItem)
+        setMedicineCartQuantity()
+        recyclerViewAdaptor.setChangedCartItemList(medicineCartItems)
+    }
 
+    fun setMedicineCartQuantity(){
+        medicineCartQuantity=0
+        for(cartItem in medicineCartItems){
+            medicineCartQuantity+=cartItem.medicineQuantity
+        }
+        checkViewDisplayState()
+        sendMedicineCartChanges()
+    }
+
+    fun checkViewDisplayState(){
+        if(medicineCartQuantity==0){
+            viewDisplay()
+        }
+    }
+
+    fun sendMedicineCartChanges(){
+        mMedicineCartListener.sendMedicineCartQuantity(medicineCartQuantity)
+    }
+
+    fun setMedicineCartListener(mMedicineCartListener: MedicineCartListener){
+        this.mMedicineCartListener = mMedicineCartListener
+    }
 
 }
