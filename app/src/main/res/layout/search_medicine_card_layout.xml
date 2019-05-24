@@ -2,7 +2,7 @@
 
 <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
         android:orientation="horizontal"
         app:cardCornerRadius="8dp"
         android:layout_marginTop="3dp"
@@ -17,53 +17,79 @@
             android:layout_height="wrap_content">
 
 
-    <ImageView
-            android:layout_margin="10dp"
-            android:id="@+id/medicine_imv"
-            android:src="@mipmap/ic_launcher"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"/>
+        <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/medicine_imv"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_margin="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="5dp"
                 android:layout_width="match_parent"
-                android:text="Medicine Name"
-                android:id="@+id/medicine_name_txv"
-                android:gravity="start"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                android:textSize="17sp"
-                android:layout_height="30dp"/>
+                android:layout_height="wrap_content">
 
-        <TextView
-                android:text="Medicine Description"
-                android:id="@+id/medicine_description_txv"
-                android:gravity="start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <TextView
-                android:text="Medicine Price"
-                android:id="@+id/medicine_price_txv"
-                android:gravity="start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Medicine Name"
+                    android:id="@+id/medicine_name_txv"
+                    android:gravity="start"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                    android:textSize="17sp"
+                    android:layout_height="wrap_content"/>
 
-        <TextView
-                android:text="ADD TO CART"
-                android:id="@+id/add_to_cart_txv"
-                android:textColor="@color/colorAccent"
-                android:gravity="end"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+               <ImageView
+                       android:id="@+id/favorite_medicine"
+                       android:src="@drawable/ic_favorite"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:text="Medicine Description"
+                    android:id="@+id/medicine_description_txv"
+                    android:gravity="start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/rupee"
+                        android:layout_width="12dp"
+                        android:layout_height="10dp"/>
+
+                <TextView
+                        android:text="Medicine Price"
+                        android:id="@+id/medicine_price_txv"
+                        android:gravity="start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <TextView
+                    android:text="ADD TO CART"
+                    android:id="@+id/add_to_cart_txv"
+                    android:textColor="@color/colorAccent"
+                    android:gravity="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
-
-
-</LinearLayout>
 
 </android.support.v7.widget.CardView>

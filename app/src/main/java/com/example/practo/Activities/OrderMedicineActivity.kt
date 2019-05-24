@@ -3,28 +3,28 @@ package com.example.practo.Activities
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.example.practo.R
 
-import android.view.ViewStub
 import android.widget.Toast
 import com.example.practo.Fragments.MedicineOrderFragment
 import com.example.practo.Fragments.SearchMedicinesFragment
 import com.example.practo.Fragments.ViewCartFragment
+import com.example.practo.Fragments.WishListFragment
 import com.example.practo.InterfaceListeners.MedicineCartListener
 import com.example.practo.InterfaceListeners.OnPlaceMedicineOrderListener
-import com.example.practo.InterfaceListeners.OnViewCartListener
+import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
 import com.example.practo.InterfaceListeners.SearchMedicinesFragmentListener
 import com.example.practo.Model.Medicine
 import kotlinx.android.synthetic.main.activity_order_medicine.*
 
 
-class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,OnViewCartListener,SearchMedicinesFragmentListener,MedicineCartListener{
+class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,OnSearchFragmentToolbarMenuListener,SearchMedicinesFragmentListener,MedicineCartListener{
+
     private lateinit var medicineOrderFragment: MedicineOrderFragment
     private lateinit var searchMedicinesFragment: SearchMedicinesFragment
     private lateinit var viewCartFragment: ViewCartFragment
+    private lateinit var wishListFragment: WishListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
 
     fun setFragmentListeners(){
         medicineOrderFragment.setMedicineOrderButtonListener(this)
-        searchMedicinesFragment.setViewCartListener(this)
+        searchMedicinesFragment.setSearchFragmentToolbarMenuListener(this)
         searchMedicinesFragment.setSearchMedicinesFragmentListener(this)
         viewCartFragment.setMedicineCartListener(this)
     }
@@ -62,6 +62,7 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
         medicineOrderFragment = MedicineOrderFragment()
         searchMedicinesFragment = SearchMedicinesFragment()
         viewCartFragment = ViewCartFragment()
+        wishListFragment = WishListFragment()
     }
 
     fun customizeToolbar(){
@@ -98,6 +99,10 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
     }
     override fun sendMedicineCartQuantity(cartQuantity: Int) {
         searchMedicinesFragment.setMedicineCartItemCount(cartQuantity)
+    }
+
+    override fun onWishListClicked() {
+       setFragmentTransitionWithAddToBackStack(wishListFragment)
     }
 
 

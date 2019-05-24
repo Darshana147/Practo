@@ -16,12 +16,13 @@ import com.example.practo.InterfaceListeners.MedicineCartListener
 import com.example.practo.InterfaceListeners.OnChangeCartItemQtyListener
 import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineCartItem
+import com.example.practo.Model.MedicineCartSupplier
 import com.example.practo.R
 
 
 class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogFragment.OnInputSelected{
     private lateinit var rootView:View
-    private var medicineCartItems:ArrayList<MedicineCartItem> = ArrayList()
+    private var medicineCartItems:ArrayList<MedicineCartItem> = MedicineCartSupplier.medicineCart.medicineCartItems
     private lateinit var emptyCartView:LinearLayout
     private lateinit var cartNotEmptyView:LinearLayout
     private lateinit var recyclerView: RecyclerView
@@ -31,8 +32,8 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     private lateinit var medicineCartTotalItemCountTxv:TextView
     private lateinit var medicineCartTotalAmountTxv:TextView
     private var medicineId:Int=0
-    private var medicineCartItemTotalQuantity:Int = 0
-    private var medicineCartTotalAmount:Double=0.0
+    private var medicineCartItemTotalQuantity:Int = MedicineCartSupplier.medicineCart.totalNumOfItems
+    private var medicineCartTotalAmount:Double=MedicineCartSupplier.medicineCart.totalPrice
 
 
     override fun onCreateView(
@@ -195,6 +196,13 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
 
     fun setMedicineCartListener(mMedicineCartListener: MedicineCartListener){
         this.mMedicineCartListener = mMedicineCartListener
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        MedicineCartSupplier.medicineCart.medicineCartItems = medicineCartItems
+        MedicineCartSupplier.medicineCart.totalNumOfItems=medicineCartItemTotalQuantity
+        MedicineCartSupplier.medicineCart.totalPrice=medicineCartTotalAmount
     }
 
 }

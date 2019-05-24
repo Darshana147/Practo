@@ -1,26 +1,26 @@
 package com.example.practo.Adapters
 
 import android.content.Context
-import android.content.DialogInterface
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
+import android.graphics.PorterDuffColorFilter
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import com.example.practo.Fragments.AddToCartDialogFragment
+import android.view.animation.AnimationUtils
 import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 import com.example.practo.Model.Medicine
 import com.example.practo.R
-import kotlinx.android.synthetic.main.add_to_cart_custom_dialog_layout.view.*
+import com.example.practo.UseCases.SearchMedicineFragmentUseCases
 import kotlinx.android.synthetic.main.search_medicine_card_layout.view.*
 
-class SearchMedicineRecyclerAdaptor(var context: Context,var medList:ArrayList<Medicine>,val listener: OnAddToCartSelectedListener):RecyclerView.Adapter<SearchMedicineRecyclerAdaptor.MyViewHolder>() {
+
+
+
+class SearchMedicineRecyclerAdaptor(var context: Context,var medList:ArrayList<Medicine>,val listener: OnAddToCartSelectedListener,val searchMedicineFragmentUseCaseObj:SearchMedicineFragmentUseCases):RecyclerView.Adapter<SearchMedicineRecyclerAdaptor.MyViewHolder>() {
     var medicineList:ArrayList<Medicine> = medList
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
-        val view:View = LayoutInflater.from(context).inflate(R.layout.search_medicine_card_layout,p0,false)
+        val view:View = LayoutInflater.from(context).inflate(com.example.practo.R.layout.search_medicine_card_layout,p0,false)
         return MyViewHolder(view)
     }
 
@@ -48,6 +48,9 @@ class SearchMedicineRecyclerAdaptor(var context: Context,var medList:ArrayList<M
             } else{
                 itemView.medicine_imv.setImageResource(R.drawable.capsule)
             }
+            if(searchMedicineFragmentUseCaseObj.isPresentInWishList(medicineList.get(adapterPosition).medicineId)){
+                itemView.favorite_medicine.setColorFilter(ContextCompat.getColor(context,R.color.favorite_ic_color))
+            }
         }
 
         init {
@@ -61,6 +64,18 @@ class SearchMedicineRecyclerAdaptor(var context: Context,var medList:ArrayList<M
 
                listener.onAddToCartClicked(medicine)
            }
+
+            itemView.favorite_medicine.setOnClickListener {
+
+                if(searchMedicineFragmentUseCaseObj.isPresentInWishList(medicineList.get(adapterPosition).medicineId)){
+                    itemView.favorite_medicine.setColorFilter(null)
+                    searchMedicineFragmentUseCaseObj.removeFromWishList(medicineList.get(adapterPosition).medicineId)
+                } else {
+                    itemView.favorite_medicine.setColorFilter(ContextCompat.getColor(context,R.color.favorite_ic_color))
+                    itemView.favorite_medicine.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_item))
+                    searchMedicineFragmentUseCaseObj.addToWishList(medicineList.get(adapterPosition).medicineId)
+                }
+            }
         }
 
     }

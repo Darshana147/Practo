@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:title="search"
+            android:id="@+id/search_menu_item"
+            android:icon="@drawable/ic_search_icon"
+            app:showAsAction="ifRoom|collapseActionView"
+            app:actionViewClass="android.support.v7.widget.SearchView">
+    </item>
+
+    <item
             android:title="view cart"
             android:id="@+id/view_cart_menu_item"
             android:icon="@drawable/ic_shopping_cart"
@@ -10,14 +18,14 @@
     >
     </item>
 
-    <item
-        android:title="search"
-        android:id="@+id/search_menu_item"
-        android:icon="@drawable/ic_search_icon"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView">
-    </item>
 
+    <item
+            android:title="favorite list"
+            android:id="@+id/favorites_list_menu_item"
+            android:icon="@drawable/ic_favorite_white"
+            app:showAsAction="always"
+    >
+    </item>
 
 
 </menu>

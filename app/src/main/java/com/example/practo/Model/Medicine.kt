@@ -3,6 +3,7 @@ package com.example.practo.Model
 data class Medicine(var medicineId:Int,var medicineName:String,var medicineDescription:String,var medicinePrice:Double,var medicineType:String)
 
 
+
 object MedicineSupplier{
     val medicineList = arrayListOf<Medicine>(
         Medicine(1,"Asthalin Inhaler 200md","Cipla Limited Respiratory",113.42,"liquid"),

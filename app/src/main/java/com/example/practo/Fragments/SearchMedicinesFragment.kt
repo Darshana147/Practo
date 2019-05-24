@@ -1,31 +1,27 @@
 package com.example.practo.Fragments
 
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.view.MenuItemCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.example.practo.Adapters.HealthArticleRecylerAdapter
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
 import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 
 
 import com.example.practo.R
-import com.example.practo.InterfaceListeners.OnViewCartListener
+import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
 import com.example.practo.InterfaceListeners.SearchMedicinesFragmentListener
-import com.example.practo.Model.ArticlesSupplier
 import com.example.practo.Model.Medicine
+import com.example.practo.Model.MedicineCartSupplier
 import com.example.practo.Model.MedicineSupplier
+import com.example.practo.Model.WishListSupplier
+import com.example.practo.UseCases.SearchMedicineFragmentUseCases
 
 
 class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCartDialogFragment.OnInputSelected{
@@ -33,17 +29,22 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     private lateinit var rootView:View
     private lateinit var searcItem:MenuItem
     private lateinit var searchView: android.support.v7.widget.SearchView
-    private lateinit var mViewCartListener: OnViewCartListener
+    private lateinit var mSearchFragmentToolbarMenuListener: OnSearchFragmentToolbarMenuListener
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdaptor:SearchMedicineRecyclerAdaptor
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var mSearchMedicinesFragmentListener:SearchMedicinesFragmentListener
     private lateinit var medicine:Medicine
     private lateinit var cartCount:TextView
-    private var mCartItemCount:Int=0
+    private lateinit var searchMedicineFragmentUseCases: SearchMedicineFragmentUseCases
+    private var mCartItemCount:Int=MedicineCartSupplier.medicineCart.totalNumOfItems //acts as db
 
-    fun setViewCartListener(mViewCartListener: OnViewCartListener){
-        this.mViewCartListener = mViewCartListener
+    init {
+        searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases()
+    }
+
+    fun setSearchFragmentToolbarMenuListener(mSearchFragmentToolbarMenuListener: OnSearchFragmentToolbarMenuListener){
+        this.mSearchFragmentToolbarMenuListener = mSearchFragmentToolbarMenuListener
     }
 
     override fun onCreateView(
@@ -59,7 +60,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
         setHasOptionsMenu(true)
         return rootView
     }
-
 
 
     fun customizeToolbar(){
@@ -82,7 +82,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
         recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,
-            MedicineSupplier.medicineList,this)
+            MedicineSupplier.medicineList,this,searchMedicineFragmentUseCases)
         recyclerView.adapter = recyclerViewAdaptor
     }
 
@@ -104,7 +104,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
         //search bar
         searcItem = menu!!.findItem(R.id.search_menu_item)
         searchView = searcItem.actionView as SearchView
-
         searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -137,11 +136,16 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item!!.itemId){
-          R.id.view_cart_menu_item -> {
-              mViewCartListener.onViewCartClicked()
-              return true
-          }
+        when (item!!.itemId) {
+            R.id.view_cart_menu_item -> {
+                mSearchFragmentToolbarMenuListener.onViewCartClicked()
+                return true
+            }
+            R.id.favorites_list_menu_item -> {
+                mSearchFragmentToolbarMenuListener.onWishListClicked()
+                Toast.makeText(context, "WishList", Toast.LENGTH_SHORT).show()
+                return true
+            }
             else -> {
                 return super.onOptionsItemSelected(item)
             }
@@ -176,7 +180,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     }
 
     override fun sendItemQtyInputFromCartDialogFragment(input: String) {
-        //to-do
         mCartItemCount = input.toInt()
         //setUpBadge() //no need here as addToCart sends back the changes
         mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
@@ -186,6 +189,5 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
         this.mCartItemCount = mCartItemCount
         setUpBadge()
     }
-
 
 }
