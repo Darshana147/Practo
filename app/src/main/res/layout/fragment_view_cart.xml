@@ -8,6 +8,7 @@
 
     <LinearLayout
             android:id="@+id/cart_not_empty_view"
+            android:visibility="invisible"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -86,7 +87,6 @@
 
     <LinearLayout
             android:id="@+id/cart_emtpy_view"
-            android:visibility="invisible"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -94,17 +94,16 @@
         <ImageView
                 android:id="@+id/empty_cart_imv"
                 android:layout_gravity="center"
-                android:backgroundTint="#ffffff"
                 android:layout_marginTop="75dp"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
-                android:src="@drawable/emptycart"
+                android:src="@drawable/empty_cart"
         />
 
         <TextView
                 android:text="Add Item To Begin"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:padding="5dp"
                 android:id="@+id/add_item_to_begin_txv"
                 android:textStyle="bold"
@@ -115,7 +114,7 @@
         <TextView
                 android:id="@+id/empty_cart_txv"
                 android:text="Your cart is empty."
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:textSize="20sp"
                 android:textColor="#000000"

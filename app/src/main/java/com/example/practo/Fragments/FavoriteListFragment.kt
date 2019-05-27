@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.practo.Adapters.MedicineFavoriteListRecyclerAdapter
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
-import com.example.practo.Model.MedicineSupplier
-import com.example.practo.Model.WishListSupplier
+//import com.example.practo.Model.MedicineSupplier
+//import com.example.practo.Model.WishListSupplier
 
 import com.example.practo.R
 
@@ -50,7 +50,7 @@ class FavoriteListFragment : Fragment() {
 
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdaper = MedicineFavoriteListRecyclerAdapter(this.context!!,WishListSupplier.medicineWishList)
+        //recyclerViewAdaper = MedicineFavoriteListRecyclerAdapter(this.context!!,WishListSupplier.medicineWishList)
         recyclerView.adapter = recyclerViewAdaper
     }
 

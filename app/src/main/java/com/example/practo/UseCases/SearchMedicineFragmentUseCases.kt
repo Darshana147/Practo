@@ -3,10 +3,14 @@ package com.example.practo.UseCases
 import android.content.Context
 import com.example.practo.DAO.MedicineDAO
 import com.example.practo.Model.Medicine
-import com.example.practo.Model.MedicineSupplier
 import com.example.practo.Model.WishListSupplier
 
-class SearchMedicineFragmentUseCases(var medicineDAO: MedicineDAO) {
+class SearchMedicineFragmentUseCases(context: Context) {
+    private var medicineDAO:MedicineDAO
+
+    init {
+        medicineDAO = MedicineDAO(context)
+    }
 
     fun isPresentInWishList(medicineId:Int):Boolean{
         for(medicine in WishListSupplier.medicineWishList){

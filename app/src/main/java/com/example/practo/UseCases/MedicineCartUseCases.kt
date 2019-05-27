@@ -34,6 +34,8 @@ class MedicineCartUseCases(context:Context) {
         else{
             medicineCartItemDetailsDAO.insertMedicineItemIntoCart(medicineCartItem)
         }
+        updateCartTotalQuantity()
+        updateCartTotalPrice()
     }
 
 

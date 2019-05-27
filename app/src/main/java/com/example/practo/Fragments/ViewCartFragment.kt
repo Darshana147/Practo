@@ -12,30 +12,23 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.practo.Adapters.MedicineCartRecyclerAdaptor
-import com.example.practo.InterfaceListeners.MedicineCartListener
 import com.example.practo.InterfaceListeners.OnChangeCartItemQtyListener
-import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineCartItem
-import com.example.practo.Model.MedicineCartSupplier
 import com.example.practo.R
 import com.example.practo.UseCases.MedicineCartUseCases
 
 
 class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogFragment.OnInputSelected{
     private lateinit var rootView:View
-//    private var medicineCartItems:ArrayList<MedicineCartItem> = MedicineCartSupplier.medicineCart.medicineCartItems
     private lateinit var emptyCartView:LinearLayout
     private lateinit var cartNotEmptyView:LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdaptor:MedicineCartRecyclerAdaptor
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var mMedicineCartListener:MedicineCartListener
     private lateinit var medicineCartTotalItemCountTxv:TextView
     private lateinit var medicineCartTotalAmountTxv:TextView
     private lateinit var medicineCartUseCases: MedicineCartUseCases
     private lateinit var medicineCartItems:ArrayList<MedicineCartItem>
-//    private var medicineCartItemTotalQuantity:Int=0
-//    private var medicineCartTotalAmount:Double=0.0
     private var medicineId:Int=0
 
 
@@ -48,7 +41,6 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         customizeToolbar()
         initViews()
         initUseCases()
-        //initInitialValues()
         initRecyclerView()
         initLayoutManager()
         viewDisplay()
@@ -60,10 +52,6 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         medicineCartItems = medicineCartUseCases.getMedicineItemsFromCart()
     }
 
-//    fun initInitialValues(){
-//        medicineCartItemTotalQuantity = medicineCartUseCases.getCartTotalQuantity()
-//        medicineCartTotalAmount = medicineCartUseCases.getCartTotalPrice()
-//    }
 
     fun initViews(){
         emptyCartView = rootView.findViewById(R.id.cart_emtpy_view)
@@ -112,26 +100,6 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         }
     }
 
-//    fun addItemToCart(medicine: Medicine,qty:Int) {
-//        var flag = 0
-//        var medicineCartItem: MedicineCartItem
-//
-//        for (item in medicineCartItems) {
-//            if (item.medicine.medicineId == medicine.medicineId) {
-//                flag = 1
-//                var index = medicineCartItems.indexOf(item)
-//                medicineCartItem = MedicineCartItem(medicine, qty) //change
-//                medicineCartItems.set(index, medicineCartItem)
-//                break
-//            }
-//        }
-//        if (flag == 0) {
-//            medicineCartItem = MedicineCartItem(medicine, qty)//change
-//            medicineCartItems.add(medicineCartItem)
-//        }
-//        setMedicineCartTotalAmount()
-//        setMedicineCartQuantity()
-//    }
 
     override fun onChangeQuantityClicked(medicineId:Int) {
         this.medicineId = medicineId
@@ -180,31 +148,20 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     }
 
     fun applyChangesInCartTotalItemCount(){
-//        medicineCartTotalItemCountTxv.text = medicineCartItemTotalQuantity.toString()+" Items"
         medicineCartTotalItemCountTxv.text = medicineCartUseCases.getCartTotalQuantity().toString()+" Items"
     }
 
     fun applyChangesInCartTotalAmount(){
-//        medicineCartTotalAmountTxv.text = medicineCartTotalAmount.toString()
         medicineCartTotalAmountTxv.text = medicineCartUseCases.getCartTotalPrice().toString()
     }
 
     fun setMedicineCartQuantity(){
-//        medicineCartItemTotalQuantity=0
-//        for(cartItem in medicineCartItems){
-//            medicineCartItemTotalQuantity+=cartItem.medicineQuantity
-//        }
         medicineCartUseCases.updateCartTotalQuantity()
         checkViewDisplayState()
-        sendMedicineCartChanges()
     }
 
 
     fun setMedicineCartTotalAmount(){
-//        medicineCartTotalAmount=0.0
-//        for(cartItem in medicineCartItems){
-//            medicineCartTotalAmount+=(cartItem.medicine.medicinePrice*cartItem.medicineQuantity)
-//        }
         medicineCartUseCases.updateCartTotalPrice()
     }
 
@@ -213,20 +170,5 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
             viewDisplay()
         }
     }
-
-    fun sendMedicineCartChanges(){
-        mMedicineCartListener.sendMedicineCartQuantity(medicineCartUseCases.getCartTotalQuantity())
-    }
-
-    fun setMedicineCartListener(mMedicineCartListener: MedicineCartListener){
-        this.mMedicineCartListener = mMedicineCartListener
-    }
-
-//    override fun onDetach() {
-//        super.onDetach()
-//        MedicineCartSupplier.medicineCart.medicineCartItems = medicineCartItems
-//        MedicineCartSupplier.medicineCart.totalNumOfItems=medicineCartItemTotalQuantity
-//        MedicineCartSupplier.medicineCart.totalPrice=medicineCartTotalAmount
-//    }
 
 }

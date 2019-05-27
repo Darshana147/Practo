@@ -11,14 +11,12 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
-import com.example.practo.DAO.MedicineCartItemDetailsDAO
 import com.example.practo.DAO.MedicineDAO
 import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 
 
 import com.example.practo.R
 import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
-import com.example.practo.InterfaceListeners.SearchMedicinesFragmentListener
 import com.example.practo.Model.*
 import com.example.practo.UseCases.MedicineCartUseCases
 import com.example.practo.UseCases.SearchMedicineFragmentUseCases
@@ -33,17 +31,13 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdaptor:SearchMedicineRecyclerAdaptor
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var mSearchMedicinesFragmentListener:SearchMedicinesFragmentListener
     private lateinit var medicine:Medicine
     private lateinit var cartCount:TextView
     private lateinit var searchMedicineFragmentUseCases: SearchMedicineFragmentUseCases
     private lateinit var medicineCartUseCases:MedicineCartUseCases
     private lateinit var medicineDAO:MedicineDAO
-    private var mCartItemCount:Int=MedicineCartSupplier.medicineCart.totalNumOfItems //acts as db
 
-    init {
 
-    }
 
     fun setSearchFragmentToolbarMenuListener(mSearchFragmentToolbarMenuListener: OnSearchFragmentToolbarMenuListener){
         this.mSearchFragmentToolbarMenuListener = mSearchFragmentToolbarMenuListener
@@ -66,7 +60,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     }
 
     fun initUseCases(){
-        searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases(medicineDAO)
+        searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases(this.context!!)
         medicineCartUseCases = MedicineCartUseCases(this.context!!)
     }
 
@@ -90,8 +84,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
-//        recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,
-//            MedicineSupplier.medicineList,this,searchMedicineFragmentUseCases)
         recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,medicineDAO.getAllMedicines(),this,searchMedicineFragmentUseCases)
         recyclerView.adapter = recyclerViewAdaptor
     }
@@ -132,12 +124,12 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     fun setUpBadge(){
         if (cartCount != null) {
-            if (mCartItemCount == 0) {
+            if (medicineCartUseCases.getCartTotalQuantity() == 0) {
                 if (cartCount.getVisibility() != View.GONE) {
                     cartCount.setVisibility(View.GONE);
                 }
             } else {
-                cartCount.setText(mCartItemCount.toString());
+                cartCount.setText(medicineCartUseCases.getCartTotalQuantity().toString());
                 if (cartCount.getVisibility() != View.VISIBLE) {
                     cartCount.setVisibility(View.VISIBLE);
                 }
@@ -166,17 +158,12 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     fun filter(text:String){
         var filteredList:ArrayList<Medicine> = ArrayList()
 
-        for(medicine in MedicineSupplier.medicineList){
+        for(medicine in medicineDAO.getAllMedicines()){
             if(medicine.medicineName.toLowerCase().trim().contains(text.toLowerCase().trim())||(medicine.medicineDescription.trim().toLowerCase().contains(text.toLowerCase().trim()))){
                 filteredList.add(medicine)
             }
         }
         recyclerViewAdaptor.filterList(filteredList)
-    }
-
-    fun setSearchMedicinesFragmentListener(mSearchMedicinesFragmentListener: SearchMedicinesFragmentListener){
-        this.mSearchMedicinesFragmentListener = mSearchMedicinesFragmentListener
-
     }
 
     override fun onAddToCartClicked(medicine: Medicine) {
@@ -190,15 +177,10 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     }
 
     override fun sendItemQtyInputFromCartDialogFragment(input: String) {
-        mCartItemCount = input.toInt()
-        setUpBadge() //no need here as addToCart sends back the changes
+        Toast.makeText(context,input.toString(),Toast.LENGTH_SHORT).show()
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine,input.toInt()))
-        //mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
+        setUpBadge() //no need here as addToCart sends back the changes
     }
 
-    fun setMedicineCartItemCount(mCartItemCount:Int){
-        this.mCartItemCount = mCartItemCount
-        setUpBadge()
-    }
 
 }
