@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.example.practo.Fragments.MedicineOrderFragment
 import com.example.practo.Fragments.SearchMedicinesFragment
 import com.example.practo.Fragments.ViewCartFragment
-import com.example.practo.Fragments.WishListFragment
+import com.example.practo.Fragments.FavoriteListFragment
 import com.example.practo.InterfaceListeners.MedicineCartListener
 import com.example.practo.InterfaceListeners.OnPlaceMedicineOrderListener
 import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
@@ -24,7 +24,7 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
     private lateinit var medicineOrderFragment: MedicineOrderFragment
     private lateinit var searchMedicinesFragment: SearchMedicinesFragment
     private lateinit var viewCartFragment: ViewCartFragment
-    private lateinit var wishListFragment: WishListFragment
+    private lateinit var favoriteListFragment: FavoriteListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
         medicineOrderFragment = MedicineOrderFragment()
         searchMedicinesFragment = SearchMedicinesFragment()
         viewCartFragment = ViewCartFragment()
-        wishListFragment = WishListFragment()
+        favoriteListFragment = FavoriteListFragment()
     }
 
     fun customizeToolbar(){
@@ -95,14 +95,14 @@ class OrderMedicineActivity : AppCompatActivity(),OnPlaceMedicineOrderListener,O
 
     override fun onAddToCartFromSearchMedicinesListener(medicine:Medicine,qty:Int) {
         Toast.makeText(applicationContext,"Item Added To Cart",Toast.LENGTH_SHORT).show()
-        viewCartFragment.addItemToCart(medicine,qty)
+        //viewCartFragment.addItemToCart(medicine,qty)
     }
     override fun sendMedicineCartQuantity(cartQuantity: Int) {
         searchMedicinesFragment.setMedicineCartItemCount(cartQuantity)
     }
 
     override fun onWishListClicked() {
-       setFragmentTransitionWithAddToBackStack(wishListFragment)
+       setFragmentTransitionWithAddToBackStack(favoriteListFragment)
     }
 
 

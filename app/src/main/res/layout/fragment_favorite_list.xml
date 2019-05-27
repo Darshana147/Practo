@@ -4,16 +4,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context=".Fragments.SearchMedicinesFragment">
+              tools:context=".Fragments.FavoriteListFragment">
 
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/favorite_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/search_medicine_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

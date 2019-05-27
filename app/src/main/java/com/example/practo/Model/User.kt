@@ -1,6 +1,6 @@
 package com.example.practo.Model
 
-class User{
+ class User{
     var userId = 1
     var userName = "abc"
     lateinit var medicineCart: MedicineCart

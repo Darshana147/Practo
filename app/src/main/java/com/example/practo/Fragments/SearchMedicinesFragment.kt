@@ -11,16 +11,16 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
+import com.example.practo.DAO.MedicineCartItemDetailsDAO
+import com.example.practo.DAO.MedicineDAO
 import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 
 
 import com.example.practo.R
 import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
 import com.example.practo.InterfaceListeners.SearchMedicinesFragmentListener
-import com.example.practo.Model.Medicine
-import com.example.practo.Model.MedicineCartSupplier
-import com.example.practo.Model.MedicineSupplier
-import com.example.practo.Model.WishListSupplier
+import com.example.practo.Model.*
+import com.example.practo.UseCases.MedicineCartUseCases
 import com.example.practo.UseCases.SearchMedicineFragmentUseCases
 
 
@@ -37,10 +37,12 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     private lateinit var medicine:Medicine
     private lateinit var cartCount:TextView
     private lateinit var searchMedicineFragmentUseCases: SearchMedicineFragmentUseCases
+    private lateinit var medicineCartUseCases:MedicineCartUseCases
+    private lateinit var medicineDAO:MedicineDAO
     private var mCartItemCount:Int=MedicineCartSupplier.medicineCart.totalNumOfItems //acts as db
 
     init {
-        searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases()
+
     }
 
     fun setSearchFragmentToolbarMenuListener(mSearchFragmentToolbarMenuListener: OnSearchFragmentToolbarMenuListener){
@@ -53,12 +55,19 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     ): View? {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_search_medicines, container, false)
+        medicineDAO = MedicineDAO(this.context!!)
+        initUseCases()
         customizeToolbar()
         initRecyclerView()
         initLayoutManager()
         bindRecyclerViewWithAdapter()
         setHasOptionsMenu(true)
         return rootView
+    }
+
+    fun initUseCases(){
+        searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases(medicineDAO)
+        medicineCartUseCases = MedicineCartUseCases(this.context!!)
     }
 
 
@@ -81,8 +90,9 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,
-            MedicineSupplier.medicineList,this,searchMedicineFragmentUseCases)
+//        recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,
+//            MedicineSupplier.medicineList,this,searchMedicineFragmentUseCases)
+        recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,medicineDAO.getAllMedicines(),this,searchMedicineFragmentUseCases)
         recyclerView.adapter = recyclerViewAdaptor
     }
 
@@ -181,8 +191,9 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     override fun sendItemQtyInputFromCartDialogFragment(input: String) {
         mCartItemCount = input.toInt()
-        //setUpBadge() //no need here as addToCart sends back the changes
-        mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
+        setUpBadge() //no need here as addToCart sends back the changes
+        medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine,input.toInt()))
+        //mSearchMedicinesFragmentListener.onAddToCartFromSearchMedicinesListener(medicine,input.toInt())
     }
 
     fun setMedicineCartItemCount(mCartItemCount:Int){

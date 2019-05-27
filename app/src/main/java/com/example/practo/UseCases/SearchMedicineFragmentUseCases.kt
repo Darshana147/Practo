@@ -1,10 +1,12 @@
 package com.example.practo.UseCases
 
+import android.content.Context
+import com.example.practo.DAO.MedicineDAO
 import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineSupplier
 import com.example.practo.Model.WishListSupplier
 
-class SearchMedicineFragmentUseCases {
+class SearchMedicineFragmentUseCases(var medicineDAO: MedicineDAO) {
 
     fun isPresentInWishList(medicineId:Int):Boolean{
         for(medicine in WishListSupplier.medicineWishList){
@@ -16,7 +18,7 @@ class SearchMedicineFragmentUseCases {
     }
 
     fun getMedicineById(medicineId:Int): Medicine?{
-        for(medicine in MedicineSupplier.medicineList){
+        for(medicine in medicineDAO.getAllMedicines()){
             if(medicine.medicineId==medicineId){
                 return medicine
             }
