@@ -14,6 +14,7 @@ import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
 //import com.example.practo.Model.WishListSupplier
 
 import com.example.practo.R
+import com.example.practo.UseCases.FavoriteMedicineUseCases
 
 
 class FavoriteListFragment : Fragment() {
@@ -21,6 +22,7 @@ class FavoriteListFragment : Fragment() {
     private lateinit var recyclerView:RecyclerView
     private lateinit var layoutManager:LinearLayoutManager
     private lateinit var recyclerViewAdaper:MedicineFavoriteListRecyclerAdapter
+    private lateinit var favoriteMedicineUseCases:FavoriteMedicineUseCases
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,15 +30,17 @@ class FavoriteListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         rootView =inflater.inflate(R.layout.fragment_favorite_list, container, false)
+        initUseCases()
         initRecyclerView()
         initLayoutManager()
         bindRecyclerViewWithAdapter()
         return rootView
     }
 
-    fun initViews(){
-        recyclerView
+    fun initUseCases(){
+        favoriteMedicineUseCases = FavoriteMedicineUseCases(this.context!!)
     }
+
 
     fun initRecyclerView(){
         recyclerView = rootView.findViewById<RecyclerView>(R.id.favorite_list_recycler_view)
@@ -51,6 +55,7 @@ class FavoriteListFragment : Fragment() {
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
         //recyclerViewAdaper = MedicineFavoriteListRecyclerAdapter(this.context!!,WishListSupplier.medicineWishList)
+        recyclerViewAdaper = MedicineFavoriteListRecyclerAdapter(this.context!!,favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1))
         recyclerView.adapter = recyclerViewAdaper
     }
 

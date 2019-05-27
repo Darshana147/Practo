@@ -2,6 +2,7 @@ package com.example.practo.UseCases
 
 import android.content.Context
 import com.example.practo.DAO.CartDetailsDAO
+import com.example.practo.DAO.FavoriteMedicineListDAO
 import com.example.practo.DAO.MedicineCartItemDetailsDAO
 import com.example.practo.DAO.MedicineDAO
 import com.example.practo.Model.Medicine
@@ -11,11 +12,13 @@ class MedicineCartUseCases(context:Context) {
     private var medicineCartItemDetailsDAO:MedicineCartItemDetailsDAO
     private var medicineDAO:MedicineDAO
     private var medicineCartDetailsDAO:CartDetailsDAO
+    private var favoriteMedicineDAO:FavoriteMedicineListDAO
 
     init{
         medicineCartItemDetailsDAO = MedicineCartItemDetailsDAO(context)
         medicineDAO = MedicineDAO(context)
         medicineCartDetailsDAO = CartDetailsDAO(context)
+        favoriteMedicineDAO = FavoriteMedicineListDAO(context)
     }
 
     fun isPresentInMedicineCart(medicineId: Int):Boolean{
@@ -83,6 +86,8 @@ class MedicineCartUseCases(context:Context) {
     fun getCartTotalPrice():Double{
         return medicineCartDetailsDAO.getCartTotalPrice(1)!!
     }
+
+
 
 
 }

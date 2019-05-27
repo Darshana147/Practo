@@ -18,6 +18,7 @@ import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 import com.example.practo.R
 import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
 import com.example.practo.Model.*
+import com.example.practo.UseCases.FavoriteMedicineUseCases
 import com.example.practo.UseCases.MedicineCartUseCases
 import com.example.practo.UseCases.SearchMedicineFragmentUseCases
 
@@ -34,6 +35,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     private lateinit var medicine:Medicine
     private lateinit var cartCount:TextView
     private lateinit var searchMedicineFragmentUseCases: SearchMedicineFragmentUseCases
+    private lateinit var favoriteMedicineUseCases: FavoriteMedicineUseCases
     private lateinit var medicineCartUseCases:MedicineCartUseCases
     private lateinit var medicineDAO:MedicineDAO
 
@@ -62,6 +64,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     fun initUseCases(){
         searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases(this.context!!)
         medicineCartUseCases = MedicineCartUseCases(this.context!!)
+        favoriteMedicineUseCases = FavoriteMedicineUseCases(this.context!!)
     }
 
 
@@ -84,7 +87,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
 
     fun bindRecyclerViewWithAdapter(){
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,medicineDAO.getAllMedicines(),this,searchMedicineFragmentUseCases)
+        recyclerViewAdaptor = SearchMedicineRecyclerAdaptor(this.context!!,medicineDAO.getAllMedicines(),this,favoriteMedicineUseCases)
         recyclerView.adapter = recyclerViewAdaptor
     }
 
