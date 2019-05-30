@@ -87,7 +87,8 @@ class MedicineCartUseCases(context:Context) {
         return medicineCartDetailsDAO.getCartTotalPrice(1)!!
     }
 
-
-
+    fun getMedicineById(medicineId:Int):Medicine{
+        return medicineDAO.getMedicineById(medicineId)
+    }
 
 }

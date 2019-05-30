@@ -97,7 +97,6 @@ class HomeFragment : Fragment() {
         }
 
         pharmacyCardView.setOnClickListener {
-            Toast.makeText(context,"Pharmacy Clicked",Toast.LENGTH_SHORT).show()
             mPharmacyListener.onPharmacyClicked()
         }
 

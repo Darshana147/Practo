@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+              android:orientation="vertical"
+
+             tools:context=".Fragments.NoNetworkConnectionDialogFragment">
+    <TextView
+            android:id="@+id/dialog_title"
+            android:text="No Internet Connection"
+            android:padding="15dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/dialog_message"
+            android:text="Please connect to the Internet"
+            android:textSize="15sp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="20dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <View
+            android:background="#B6B5B5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <Button
+                android:id="@+id/dialog_cancel_btn"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:textColor="@color/colorAccent"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        <View
+                android:background="#B6B5B5"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"/>
+
+        <Button
+                android:id="@+id/dialog_ok_btn"
+                android:textColor="@color/colorAccent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@android:color/transparent"
+                android:text="Ok"
+                android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <View
+            android:background="#B6B5B5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+
+
+</LinearLayout>

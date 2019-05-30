@@ -4,12 +4,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="8dp"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:layout_marginRight="3dp"
-        app:cardElevation="5dp"
+        app:cardElevation="4dp"
         android:layout_height="wrap_content">
 
     <LinearLayout
@@ -83,6 +82,9 @@
             <TextView
                     android:text="ADD TO CART"
                     android:id="@+id/add_to_cart_txv"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:textColor="@color/colorAccent"
                     android:gravity="end"
                     android:layout_width="match_parent"

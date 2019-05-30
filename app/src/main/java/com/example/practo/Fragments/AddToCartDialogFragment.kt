@@ -18,6 +18,7 @@ class AddToCartDialogFragment:DialogFragment() {
     interface OnInputSelected{
         fun sendItemQtyInputFromCartDialogFragment(input:String)
     }
+
     private lateinit var mOnInputSelected:OnInputSelected
     private lateinit var rootView:View
     private lateinit var listView: ListView
@@ -36,13 +37,8 @@ class AddToCartDialogFragment:DialogFragment() {
         var listAdapter = ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,qtyArray)
         listView.adapter = listAdapter
         listView.setOnItemClickListener { parent, view, position, id ->
-            //to-do
             var value=parent.getItemAtPosition(position).toString()
-            if(value!=null&&(!value.equals("Remove Item"))) {
-                qtyArray.add(0,"Remove Item")
-                listAdapter.notifyDataSetChanged()
-                mOnInputSelected.sendItemQtyInputFromCartDialogFragment(value)
-            }
+            mOnInputSelected.sendItemQtyInputFromCartDialogFragment(value)
             dialog.dismiss()
         }
 
@@ -58,9 +54,6 @@ class AddToCartDialogFragment:DialogFragment() {
         cancelImv = rootView.findViewById(R.id.cancel_imv)
     }
 
-    fun sendValue(value:Any){
-
-    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

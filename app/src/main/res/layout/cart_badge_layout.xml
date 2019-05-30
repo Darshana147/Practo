@@ -16,6 +16,7 @@
 
     <TextView
             android:id="@+id/cart_badge_txv"
+            android:textStyle="bold"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="right|end|top"

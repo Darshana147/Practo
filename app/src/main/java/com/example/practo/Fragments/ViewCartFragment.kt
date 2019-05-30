@@ -9,16 +9,21 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.example.practo.Adapters.MedicineCartRecyclerAdaptor
 import com.example.practo.InterfaceListeners.OnChangeCartItemQtyListener
+import com.example.practo.InterfaceListeners.ViewCartFragmentListener
 import com.example.practo.Model.MedicineCartItem
 import com.example.practo.R
 import com.example.practo.UseCases.MedicineCartUseCases
 
 
 class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogFragment.OnInputSelected{
+
+
     private lateinit var rootView:View
     private lateinit var emptyCartView:LinearLayout
     private lateinit var cartNotEmptyView:LinearLayout
@@ -29,6 +34,9 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     private lateinit var medicineCartTotalAmountTxv:TextView
     private lateinit var medicineCartUseCases: MedicineCartUseCases
     private lateinit var medicineCartItems:ArrayList<MedicineCartItem>
+    private lateinit var addMedicinesToCartBtn:Button
+    private lateinit var checkOutBtn:Button
+    private lateinit var viewCartFragmentListener: ViewCartFragmentListener
     private var medicineId:Int=0
 
 
@@ -41,6 +49,7 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         customizeToolbar()
         initViews()
         initUseCases()
+        initOnSelectListeners()
         initRecyclerView()
         initLayoutManager()
         viewDisplay()
@@ -58,6 +67,17 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         cartNotEmptyView = rootView.findViewById(R.id.cart_not_empty_view)
         medicineCartTotalItemCountTxv = rootView.findViewById(R.id.cart_total_item_count)
         medicineCartTotalAmountTxv = rootView.findViewById<TextView>(R.id.cart_total_amount)
+        addMedicinesToCartBtn = rootView.findViewById(R.id.add_medicines_to_empty_cart_btn)
+        checkOutBtn = rootView.findViewById(R.id.CheckOutBtn)
+    }
+
+    fun initOnSelectListeners(){
+        addMedicinesToCartBtn.setOnClickListener {
+            viewCartFragmentListener.onAddMedicinesBtnFromEmptyCartClicked()
+        }
+        checkOutBtn.setOnClickListener {
+            viewCartFragmentListener.onCheckOutBtnClicked()
+        }
     }
 
 
@@ -119,6 +139,7 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
             }
         }
         medicineCartUseCases.removeMedicineItemFromCart(medicineId)
+        Toast.makeText(context,"Item Removed", Toast.LENGTH_SHORT).show()
         setMedicineCartTotalAmount()
         setMedicineCartQuantity()
         applyChangesInCartTotalAmount()
@@ -160,7 +181,6 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         checkViewDisplayState()
     }
 
-
     fun setMedicineCartTotalAmount(){
         medicineCartUseCases.updateCartTotalPrice()
     }
@@ -169,6 +189,10 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         if(medicineCartUseCases.getCartTotalQuantity()==0){
             viewDisplay()
         }
+    }
+
+    fun setViewCartFragmentListener(viewCartFragmentListener: ViewCartFragmentListener){
+        this.viewCartFragmentListener = viewCartFragmentListener
     }
 
 }

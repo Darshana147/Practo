@@ -39,4 +39,8 @@ dependencies {
     //swipe tabs
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:design:28.0.0'
+
+    //user current location
+    implementation 'com.google.android.gms:play-services-location:15.0.0'
+    implementation 'com.nabinbhandari.android:permissions:3.5'
 }

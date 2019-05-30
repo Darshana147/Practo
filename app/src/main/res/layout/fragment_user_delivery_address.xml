@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+             tools:context=".Fragments.UserDeliveryAddressFragment">
+
+        <LinearLayout
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            <Button
+
+                    android:text=" Use my current location"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:id="@+id/get_user_location_btn"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:background="#E9E8E8"
+                    android:elevation="2dp"
+                    android:drawableLeft="@drawable/ic_gps_primary_color"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                   android:theme="@style/MyEditText"
+                   android:id="@+id/user_name_til"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    app:errorEnabled="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <EditText
+                        android:id="@+id/user_name_edit_text"
+                        android:hint="Name *"
+                        android:theme="@style/MyEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+                <EditText
+                        android:theme="@style/MyEditText"
+                        android:hint="Mobile Number *"
+                        android:id="@+id/user_mobile_number_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#EBE9E9"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+            <EditText
+                    android:theme="@style/MyEditText"
+                    android:id="@+id/user_pin_code_edit_text"
+                    android:hint="Pin Code *"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+            <EditText
+                    android:theme="@style/MyEditText"
+                    android:id="@+id/user_address_edit_text"
+                    android:hint="Address(House No, Building, Street, Area) *"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+            <EditText
+                    android:theme="@style/MyEditText"
+                    android:id="@+id/user_locality_edit_text"
+                    android:hint="Locality/Town *"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+            <EditText
+                    android:theme="@style/MyEditText"
+                    android:id="@+id/user_city_edit_text"
+                    android:hint="City/District *"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+            <EditText
+                    android:theme="@style/MyEditText"
+                    android:id="@+id/user_state_edit_text"
+                    android:hint="State *"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:theme="@style/MyEditText"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+                <EditText
+                        android:theme="@style/MyEditText"
+                        android:id="@+id/user_country_edit_text"
+                        android:hint="Country *"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#EBE9E9"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+
+            <TextView
+
+                    android:text="Type of Address *"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <RadioGroup
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/MyEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <RadioButton
+                        android:id="@+id/home_address"
+                        android:text="Home"
+                        android:checked="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <RadioButton
+                        android:id="@+id/office_address"
+                        android:text="Office/Commercial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </RadioGroup>
+
+            <View
+                    android:layout_marginTop="10dp"
+
+                    android:background="#EBE9E9"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+
+            <LinearLayout
+                    android:gravity="center|bottom"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <Button
+                        android:layout_gravity="center"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:id="@+id/cancel_btn"
+                        android:text="Cancel"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+
+                />
+
+                <Button
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:id="@+id/save_btn"
+                        android:text="Save"
+                        android:background="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+
+                />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+</ScrollView>

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.util.TypedValue
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
@@ -20,7 +21,7 @@ import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
 import com.example.practo.Model.*
 import com.example.practo.UseCases.FavoriteMedicineUseCases
 import com.example.practo.UseCases.MedicineCartUseCases
-import com.example.practo.UseCases.SearchMedicineFragmentUseCases
+
 
 
 class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCartDialogFragment.OnInputSelected{
@@ -34,7 +35,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var medicine:Medicine
     private lateinit var cartCount:TextView
-    private lateinit var searchMedicineFragmentUseCases: SearchMedicineFragmentUseCases
     private lateinit var favoriteMedicineUseCases: FavoriteMedicineUseCases
     private lateinit var medicineCartUseCases:MedicineCartUseCases
     private lateinit var medicineDAO:MedicineDAO
@@ -62,7 +62,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     }
 
     fun initUseCases(){
-        searchMedicineFragmentUseCases = SearchMedicineFragmentUseCases(this.context!!)
         medicineCartUseCases = MedicineCartUseCases(this.context!!)
         favoriteMedicineUseCases = FavoriteMedicineUseCases(this.context!!)
     }
@@ -72,7 +71,6 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
         var activity = getActivity() as AppCompatActivity
         var actionBarSupport = activity.supportActionBar
         actionBarSupport?.setTitle("Search Medicines")
-
     }
 
     fun initRecyclerView(){
@@ -132,6 +130,13 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
                     cartCount.setVisibility(View.GONE);
                 }
             } else {
+                if(medicineCartUseCases.getCartTotalQuantity()>=100&&medicineCartUseCases.getCartTotalQuantity()<1000){
+                    cartCount.setTextSize(TypedValue.COMPLEX_UNIT_PX,resources.getDimension(R.dimen.textsizefor100ele))
+                } else if(medicineCartUseCases.getCartTotalQuantity()>=1000){
+                    cartCount.setTextSize(TypedValue.COMPLEX_UNIT_PX,resources.getDimension(R.dimen.textsizefor1000ele))
+                } else {
+                    cartCount.setTextSize(TypedValue.COMPLEX_UNIT_PX,resources.getDimension(R.dimen.textsize))
+                }
                 cartCount.setText(medicineCartUseCases.getCartTotalQuantity().toString());
                 if (cartCount.getVisibility() != View.VISIBLE) {
                     cartCount.setVisibility(View.VISIBLE);
@@ -180,7 +185,7 @@ class SearchMedicinesFragment : Fragment(),OnAddToCartSelectedListener,AddToCart
     }
 
     override fun sendItemQtyInputFromCartDialogFragment(input: String) {
-        Toast.makeText(context,input.toString(),Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,"Item added to Cart",Toast.LENGTH_SHORT).show()
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine,input.toInt()))
         setUpBadge() //no need here as addToCart sends back the changes
     }

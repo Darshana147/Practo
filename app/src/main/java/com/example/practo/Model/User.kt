@@ -9,7 +9,5 @@ package com.example.practo.Model
 
 }
 
-object WishListSupplier{
-    val medicineWishList = arrayListOf<Medicine>()
-}
+
 
