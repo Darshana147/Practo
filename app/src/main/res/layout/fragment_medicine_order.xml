@@ -49,7 +49,7 @@
                 <TextView
                         android:id="@+id/place_order_txv"
                         android:text="Place your first order now."
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
                         android:textSize="20sp"
                         android:textColor="#000000"

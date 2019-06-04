@@ -1,29 +1,29 @@
 package com.example.practo.Activities
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.practo.Fragments.*
+import com.example.practo.InterfaceListeners.*
+import com.example.practo.Model.UserDeliveryAddressStorage
+import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 import com.example.practo.R
 
-import com.example.practo.InterfaceListeners.FavoriteMedicinesFragmentListener
-import com.example.practo.InterfaceListeners.OnPlaceMedicineOrderListener
-import com.example.practo.InterfaceListeners.OnSearchFragmentToolbarMenuListener
-import com.example.practo.InterfaceListeners.ViewCartFragmentListener
 import kotlinx.android.synthetic.main.activity_order_medicine.*
 
 
 class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener, OnSearchFragmentToolbarMenuListener,
-    ViewCartFragmentListener,FavoriteMedicinesFragmentListener{
+    ViewCartFragmentListener,FavoriteMedicinesFragmentListener,UserDeliveryAddressFragmentListener,UserSavedDeliveryAddressesFragmentListener{
 
     private lateinit var medicineOrderFragment: MedicineOrderFragment
     private lateinit var searchMedicinesFragment: SearchMedicinesFragment
     private lateinit var viewCartFragment: ViewCartFragment
     private lateinit var favoriteListFragment: FavoriteMedicineListFragment
+    private lateinit var medicineOrderPlacementFragment:MedicineOrderPlacementFragment
     private lateinit var userDeliveryAddressFragment:UserDeliveryAddressFragment
+    private lateinit var userSavedDeliveryAddressesFragment: UserSavedDeliveryAddressesFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +53,8 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
         searchMedicinesFragment.setSearchFragmentToolbarMenuListener(this)
         viewCartFragment.setViewCartFragmentListener(this)
         favoriteListFragment.setFavoriteMedicinesFragmentListener(this)
+        userDeliveryAddressFragment.setUserDeliveryAddressFragmentListener(this)
+        userSavedDeliveryAddressesFragment.setUserSavedDeliveryAddressFragmentListener(this)
     }
 
     fun initFragments() {
@@ -61,6 +63,8 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
         viewCartFragment = ViewCartFragment()
         favoriteListFragment = FavoriteMedicineListFragment()
         userDeliveryAddressFragment = UserDeliveryAddressFragment()
+        medicineOrderPlacementFragment=MedicineOrderPlacementFragment()
+        userSavedDeliveryAddressesFragment= UserSavedDeliveryAddressesFragment()
     }
 
     fun customizeToolbar() {
@@ -108,7 +112,33 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
     }
 
     override fun onCheckOutBtnClicked() {
+        if(UserDeliveryAddressStorage.userDeliveryAddress.isEmpty()){
+            Toast.makeText(this,"empty saved address list",Toast.LENGTH_SHORT).show()
+            setFragmentTransitionWithAddToBackStack(userDeliveryAddressFragment,"user_delivery_address_frag")
+       }else {
+            setFragmentTransitionWithAddToBackStack(userSavedDeliveryAddressesFragment,"user_saved_delivery_addresses_frag")
+        }
+    }
+
+    override fun onSaveButtonClicked() {
+        //setFragmentTransition(userSavedDeliveryAddressesFragment)
+        //setFragmentTransitionWithAddToBackStack(userSavedDeliveryAddressesFragment,"user_saved_delivery_addresses_frag")
+        supportFragmentManager.popBackStack("user_delivery_address_frag",1)
+    }
+
+    override fun onAddNewAddressClicked() {
        setFragmentTransitionWithAddToBackStack(userDeliveryAddressFragment,"user_delivery_address_frag")
+    }
+
+    override fun onDeliverHereBtnClicked(addressDetails: UserMedicineDeliveryAddressDetails) {
+        medicineOrderPlacementFragment.setDeliveryAddress(addressDetails)
+        setFragmentTransitionWithAddToBackStack(medicineOrderPlacementFragment,"medicine_order_placement_frag")
+    }
+
+
+    override fun onEditAddressClicked(addressDetails: UserMedicineDeliveryAddressDetails) {
+        userDeliveryAddressFragment.editAddressDetails(addressDetails)
+        setFragmentTransitionWithAddToBackStack(userDeliveryAddressFragment,"user_delivery_address_frag")
     }
 
 }

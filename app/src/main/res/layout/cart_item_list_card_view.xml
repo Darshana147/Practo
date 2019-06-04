@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
     <LinearLayout
             android:orientation="horizontal"
+            android:paddingBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -64,33 +65,36 @@
                         android:layout_marginTop="5dp"
                         android:src="@drawable/rupee"
                         android:layout_width="12dp"
-                        android:layout_height="10dp"/>
+                        android:layout_height="match_parent"/>
 
 
                 <TextView
                         android:text="120"
                         android:id="@+id/cart_item_medicine_price_txv"
-                        android:gravity="start"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
+
+                <Button
+                        android:layout_marginTop="3dp"
+                        android:id="@+id/cart_item_count_button"
+                        android:layout_gravity="start"
+                        android:layout_marginRight="2dp"
+                        android:padding="3dp"
+                        android:backgroundTint="#979090"
+                        android:textAllCaps="false"
+                        android:background="@drawable/btn_round_edge"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:text="change qty"
+                        android:textColor="#000000"
+                        android:backgroundTintMode="add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"/>
 
             </LinearLayout>
-
-            <Button
-                    android:layout_marginTop="3dp"
-                    android:id="@+id/cart_item_count_button"
-                    android:layout_gravity="start"
-                    android:layout_marginRight="2dp"
-                    android:padding="3dp"
-                    android:backgroundTint="#000000"
-                    android:textAllCaps="false"
-                    android:background="@drawable/btn_round_edge"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down"
-                    android:text="change qty"
-                    android:textColor="#929090"
-                    android:backgroundTintMode="add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"/>
 
         </LinearLayout>
 

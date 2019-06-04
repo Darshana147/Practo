@@ -55,7 +55,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:background="@android:color/transparent"
-                android:text="Ok"
+                android:text="Open Settings"
                 android:layout_height="wrap_content"/>
 
 

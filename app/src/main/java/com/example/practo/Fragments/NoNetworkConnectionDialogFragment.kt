@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 
 import com.example.practo.R
-import java.lang.ClassCastException
+
 
 
 class NoNetworkConnectionDialogFragment : DialogFragment() {

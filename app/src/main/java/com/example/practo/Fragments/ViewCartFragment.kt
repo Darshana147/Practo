@@ -169,7 +169,7 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     }
 
     fun applyChangesInCartTotalItemCount(){
-        medicineCartTotalItemCountTxv.text = medicineCartUseCases.getCartTotalQuantity().toString()+" Items"
+        medicineCartTotalItemCountTxv.text = medicineCartUseCases.getCartTotalQuantity().toString()+" Item(s)"
     }
 
     fun applyChangesInCartTotalAmount(){

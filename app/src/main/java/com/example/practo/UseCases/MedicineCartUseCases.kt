@@ -84,7 +84,7 @@ class MedicineCartUseCases(context:Context) {
     }
 
     fun getCartTotalPrice():Double{
-        return medicineCartDetailsDAO.getCartTotalPrice(1)!!
+        return Math.round(medicineCartDetailsDAO.getCartTotalPrice(1)!!*100.0)/100.0
     }
 
     fun getMedicineById(medicineId:Int):Medicine{
