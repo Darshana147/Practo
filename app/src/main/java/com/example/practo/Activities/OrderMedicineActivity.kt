@@ -15,15 +15,14 @@ import kotlinx.android.synthetic.main.activity_order_medicine.*
 
 
 class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener, OnSearchFragmentToolbarMenuListener,
-    ViewCartFragmentListener,FavoriteMedicinesFragmentListener,UserDeliveryAddressFragmentListener,UserSavedDeliveryAddressesFragmentListener{
+    ViewCartFragmentListener,UserDeliveryAddressFragmentListener,UserSavedDeliveryAddressesFragmentListener{
 
     private lateinit var medicineOrderFragment: MedicineOrderFragment
-    private lateinit var searchMedicinesFragment: SearchMedicinesFragment
     private lateinit var viewCartFragment: ViewCartFragment
-    private lateinit var favoriteListFragment: FavoriteMedicineListFragment
     private lateinit var medicineOrderPlacementFragment:MedicineOrderPlacementFragment
     private lateinit var userDeliveryAddressFragment:UserDeliveryAddressFragment
     private lateinit var userSavedDeliveryAddressesFragment: UserSavedDeliveryAddressesFragment
+    private lateinit var searchMedicinePagerFragment: SearchMedicinePagerFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +40,7 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
             var fragment = intent.extras.getString("fragment")
             when (fragment) {
                 "searchMedicineFragment" -> {
-                    setFragmentTransition(searchMedicinesFragment)
+                    setFragmentTransition(searchMedicinePagerFragment)
                 }
             }
 
@@ -50,18 +49,19 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
 
     fun setFragmentListeners() {
         medicineOrderFragment.setMedicineOrderButtonListener(this)
-        searchMedicinesFragment.setSearchFragmentToolbarMenuListener(this)
+        searchMedicinePagerFragment.setSearchFragmentToolbarMenuListener(this)
         viewCartFragment.setViewCartFragmentListener(this)
-        favoriteListFragment.setFavoriteMedicinesFragmentListener(this)
+        //favoriteListFragment.setFavoriteMedicinesFragmentListener(this)
         userDeliveryAddressFragment.setUserDeliveryAddressFragmentListener(this)
         userSavedDeliveryAddressesFragment.setUserSavedDeliveryAddressFragmentListener(this)
     }
 
     fun initFragments() {
+        searchMedicinePagerFragment= SearchMedicinePagerFragment()
         medicineOrderFragment = MedicineOrderFragment()
-        searchMedicinesFragment = SearchMedicinesFragment()
+        //searchMedicinesFragment = SearchMedicinesFragment()
         viewCartFragment = ViewCartFragment()
-        favoriteListFragment = FavoriteMedicineListFragment()
+        //favoriteListFragment = FavoriteMedicineListFragment()
         userDeliveryAddressFragment = UserDeliveryAddressFragment()
         medicineOrderPlacementFragment=MedicineOrderPlacementFragment()
         userSavedDeliveryAddressesFragment= UserSavedDeliveryAddressesFragment()
@@ -89,7 +89,7 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
     }
 
     override fun onPlaceMedicineOrderButtonClicked() {
-        setFragmentTransition(searchMedicinesFragment)
+        setFragmentTransition(searchMedicinePagerFragment)
     }
 
     override fun onViewCartClicked() {
@@ -97,19 +97,12 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
 
     }
 
-    override fun onWishListClicked() {
-        setFragmentTransitionWithAddToBackStack(favoriteListFragment,"fav_frag")
-    }
 
     override fun onAddMedicinesBtnFromEmptyCartClicked() {
         supportFragmentManager.popBackStack("cart_frag",1)
-        setFragmentTransition(searchMedicinesFragment)
+          setFragmentTransition(searchMedicinePagerFragment)
     }
 
-    override fun onAddMedicinesBtnFromEmptyFavListClicked() {
-       supportFragmentManager.popBackStack("fav_frag",1)
-        setFragmentTransition(searchMedicinesFragment)
-    }
 
     override fun onCheckOutBtnClicked() {
         if(UserDeliveryAddressStorage.userDeliveryAddress.isEmpty()){

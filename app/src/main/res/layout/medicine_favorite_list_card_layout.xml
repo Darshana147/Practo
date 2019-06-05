@@ -44,7 +44,7 @@
 
                 <ImageView
                         android:id="@+id/remove_item_from_favoriteList"
-                        android:src="@drawable/ic_delete"
+                        android:src="@drawable/ic_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
             </LinearLayout>

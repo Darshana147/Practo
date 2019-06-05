@@ -19,14 +19,4 @@
     >
     </item>
 
-
-    <item
-            android:title="favorite list"
-            android:id="@+id/favorites_list_menu_item"
-            android:icon="@drawable/ic_favorite_white"
-            app:showAsAction="always"
-    >
-    </item>
-
-
 </menu>

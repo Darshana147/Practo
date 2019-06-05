@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import com.example.practo.Fragments.UserSavedDeliveryAddressesFragment
-import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 import com.example.practo.Model.Medicine
 import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 import kotlinx.android.synthetic.main.search_medicine_card_layout.view.*

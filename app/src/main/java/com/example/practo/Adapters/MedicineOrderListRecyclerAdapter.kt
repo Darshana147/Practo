@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
 import com.example.practo.Model.MedicineOrder
 import com.example.practo.R
 import kotlinx.android.synthetic.main.medicine_order_card_view.view.*

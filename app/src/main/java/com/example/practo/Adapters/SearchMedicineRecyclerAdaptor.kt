@@ -3,12 +3,13 @@ package com.example.practo.Adapters
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import com.example.practo.InterfaceListeners.OnAddToCartSelectedListener
+import com.example.practo.InterfaceListeners.OnSearchMedicinesFragmentListener
 import com.example.practo.Model.Medicine
 import com.example.practo.R
 import com.example.practo.UseCases.FavoriteMedicineUseCases
@@ -18,10 +19,10 @@ import kotlinx.android.synthetic.main.search_medicine_card_layout.view.*
 class SearchMedicineRecyclerAdaptor(
     var context: Context,
     var medList: ArrayList<Medicine>,
-    val listener: OnAddToCartSelectedListener,
+    val listener: OnSearchMedicinesFragmentListener,
     val favoriteMedicineUseCases: FavoriteMedicineUseCases
 ) : RecyclerView.Adapter<SearchMedicineRecyclerAdaptor.MyViewHolder>() {
-    var medicineList: ArrayList<Medicine> = medList
+    var medicineList: ArrayList<Medicine> = sortMedicineListAsPerFavorites()
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         val view: View =
             LayoutInflater.from(context).inflate(com.example.practo.R.layout.search_medicine_card_layout, p0, false)
@@ -36,6 +37,39 @@ class SearchMedicineRecyclerAdaptor(
         p0.itemView.favorite_medicine.setColorFilter(null)
         var medicine = medicineList.get(p1)
         p0.setData(medicine, p1)
+
+        p0.itemView.favorite_medicine.setOnClickListener {
+
+
+            if (favoriteMedicineUseCases.isPresentInFavoriteList(medicineList.get(p1).medicineId)) {
+                p0.itemView.favorite_medicine.setColorFilter(null)
+                favoriteMedicineUseCases.removeMedicineFromFavoriteList(
+                    1,
+                    medicineList.get(p1).medicineId
+                )
+
+                var tempMed = medicineList.removeAt(p1)
+                medicineList.add(medicineList.lastIndex, tempMed)
+                notifyDataSetChanged()
+
+            } else {
+                p0.itemView.favorite_medicine.setColorFilter(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.favorite_ic_color
+                    )
+                )
+                p0.itemView.favorite_medicine.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_item))
+                Toast.makeText(context,"Item added to Favorite List", Toast.LENGTH_SHORT).show()
+                favoriteMedicineUseCases.addMedicineToFavoriteList(1, medicineList.get(p1).medicineId)
+                var tempMed = medicineList.removeAt(p1)
+                medicineList.add(0, tempMed)
+                notifyDataSetChanged()
+            }
+            listener.onAddToFavoriteListClicked()
+
+
+        }
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -73,30 +107,6 @@ class SearchMedicineRecyclerAdaptor(
 
                 listener.onAddToCartClicked(medicine)
             }
-
-            itemView.favorite_medicine.setOnClickListener {
-
-
-                if (favoriteMedicineUseCases.isPresentInFavoriteList(medicineList.get(adapterPosition).medicineId)) {
-                    itemView.favorite_medicine.setColorFilter(null)
-                    favoriteMedicineUseCases.removeMedicineFromFavoriteList(
-                        1,
-                        medicineList.get(adapterPosition).medicineId
-                    )
-                } else {
-                    itemView.favorite_medicine.setColorFilter(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.favorite_ic_color
-                        )
-                    )
-                    itemView.favorite_medicine.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_item))
-                    Toast.makeText(context,"Item added to Favorite List", Toast.LENGTH_SHORT).show()
-                    favoriteMedicineUseCases.addMedicineToFavoriteList(1, medicineList.get(adapterPosition).medicineId)
-                }
-            }
-
-
         }
 
     }
@@ -104,5 +114,22 @@ class SearchMedicineRecyclerAdaptor(
     fun filterList(filteredList: ArrayList<Medicine>) {
         medicineList = filteredList
         notifyDataSetChanged()
+    }
+
+    fun dataSetChanged(){
+        Toast.makeText(context,"data set changed",Toast.LENGTH_SHORT).show()
+        medicineList=sortMedicineListAsPerFavorites()
+        notifyDataSetChanged()
+    }
+
+    fun sortMedicineListAsPerFavorites():ArrayList<Medicine>{
+        var medicineList = arrayListOf<Medicine>()
+        medicineList = favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1)
+        for(medicine in medList){
+            if(!(favoriteMedicineUseCases.isPresentInFavoriteList(medicine.medicineId))){
+                medicineList.add(medicine)
+            }
+        }
+        return medicineList
     }
 }

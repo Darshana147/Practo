@@ -44,19 +44,12 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         // Inflate the layout for this fragment
         rootView =inflater.inflate(R.layout.fragment_favorite_list, container, false)
         initUseCases()
-        customizeToolbar()
         initViews()
         initOnSelectListeners()
         initRecyclerView()
         initLayoutManager()
         viewDisplay()
         return rootView
-    }
-
-    fun customizeToolbar(){
-        var activity = getActivity() as AppCompatActivity
-        var actionBarSupport = activity.supportActionBar
-        actionBarSupport?.setTitle("My WishList")
     }
 
     fun initUseCases(){
@@ -108,6 +101,7 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         favoriteMedicineUseCases.removeMedicineFromFavoriteList(1,medicineId)
         viewDisplay()
         recyclerViewAdaper.setChangedFavoriteList(favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1))
+        (parentFragment as SearchMedicinePagerFragment).notifyChangesToSearchMedicinesFragment()
     }
 
     override fun onAddToCartClicked(medicineId: Int) {
@@ -123,6 +117,7 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     override fun sendItemQtyInputFromCartDialogFragment(input: String) {
         Toast.makeText(context,input.toString(), Toast.LENGTH_SHORT).show()
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicineCartUseCases.getMedicineById(medicineId),input.toInt()))
+        (parentFragment as SearchMedicinePagerFragment).setUpBadge()
         Toast.makeText(context,"Item added to Cart",Toast.LENGTH_SHORT).show()
     }
 
@@ -130,5 +125,8 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         this.mFavoriteMedicinesFragmentListener=mFavoriteMedicinesFragmentListener
     }
 
+    fun notifyFavoriteListChanges(){
+       viewDisplay()
+    }
 
 }

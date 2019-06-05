@@ -1,10 +1,12 @@
 package com.example.practo.Adapters
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.practo.InterfaceListeners.FavoriteMedicineListListener
 import com.example.practo.Model.Medicine
@@ -26,6 +28,11 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
         var medicine = medicineWishList.get(p1)
+        p0.itemView.remove_item_from_favoriteList.setColorFilter(
+            ContextCompat.getColor(
+                context,
+                R.color.favorite_ic_color
+            ))
         p0.setData(medicine,p1)
     }
 
@@ -43,6 +50,7 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
             } else{
                 itemView.favoriteList_medicine_imv.setImageResource(R.drawable.capsule)
             }
+
         }
 
         init {
