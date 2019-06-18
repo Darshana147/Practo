@@ -5,12 +5,14 @@
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:layout_marginRight="3dp"
-        android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <LinearLayout
+            android:id="@+id/favorite_medicine_linear_layout"
             android:orientation="horizontal"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -45,6 +47,8 @@
                 <ImageView
                         android:id="@+id/remove_item_from_favoriteList"
                         android:src="@drawable/ic_favorite"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -77,13 +81,33 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:visibility="invisible"
+                        android:id="@+id/added_to_cart_from_fav_status_txv"
+                        android:textSize="14dp"
+                        android:text="Added to Cart"
+                        android:textStyle="bold"
+                        android:gravity="center|start"
+                        android:layout_weight="1"
+                        android:textColor="#C0C0BE"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
             <TextView
+                    android:layout_weight="1"
                     android:text="ADD TO CART"
                     android:id="@+id/favoriteList_add_to_cart_txv"
                     android:textColor="@color/colorAccent"
+                    android:padding="5dp"
                     android:gravity="end"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
+            </LinearLayout>
 
         </LinearLayout>
 

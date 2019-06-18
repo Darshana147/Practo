@@ -1,15 +1,23 @@
 package com.example.practo.Model
 
-data class MedicineOrder(var orderId:Int,var medicineQuantity:Int,var totalAmount:Double)
+import java.time.LocalDateTime
+import java.util.*
 
-object MedicineOrderSupplier{
-    val orders = listOf<MedicineOrder>(
-        MedicineOrder(1,10,1000.0),
-        MedicineOrder(2,20,500.0),
-        MedicineOrder(3,13,1200.0),
-        MedicineOrder(4,3,145.0),
-        MedicineOrder(5,7,100.0),
-        MedicineOrder(6,14,370.0)
-    )
-}
+// class MedicineOrder(var medicineCart: MedicineCart,var deliveryAddressDetails: UserMedicineDeliveryAddressDetails){
+//     var orderId:Int = 0
+//     constructor(orderId: Int,medicineCart: MedicineCart,deliveryAddressDetails: UserMedicineDeliveryAddressDetails):this(medicineCart,deliveryAddressDetails){
+//       this.orderId = orderId
+//     }
+// }
+
+ class MedicineOrder(var medicineCart: MedicineCart,var deliveryAddressDetails: UserMedicineDeliveryAddressDetails,var deliveryDate:String, var orderedDate:String, var isDelivered:Boolean){
+     var orderId:Int = 0
+     constructor(orderId:Int,medicineCart: MedicineCart,deliveryAddressDetails: UserMedicineDeliveryAddressDetails,deliveryDate: String,orderedDate: String,isDelivered: Boolean):this(medicineCart,deliveryAddressDetails,deliveryDate,orderedDate,isDelivered){
+         this.orderId = orderId
+     }
+ }
+
+// object MedicineOrderSupplier{
+//    val orders = arrayListOf<MedicineOrder>()
+//}
 

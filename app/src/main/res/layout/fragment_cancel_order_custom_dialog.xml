@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             tools:context=".Fragments.CancelOrderCustomDialog">
+
+    <TextView
+            android:id="@+id/dialog_title"
+            android:text="Cancel Order"
+            android:padding="15dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/dialog_message"
+            android:text="Are you sure you want to cancel the order?"
+            android:textSize="15sp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="20dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <View
+            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="45dp">
+
+        <TextView
+                android:id="@+id/dialog_no_txv"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="NO"
+                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        <View
+                android:background="@color/light_gray"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"/>
+
+        <TextView
+                android:id="@+id/dialog_yes_cancel_txv"
+                android:textColor="@color/colorAccent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:text="YES, CANCEL"
+                android:layout_height="17dp"/>
+
+
+    </LinearLayout>
+
+    <View
+            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+
+</LinearLayout>

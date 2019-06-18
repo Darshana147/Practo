@@ -43,14 +43,15 @@ class MedicineCartUseCases(context:Context) {
 
 
     fun getMedicineItemsFromCart():ArrayList<MedicineCartItem>{
-        var medicineCartItemList:ArrayList<MedicineCartItem> = ArrayList()
+        val medicineCartItemList:ArrayList<MedicineCartItem> = ArrayList()
         for(cartItem in medicineCartItemDetailsDAO.getAllCartItems()){
-            var medicine:Medicine = medicineDAO.getMedicineById(cartItem.medicine.medicineId)
-            var medicineCartItem = MedicineCartItem(medicine,cartItem.medicineQuantity)
+            val medicine:Medicine = medicineDAO.getMedicineById(cartItem.medicine.medicineId)
+            val medicineCartItem = MedicineCartItem(medicine,cartItem.medicineQuantity)
             medicineCartItemList.add(medicineCartItem)
         }
         return medicineCartItemList
     }
+
 
 
     fun changeMedicineCartItemQuantity(medicineId:Int,medicineQuantity:Int){
@@ -64,11 +65,11 @@ class MedicineCartUseCases(context:Context) {
     }
 
     fun updateCartTotalQuantity(){
-        var totalQuantity = 0
-        for(item in getMedicineItemsFromCart()){
-            totalQuantity+=item.medicineQuantity
-        }
-        medicineCartDetailsDAO.updateCartTotalQuantity(1,totalQuantity)
+//        var totalQuantity = 0
+//        for(item in getMedicineItemsFromCart()){
+//            totalQuantity+=item.medicineQuantity
+//        }
+        medicineCartDetailsDAO.updateCartTotalQuantity(1,getMedicineItemsFromCart().size)
     }
 
     fun updateCartTotalPrice(){
@@ -89,6 +90,12 @@ class MedicineCartUseCases(context:Context) {
 
     fun getMedicineById(medicineId:Int):Medicine{
         return medicineDAO.getMedicineById(medicineId)
+    }
+
+    fun emptyCart(cartId:Int){
+        medicineCartItemDetailsDAO.removeItemsFromCart(cartId)
+        updateCartTotalPrice()
+        updateCartTotalQuantity()
     }
 
 }

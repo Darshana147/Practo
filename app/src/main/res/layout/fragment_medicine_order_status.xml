@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Fragments.MedicineOrderStatusFragment">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_weight="1"
+            android:id="@+id/swipe_refresh_order_status"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                    android:paddingBottom="20dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                <TextView
+                        android:text="ORDER DETAILS"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:background="#ECE9E9"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"/>
+
+                <LinearLayout
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:text="Order Number"
+                            android:layout_height="wrap_content"/>
+                    <TextView
+                            android:layout_weight="1"
+                            android:textSize="20sp"
+                            android:text="#1"
+                            android:id="@+id/order_id_order_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:text="Quantity"
+                            android:layout_height="wrap_content"/>
+                    <TextView
+                            android:layout_weight="1"
+                            android:textSize="20sp"
+                            android:text="3 Items"
+                            android:id="@+id/total_quantity_order_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:text="Price"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:textSize="20dp"
+                            android:textColor="@color/black"
+                            android:text="@string/rupee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:text="1203.5"
+                            android:id="@+id/total_price_order_status"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="ORDER STATUS"
+                        android:gravity="center"
+                        android:background="#ECE9E9"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"/>
+
+                <com.vinay.stepview.VerticalStepView
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/vertical_step_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:layout_marginTop="20dp"
+                        android:text="MEDICINES"
+                        android:gravity="center"
+                        android:background="#ECE9E9"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"/>
+
+                <android.support.v7.widget.RecyclerView
+                        android:layout_weight="1"
+                        android:id="@+id/medicine_order_status_recycler_view"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:text="DELIVERY ADDRESS"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:background="#ECE9E9"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"/>
+
+                <TextView
+                        android:paddingLeft="10dp"
+                        android:text="Home"
+                        android:textSize="20sp"
+                        android:id="@+id/type_of_address_order_status"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                <TextView
+                        android:paddingLeft="10dp"
+                        android:text="User Name"
+                        android:id="@+id/user_name_order_status"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:paddingLeft="10dp"
+                        android:text="Address, Locality, City, State, Country,Pincode"
+                        android:id="@+id/user_delivery_address_order_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"/>
+
+                <TextView
+                        android:paddingLeft="10dp"
+                        android:text="Mobile Number"
+                        android:id="@+id/user_mobile_number_order_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+        <View
+                android:background="@color/light_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        <Button
+                android:id="@+id/cancel_medicine_order_button"
+                android:text="Cancel Order"
+                android:layout_gravity="end"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+        />
+
+
+
+</LinearLayout>

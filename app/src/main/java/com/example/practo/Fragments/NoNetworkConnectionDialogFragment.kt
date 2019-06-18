@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 
 import com.example.practo.R
 
@@ -20,8 +21,8 @@ import com.example.practo.R
 class NoNetworkConnectionDialogFragment : DialogFragment() {
 
     private lateinit var rootView:View
-    private lateinit var okBtn:Button
-    private lateinit var cancelBtn:Button
+    private lateinit var okBtn:TextView
+    private lateinit var cancelBtn:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +46,7 @@ class NoNetworkConnectionDialogFragment : DialogFragment() {
         }
         okBtn.setOnClickListener {
             dialog.dismiss()
-            var intent = Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
+            val intent = Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
             targetFragment!!.startActivity(intent)
         }
     }

@@ -1,49 +1,51 @@
 //package com.example.practo.UseCases
-//
+
 //import android.content.Context
 //import com.example.practo.DAO.MedicineDAO
+//import com.example.practo.Model.Dosage
 //import com.example.practo.Model.Medicine
-//import com.example.practo.Model.WishListSupplier
-//
+//import com.example.practo.Model.MedicineDescription
+
+
 //class SearchMedicineFragmentUseCases(context: Context) {
+
 //    private var medicineDAO:MedicineDAO
 //
 //    init {
 //        medicineDAO = MedicineDAO(context)
 //    }
+//    fun getAllMedicines():ArrayList<Medicine>{
+//        val medList = arrayListOf<Medicine>()
+//        val medicineList = medicineDAO.getAllMedicines()
+//        for(med in medicineList){
+//            val medId = med.medicineId
+//            val medName = med.medicineName
+//            val medDescription = med.medicineDescription
+//            val medPrice = med.medicinePrice
+//            val medType = med.medicineType
+//            val medContains = med.medicineDetailedDescription.ingredient
+//            val medManufacturer = med.medicineDetailedDescription.company
+//            val medDetailedDesc = med.medicineDetailedDescription.medicineDescription
+//            val medSideEffects = med.medicineDetailedDescription.medicineSideEffects
+//            val medPrescribedFor = med.medicineDetailedDescription.prescribedFor
+//            var medDosage: Dosage? = null
+//            if (med.medicineDetailedDescription.dosage?.missedDose != null && med.medicineDetailedDescription.dosage?.overDose != null) {
 //
-//    fun isPresentInWishList(medicineId:Int):Boolean{
-//        for(medicine in WishListSupplier.medicineWishList){
-//            if(medicine.medicineId==medicineId){
-//                return true
+//                medDosage = Dosage(
+//                    med.medicineDetailedDescription.dosage?.missedDose,
+//                    med.medicineDetailedDescription.dosage?.overDose
+//                )
 //            }
+//            val medGeneralInstructions = med.medicineDetailedDescription.generalInstructions
+//            medicineList.add(Medicine(medId,medName,medDescription,medPrice,medType,
+//                MedicineDescription(medContains,medManufacturer,medDetailedDesc,medSideEffects,medPrescribedFor,medDosage,medGeneralInstructions)))
+//
 //        }
-//        return false
+//        return medList
 //    }
 //
-//    fun getMedicineById(medicineId:Int): Medicine?{
-//        for(medicine in medicineDAO.getAllMedicines()){
-//            if(medicine.medicineId==medicineId){
-//                return medicine
-//            }
-//        }
-//        return null
-//    }
 //
-//    fun addToWishList(medicineId:Int){
-//        if(!isPresentInWishList(medicineId)){
-//            WishListSupplier.medicineWishList.add(this.getMedicineById(medicineId)!!)
-//        }
-//    }
+//    fun getMedicineById(medId:Int){
 //
-//    fun removeFromWishList(medicineId:Int){
-//        if(isPresentInWishList(medicineId)){
-//           for(medicine in WishListSupplier.medicineWishList){
-//               if(medicine.medicineId==medicineId){
-//                   WishListSupplier.medicineWishList.remove(medicine)
-//                   break
-//               }
-//           }
-//        }
 //    }
 //}

@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.practo.Adapters.ReadAboutHealthTabAdaptor
 import android.widget.Toolbar
 import com.example.practo.InterfaceListeners.OnHealthArticlesFragmentListener

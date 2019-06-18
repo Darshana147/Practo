@@ -15,12 +15,14 @@ class FavoriteMedicineUseCases(context: Context){
     }
 
     fun getMedicinesFromFavoriteMedicineList(userId:Int):ArrayList<Medicine>{
-        var favoriteMedicines:ArrayList<Medicine> = ArrayList()
+        val favoriteMedicines:ArrayList<Medicine> = ArrayList()
         for(medicineId in favoriteMedicineDAO.getAllFavoriteMedicines(1)){
-            var medicine = medicineDAO.getMedicineById(medicineId)
+            val medicine = medicineDAO.getMedicineById(medicineId)
             favoriteMedicines.add(medicine)
         }
-        return favoriteMedicines
+        return ArrayList(favoriteMedicines.sortedBy {
+            it.medicineName
+        } )
     }
 
     fun addMedicineToFavoriteList(userId:Int,medicineId:Int){

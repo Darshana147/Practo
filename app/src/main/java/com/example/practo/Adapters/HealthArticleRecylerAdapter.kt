@@ -52,8 +52,7 @@ class HealthArticleRecylerAdapter(
         init {
             itemView.share_health_article_imv.setOnClickListener {
 
-                var message="Article Title: ${articles.get(adapterPosition).articleTitle} \nArticle Description: ${articles.get(adapterPosition).articleDescription}"
-                Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+                val message="Article Title: ${articles.get(adapterPosition).articleTitle} \nArticle Description: ${articles.get(adapterPosition).articleDescription}"
                 shareArticleIntent(message)
             }
 
@@ -68,7 +67,7 @@ class HealthArticleRecylerAdapter(
             intentToShare.putExtra(Intent.EXTRA_TEXT, message)
             intentToShare.type = "text/plain"
 
-            context!!.startActivity(Intent.createChooser(intentToShare, "Please select app: "))
+            context.startActivity(Intent.createChooser(intentToShare, "Please select app: "))
         }
     }
 }

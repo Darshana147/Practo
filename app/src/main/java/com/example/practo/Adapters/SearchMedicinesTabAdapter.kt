@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 
 class SearchMedicinesTabAdapter(fragmentManager: FragmentManager):FragmentPagerAdapter(fragmentManager) {
-    var fragmentsList= arrayListOf<Fragment>()
-    var tabTitleList = arrayListOf<String>()
+    private var fragmentsList= arrayListOf<Fragment>()
+    private var tabTitleList = arrayListOf<String>()
 
     override fun getItem(p0: Int): Fragment {
         return fragmentsList.get(p0)
@@ -23,4 +23,5 @@ class SearchMedicinesTabAdapter(fragmentManager: FragmentManager):FragmentPagerA
     override fun getPageTitle(position: Int): CharSequence? {
         return tabTitleList.get(position)
     }
+
 }

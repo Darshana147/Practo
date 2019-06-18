@@ -6,22 +6,24 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.practo.Fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.practo.InterfaceListeners.PharmacyListener
 import com.example.practo.InterfaceListeners.ReadAboutHealthFragmentListener
 import com.example.practo.R
+import kotlinx.android.synthetic.main.navigation_header.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ReadAboutHealthFragmentListener,PharmacyListener {
     private lateinit var fragmentManager: FragmentManager
     private lateinit var toggle: ActionBarDrawerToggle
-
     private lateinit var homeFragment: HomeFragment
     private lateinit var reminderFragment: ReminderFragment
     private lateinit var readAboutHealthFragment: ReadAboutHealthFragment
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initFragmentManager()
         initFragments()
         setFragmentListeners()
+//        setUpHeader()
         readAboutHealthFragment.setReadAboutHealthFragmentListener(this)
         syncNavigationView()
 
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
     }
+
 
     fun initFragments() {
         homeFragment = HomeFragment()
@@ -85,7 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.orderMedicineMenuItem -> {
 
-                var intent = Intent(this, OrderMedicineActivity::class.java)
+                val intent = Intent(this, OrderMedicineActivity::class.java)
                 startActivity(intent)
 
             }
@@ -106,7 +110,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onPharmacyClicked() {
-       var intent = Intent(this,OrderMedicineActivity::class.java)
+       val intent = Intent(this,OrderMedicineActivity::class.java)
         intent.putExtra("fragment","searchMedicineFragment")
         startActivity(intent)
     }
@@ -114,6 +118,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun setFragmentListeners(){
         homeFragment.setPharmacyListener(this)
     }
+
+//    fun setUpHeader(){
+//        val headerLayout = layoutInflater.inflate(R.layout.navigation_header,null,false)
+//        val userImage = headerLayout.findViewById<de.hdodenhof.circleimageview.CircleImageView>(R.id.user_image)
+//        userImage.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.capsule,null))
+//    }
 
 
 }

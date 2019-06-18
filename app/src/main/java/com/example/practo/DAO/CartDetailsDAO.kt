@@ -33,36 +33,47 @@ class CartDetailsDAO(context: Context) {
     }
 
     fun updateCartTotalQuantity(cartId:Int,totalQuantity:Int){
-        var writableObject = dbHelper.writableDatabase
-        var values = ContentValues()
+        val writableObject = dbHelper.writableDatabase
+        val values = ContentValues()
         values.put(column_cart_quantity,totalQuantity)
         writableObject.update(tableName,values,"$column_cart_Id = $cartId",null)
         writableObject.close()
     }
 
     fun updateCartTotalPrice(cartId:Int,totalPrice:Double){
-        var writableObject = dbHelper.writableDatabase
-        var values = ContentValues()
+        val writableObject = dbHelper.writableDatabase
+        val values = ContentValues()
         values.put(column_cart_total_price,totalPrice)
         writableObject.update(tableName,values,"$column_cart_Id = $cartId",null)
         writableObject.close()
     }
 
     fun getCartTotalQuantity(cartId: Int):Int?{
-        var readableObject = dbHelper.readableDatabase
-        var cursor:Cursor = readableObject.rawQuery("SELECT $column_cart_quantity FROM $tableName WHERE $column_cart_Id = $cartId",null)
+        val readableObject = dbHelper.readableDatabase
+        val cursor:Cursor = readableObject.rawQuery("SELECT $column_cart_quantity FROM $tableName WHERE $column_cart_Id = $cartId",null)
         if(cursor.moveToFirst()){
-            return cursor.getInt(cursor.getColumnIndex(column_cart_quantity))
-        } else
+            val cartTotalQuantity = cursor.getInt(cursor.getColumnIndex(column_cart_quantity))
+            cursor.close()
+            return cartTotalQuantity
+        } else {
+            cursor.close()
             return null
+        }
+
     }
 
     fun getCartTotalPrice(cartId: Int):Double?{
-        var readableObject = dbHelper.readableDatabase
-        var cursor:Cursor = readableObject.rawQuery("SELECT $column_cart_total_price FROM $tableName WHERE $column_cart_Id = $cartId",null)
+        val readableObject = dbHelper.readableDatabase
+        val cursor:Cursor = readableObject.rawQuery("SELECT $column_cart_total_price FROM $tableName WHERE $column_cart_Id = $cartId",null)
         if(cursor.moveToFirst()){
-            return cursor.getDouble(cursor.getColumnIndex(column_cart_total_price))
-        } else
+            val cartTotalPrice = cursor.getDouble(cursor.getColumnIndex(column_cart_total_price))
+            cursor.close()
+            return cartTotalPrice
+        } else {
+            cursor.close()
             return null
+        }
     }
+
+
 }

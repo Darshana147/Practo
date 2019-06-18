@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:minWidth="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="15dp"
+            android:text="Enter Quantity"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.TextInputLayout
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/cart_qty_til"
+            android:theme="@style/MyEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+                android:id="@+id/cart_qty_edit_txt"
+                android:hint="Quantity"
+                android:inputType="number"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="Price"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:gravity="end"
+                android:layout_weight="1"
+                android:text="@string/rupee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/med_price_txv"
+                android:paddingRight="15dp"
+                android:paddingLeft="2dp"
+                android:text="180"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="Total"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:gravity="end"
+                android:layout_weight="1"
+                android:textColor="#F80303"
+                android:text="@string/rupee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/med_total_price_txv"
+                android:paddingRight="15dp"
+                android:paddingLeft="2dp"
+                android:text="1220"
+                android:textColor="#F80303"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_marginTop="25dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/cancel_txv"
+                android:paddingLeft="10dp"
+                android:text="Cancel"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/ok_txv"
+                android:layout_marginRight="20dp"
+                android:text="Ok"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:gravity="end"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

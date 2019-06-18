@@ -1,6 +1,7 @@
 package com.example.practo.Fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,14 +10,20 @@ import android.view.*
 import android.widget.Toast
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
 import com.example.practo.DAO.MedicineDAO
+import com.example.practo.InterfaceListeners.IFragmentListener
+import com.example.practo.InterfaceListeners.ISearch
 import com.example.practo.InterfaceListeners.OnSearchMedicinesFragmentListener
 import com.example.practo.R
 import com.example.practo.Model.*
 import com.example.practo.UseCases.FavoriteMedicineUseCases
 import com.example.practo.UseCases.MedicineCartUseCases
+import com.example.practo.Utils.setDialogFragment
+import kotlinx.android.synthetic.main.fragment_search_medicines.*
+import kotlinx.android.synthetic.main.fragment_search_medicines.view.*
 
 
-class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, AddToCartDialogFragment.OnInputSelected {
+class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, AddToCartCustomDialog.OnQtyEntered,ISearch{
+
 
     private lateinit var rootView: View
     private lateinit var recyclerView: RecyclerView
@@ -26,6 +33,8 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     private lateinit var favoriteMedicineUseCases: FavoriteMedicineUseCases
     private lateinit var medicineCartUseCases: MedicineCartUseCases
     private lateinit var medicineDAO: MedicineDAO
+    private lateinit var fragmentListener:IFragmentListener
+    private var itemView:View? = null
 
 
     override fun onCreateView(
@@ -34,13 +43,32 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     ): View? {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_search_medicines, container, false)
+        return rootView
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         medicineDAO = MedicineDAO(this.context!!)
         initUseCases()
         initRecyclerView()
         initLayoutManager()
         bindRecyclerViewWithAdapter()
-        return rootView
     }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+            fragmentListener = parentFragment as IFragmentListener
+            fragmentListener.addFragmentSearchContext(this)
+            fragmentListener.addSearchMedicinesFragmentListenerContext(this)
+    }
+
+
+    override fun onDetach() {
+        super.onDetach()
+            fragmentListener.removeFragmentSearchContext(this)
+    }
+
 
     fun initUseCases() {
         medicineCartUseCases = MedicineCartUseCases(this.context!!)
@@ -61,13 +89,18 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     fun bindRecyclerViewWithAdapter() {
         recyclerView.layoutManager = layoutManager
         recyclerViewAdaptor =
-            SearchMedicineRecyclerAdaptor(this.context!!, medicineDAO.getAllMedicines(), this, favoriteMedicineUseCases)
+            SearchMedicineRecyclerAdaptor(this.context!!, medicineDAO.getAllMedicines(), this, favoriteMedicineUseCases,medicineCartUseCases)
         recyclerView.adapter = recyclerViewAdaptor
     }
 
-    fun filter(text: String) {
-        var filteredList: ArrayList<Medicine> = ArrayList()
+    override fun onSearched(text: String?) {
+        text?.let {
+            filter(text)
+        }
+    }
 
+    fun filter(text: String) {
+        val filteredList: ArrayList<Medicine> = ArrayList()
         for (medicine in medicineDAO.getAllMedicines()) {
             if (medicine.medicineName.toLowerCase().trim().contains(text.toLowerCase().trim()) || (medicine.medicineDescription.trim().toLowerCase().contains(
                     text.toLowerCase().trim()
@@ -76,26 +109,24 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
                 filteredList.add(medicine)
             }
         }
-        recyclerViewAdaptor.filterList(filteredList)
+
+        if(filteredList.isEmpty()){
+            recyclerView.visibility = View.GONE
+            no_search_results_txv.text = "Nothing Found for '$text'"
+            rootView.search_nothing_found_constraint_layout.visibility = View.VISIBLE
+        }else {
+            rootView.search_nothing_found_constraint_layout.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            recyclerViewAdaptor.filterList(filteredList)
+        }
     }
 
-    override fun onAddToCartClicked(medicine: Medicine) {
-        var dialog = AddToCartDialogFragment()
-        var args: Bundle = Bundle()
-        args.putStringArrayList(
-            "qty",
-            arrayListOf<String>("1", "2", "3", "4", "5", "6", "7", "8", "9")
-        )//get the count from the db
-        dialog.arguments = args
-        dialog.setTargetFragment(this, 1)
-        dialog.show(fragmentManager, "AddToCartFragment")
+
+
+    override fun onAddToCartClicked(medicine: Medicine,itemView:View) {
+        this.itemView = itemView
+        context?.setDialogFragment(this,fragmentManager,"AddToCartFragment",AddToCartCustomDialog.newInstance(medicine.medicinePrice))
         this.medicine = medicine
-    }
-
-    override fun sendItemQtyInputFromCartDialogFragment(input: String) {
-        Toast.makeText(context, "Item added to Cart", Toast.LENGTH_SHORT).show()
-        medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine, input.toInt()))
-        (parentFragment as SearchMedicinePagerFragment).setUpBadge() //no need here as addToCart sends back the changes
     }
 
 
@@ -103,9 +134,30 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
         (parentFragment as SearchMedicinePagerFragment).notifyChangesInFavoriteList()
     }
 
-    fun notifyChangesInFavoriteMarkedMedicines(){
+
+    override fun onNotifyDataSetChanged() {
         recyclerViewAdaptor.dataSetChanged()
     }
 
+    override fun getQtyEntered(qty: Int) {
+        itemView?.visibility = View.VISIBLE
+//        Toast.makeText(context, "Item added to Cart", Toast.LENGTH_SHORT).show()
+        customAddedToCartToast("Item added to Cart")
+        medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine, qty))
+        (parentFragment as SearchMedicinePagerFragment).setUpBadge()
+    }
+
+    override fun onMedicineClicked(medicine: Medicine) {
+        context?.setDialogFragment(this,fragmentManager,"MedicineDescription",MedicineDescriptionCustomDialog.newInstance(medicine))
+    }
+
+
+    fun customAddedToCartToast(msg:String, duration:Int = Toast.LENGTH_SHORT){
+        val toast = Toast.makeText(context, msg,
+            duration)
+        val toastLayout = layoutInflater.inflate(R.layout.custom_added_to_cart_toast_layout,null)
+        toast.view = toastLayout
+        toast.show()
+    }
 
 }

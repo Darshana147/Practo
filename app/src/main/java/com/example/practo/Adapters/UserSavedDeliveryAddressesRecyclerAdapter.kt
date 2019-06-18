@@ -28,7 +28,7 @@ class UserSavedDeliveryAddressesRecyclerAdapter(var context: Context, var addres
     }
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
-        var address = userDeliveryAddressList.get(p1)
+        val address = userDeliveryAddressList.get(p1)
         p0.itemView.user_delivery_address_radio_button.isChecked=false
         p0.setData(address, p1)
     }
@@ -52,7 +52,16 @@ class UserSavedDeliveryAddressesRecyclerAdapter(var context: Context, var addres
                 mSelectedItem = adapterPosition
                 notifyDataSetChanged()
             }
+
+            itemView.remove_address_imv.setOnClickListener {
+                listener.onRemoveDeliveryAddressClicked(userDeliveryAddressList.get(adapterPosition).userAddressId)
+            }
         }
+    }
+
+    fun changeInDeliveryAddressRecord(userDeliveryAddressDetails:ArrayList<UserMedicineDeliveryAddressDetails>){
+        userDeliveryAddressList = userDeliveryAddressDetails
+        notifyDataSetChanged()
     }
 
     fun getSelectedAddressDetails():UserMedicineDeliveryAddressDetails{

@@ -1,28 +1,28 @@
 package com.example.practo.Fragments
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.example.practo.Adapters.MedicineCartRecyclerAdaptor
-import com.example.practo.InterfaceListeners.OnChangeCartItemQtyListener
+import com.example.practo.InterfaceListeners.OnChangeCartItemListener
 import com.example.practo.InterfaceListeners.ViewCartFragmentListener
 import com.example.practo.Model.MedicineCartItem
 import com.example.practo.R
 import com.example.practo.UseCases.MedicineCartUseCases
+import com.example.practo.Utils.setDialogFragment
+import com.example.practo.Utils.toast
 
 
-class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogFragment.OnInputSelected{
-
+class ViewCartFragment : Fragment(),OnChangeCartItemListener,AddToCartCustomDialog.OnQtyEntered{
 
     private lateinit var rootView:View
     private lateinit var emptyCartView:LinearLayout
@@ -46,6 +46,11 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     ): View? {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_view_cart, container, false)
+        return rootView
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         customizeToolbar()
         initViews()
         initUseCases()
@@ -53,7 +58,6 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         initRecyclerView()
         initLayoutManager()
         viewDisplay()
-        return rootView
     }
 
     fun initUseCases(){
@@ -121,14 +125,9 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
     }
 
 
-    override fun onChangeQuantityClicked(medicineId:Int) {
+    override fun onChangeQuantityClicked(medicineQty:Int,medicineId:Int) {
         this.medicineId = medicineId
-        var dialog = AddToCartDialogFragment()
-        var args:Bundle = Bundle()
-        args.putStringArrayList("qty",arrayListOf<String>("1","2","3","4","5","6","7","8","9"))//get the count from the db
-        dialog.arguments = args
-        dialog.setTargetFragment(this,1)
-        dialog.show(fragmentManager,"AddToCartFragment")
+        context?.setDialogFragment(this,fragmentManager,"AddToCartFragment",AddToCartCustomDialog.newInstance(medicineCartUseCases.getMedicineById(medicineId).medicinePrice,medicineQty))
     }
 
     override fun onCartItemRemoved(medicineId: Int) {
@@ -139,7 +138,8 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
             }
         }
         medicineCartUseCases.removeMedicineItemFromCart(medicineId)
-        Toast.makeText(context,"Item Removed", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context,"Item Removed", Toast.LENGTH_SHORT).show()
+        context?.toast("Item Removed")
         setMedicineCartTotalAmount()
         setMedicineCartQuantity()
         applyChangesInCartTotalAmount()
@@ -147,26 +147,27 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
         recyclerViewAdaptor.setChangedCartItemList(medicineCartItems)
     }
 
-
-    override fun sendItemQtyInputFromCartDialogFragment(input: String) {
+    override fun getQtyEntered(qty: Int) {
         var index=0
         lateinit var changedCartItem:MedicineCartItem
         for(cartItem in medicineCartItems){
             if(cartItem.medicine.medicineId == medicineId){
                 changedCartItem = cartItem
-                changedCartItem.medicineQuantity = input.toInt()
+                changedCartItem.medicineQuantity = qty
                 index = medicineCartItems.indexOf(cartItem)
                 break
             }
         }
         medicineCartItems.set(index,changedCartItem)
-        medicineCartUseCases.changeMedicineCartItemQuantity(medicineId,input.toInt())
+        medicineCartUseCases.changeMedicineCartItemQuantity(medicineId,qty)
         setMedicineCartTotalAmount()
         setMedicineCartQuantity()
         applyChangesInCartTotalAmount()
         applyChangesInCartTotalItemCount()
         recyclerViewAdaptor.setChangedCartItemList(medicineCartItems)
     }
+
+
 
     fun applyChangesInCartTotalItemCount(){
         medicineCartTotalItemCountTxv.text = medicineCartUseCases.getCartTotalQuantity().toString()+" Item(s)"
@@ -193,6 +194,17 @@ class ViewCartFragment : Fragment(),OnChangeCartItemQtyListener,AddToCartDialogF
 
     fun setViewCartFragmentListener(viewCartFragmentListener: ViewCartFragmentListener){
         this.viewCartFragmentListener = viewCartFragmentListener
+    }
+
+   override fun onCartItemClicked(medicineId: Int) {
+        context?.setDialogFragment(
+            this,
+            fragmentManager,
+            "MedicineDescription",
+            MedicineDescriptionCustomDialog.newInstance(
+                medicineCartUseCases.getMedicineById(medicineId)
+            )
+        )
     }
 
 }

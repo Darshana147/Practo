@@ -19,20 +19,20 @@ class SliderAdapter(var context: Context,var textList:ArrayList<String>,var imag
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        var view = inflater.inflate(R.layout.item_slider,null)
-        var imgView = view.findViewById<ImageView>(R.id.slider_imgView)
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.item_slider,null)
+        val imgView = view.findViewById<ImageView>(R.id.slider_imgView)
         imgView.setImageResource(imageList[position])
-        var textView = view.findViewById<TextView>(R.id.slider_txv)
+        val textView = view.findViewById<TextView>(R.id.slider_txv)
         textView.text=textList[position]
-        var viewPager =container
+        val viewPager =container
         viewPager.addView(view,0)
         return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        var viewPager = container
-        var view = `object`as View
+        val viewPager = container
+        val view = `object`as View
         viewPager.removeView(view)
     }
 }

@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".Fragments.MedicineOrderFragment">
 
 
-        <LinearLayout
+        <ScrollView
                 android:orientation="vertical"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp">
 
 
 
         <RelativeLayout
-                android:layout_weight="1"
                 android:id="@+id/layout_container"
                 android:layout_width="match_parent"
                 android:padding="15dp"
-                android:layout_height="0dp">
+                android:layout_height="wrap_content">
 
             <LinearLayout
                     android:id="@+id/no_orders_placed_linear_layout"
@@ -31,14 +32,14 @@
                         android:id="@+id/no_orders_imv"
                         android:src="@drawable/no_order_placed"
                         android:layout_gravity="center"
-                        android:layout_marginTop="75dp"
+                        android:layout_marginTop="60dp"
                         android:layout_width="200dp"
                         android:layout_height="200dp"/>
 
                 <TextView
                         android:text="No orders placed yet"
                         android:layout_gravity="center"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="20dp"
                         android:padding="5dp"
                         android:id="@+id/no_order_txv"
                         android:textStyle="bold"
@@ -59,6 +60,7 @@
             </LinearLayout>
 
             <LinearLayout
+                    android:visibility="invisible"
                     android:id="@+id/order_placed_linear_layout"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
@@ -77,23 +79,29 @@
 
         </RelativeLayout>
 
-        <Button
-                android:id="@+id/place_order_button"
-                android:text="Order Medicines"
-                android:background="@color/colorAccent"
-                android:textColor="#ffffff"
-                android:layout_margin="40dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+        </ScrollView>
 
-        />
-        </LinearLayout>
+    <View
+            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    <Button
+            android:id="@+id/order_medicines_button"
+            android:text="Order Medicines"
+            android:layout_gravity="end"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+
+    />
 
 
 
-
-</ScrollView>
+</LinearLayout>

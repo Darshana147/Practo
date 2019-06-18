@@ -44,26 +44,27 @@ class MedicineCartItemDetailsDAO(context: Context) {
 
     fun getAllCartItems():ArrayList<MedicineCartItem>{
         val readableObject=dbHelper.readableDatabase
-        var sqlSelect:Array<String> = arrayOf(column_cart_id,column_medicine_id,column_medicine_quantity)
-        var result:ArrayList<MedicineCartItem> = ArrayList()
-        var cursor: Cursor = readableObject.query(tableName,sqlSelect,null,null,null,null,null)
+        val sqlSelect:Array<String> = arrayOf(column_cart_id,column_medicine_id,column_medicine_quantity)
+        val result:ArrayList<MedicineCartItem> = ArrayList()
+        val cursor: Cursor = readableObject.query(tableName,sqlSelect,null,null,null,null,null)
         if(cursor.moveToFirst()){
             do{
                 var cartId = cursor.getInt(cursor.getColumnIndex(column_cart_id))
-                var medId:Int = cursor.getInt(cursor.getColumnIndex(column_medicine_id))
-                var medQuantity:Int = cursor.getInt(cursor.getColumnIndex(column_medicine_quantity))
+                val medId:Int = cursor.getInt(cursor.getColumnIndex(column_medicine_id))
+                val medQuantity:Int = cursor.getInt(cursor.getColumnIndex(column_medicine_quantity))
 
                 result.add(MedicineCartItem(Medicine(medId),medQuantity))
 
             } while(cursor.moveToNext())
         }
         readableObject.close()
+        cursor.close()
         return result
     }
 
     fun changeMedicineQuantityByMedicineId(medicineId:Int,medicineQuantity:Int){
-        var writableObject = dbHelper.writableDatabase
-        var values = ContentValues()
+        val writableObject = dbHelper.writableDatabase
+        val values = ContentValues()
         values.put(column_medicine_quantity,medicineQuantity)
         writableObject.update(tableName,values,"$column_medicine_id = $medicineId",null)
         writableObject.close()
@@ -72,8 +73,14 @@ class MedicineCartItemDetailsDAO(context: Context) {
 
 
      fun removeMedicineItemFromCart(medicineId:Int){
-         var writableObject = dbHelper.writableDatabase
+         val writableObject = dbHelper.writableDatabase
          writableObject.delete(tableName,"$column_medicine_id = $medicineId",null)
          writableObject.close()
      }
+
+    fun removeItemsFromCart(cartId:Int){
+        val writableObject = dbHelper.writableDatabase
+        writableObject.delete(tableName,"$column_cart_id = $cartId",null)
+        writableObject.close()
+    }
 }

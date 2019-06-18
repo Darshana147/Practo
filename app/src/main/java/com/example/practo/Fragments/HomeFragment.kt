@@ -1,6 +1,7 @@
 package com.example.practo.Fragments
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
@@ -9,15 +10,18 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import com.example.practo.Adapters.SliderAdapter
 import com.example.practo.InterfaceListeners.PharmacyListener
 
 
 import com.example.practo.R
+import com.example.practo.Utils.toast
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -89,11 +93,13 @@ class HomeFragment : Fragment() {
 
     fun setListeners(){
         doctorCardView.setOnClickListener {
-            Toast.makeText(context,"Doctor Clicked",Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context,"Doctor Clicked",Toast.LENGTH_SHORT).show()
+            context?.toast("Doctor Clicked")
         }
 
         chatCardView.setOnClickListener {
-            Toast.makeText(context,"Chat Clicked",Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context,"Chat Clicked",Toast.LENGTH_SHORT).show()
+            context?.toast("Chat Clicked")
         }
 
         pharmacyCardView.setOnClickListener {
@@ -101,7 +107,8 @@ class HomeFragment : Fragment() {
         }
 
         diagnosticCardView.setOnClickListener {
-            Toast.makeText(context,"Diagnostic Clicked",Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context,"Diagnostic Clicked",Toast.LENGTH_SHORT).show()
+            context?.toast("Diagnostic Clicked")
         }
     }
 

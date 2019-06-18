@@ -3,41 +3,51 @@ package com.example.practo.Activities
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.MenuItem
-import android.widget.Toast
 import com.example.practo.Fragments.*
 import com.example.practo.InterfaceListeners.*
-import com.example.practo.Model.UserDeliveryAddressStorage
+import com.example.practo.Model.MedicineOrder
 import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 import com.example.practo.R
+import com.example.practo.UseCases.UserDeliveryAddressDetailsUseCases
 
 import kotlinx.android.synthetic.main.activity_order_medicine.*
 
 
-class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener, OnSearchFragmentToolbarMenuListener,
-    ViewCartFragmentListener,UserDeliveryAddressFragmentListener,UserSavedDeliveryAddressesFragmentListener{
+class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSearchFragmentToolbarMenuListener,
+    ViewCartFragmentListener,UserDeliveryAddressFragmentListener,UserSavedDeliveryAddressesFragmentListener,OrderPlacementListener, OrderPlacementSuccessFragmentListener,MedicineOrderStatusListener{
 
     private lateinit var medicineOrderFragment: MedicineOrderFragment
     private lateinit var viewCartFragment: ViewCartFragment
+    private lateinit var medicineOrderStatusFragment:MedicineOrderStatusFragment
     private lateinit var medicineOrderPlacementFragment:MedicineOrderPlacementFragment
     private lateinit var userDeliveryAddressFragment:UserDeliveryAddressFragment
     private lateinit var userSavedDeliveryAddressesFragment: UserSavedDeliveryAddressesFragment
     private lateinit var searchMedicinePagerFragment: SearchMedicinePagerFragment
+    private lateinit var orderPlacementSuccessFragment:OrderPlacementSuccessFragment
+    private lateinit var userMedicineDeliveryAddressUseCases:UserDeliveryAddressDetailsUseCases
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_medicine)
         initFragments()
+        initUseCases()
         setFragmentListeners()
         setFragmentTransition(medicineOrderFragment)
         getIntentDetails()
         customizeToolbar()
     }
 
+    fun initUseCases(){
+        userMedicineDeliveryAddressUseCases = UserDeliveryAddressDetailsUseCases(applicationContext)
+    }
+
     fun getIntentDetails(){
-        var intent = intent
+        val intent = intent
         if (intent.hasExtra("fragment")) {
-            var fragment = intent.extras.getString("fragment")
+            val fragment = intent?.extras?.getString("fragment")
             when (fragment) {
                 "searchMedicineFragment" -> {
                     setFragmentTransition(searchMedicinePagerFragment)
@@ -51,17 +61,17 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
         medicineOrderFragment.setMedicineOrderButtonListener(this)
         searchMedicinePagerFragment.setSearchFragmentToolbarMenuListener(this)
         viewCartFragment.setViewCartFragmentListener(this)
-        //favoriteListFragment.setFavoriteMedicinesFragmentListener(this)
         userDeliveryAddressFragment.setUserDeliveryAddressFragmentListener(this)
         userSavedDeliveryAddressesFragment.setUserSavedDeliveryAddressFragmentListener(this)
+        medicineOrderPlacementFragment.setOrderPlacementListener(this)
+//        orderPlacementSuccessFragment.setOrderPlacementSuccessFragmentListener(this)
     }
 
     fun initFragments() {
+//        orderPlacementSuccessFragment = OrderPlacementSuccessFragment.newInstance(0)
         searchMedicinePagerFragment= SearchMedicinePagerFragment()
         medicineOrderFragment = MedicineOrderFragment()
-        //searchMedicinesFragment = SearchMedicinesFragment()
         viewCartFragment = ViewCartFragment()
-        //favoriteListFragment = FavoriteMedicineListFragment()
         userDeliveryAddressFragment = UserDeliveryAddressFragment()
         medicineOrderPlacementFragment=MedicineOrderPlacementFragment()
         userSavedDeliveryAddressesFragment= UserSavedDeliveryAddressesFragment()
@@ -84,12 +94,13 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
     }
 
     fun setFragmentTransitionWithAddToBackStack(fragment: Fragment,key:String) {
-        supportFragmentManager.beginTransaction().replace(R.id.order_medicine_fragment_container, fragment)
+        supportFragmentManager.beginTransaction().replace(R.id.order_medicine_fragment_container, fragment,key)
             .addToBackStack(key).commit()
     }
 
-    override fun onPlaceMedicineOrderButtonClicked() {
-        setFragmentTransition(searchMedicinePagerFragment)
+    override fun onOrderMedicinesButtonClicked() {
+//        setFragmentTransition(searchMedicinePagerFragment)
+        setFragmentTransitionWithAddToBackStack(searchMedicinePagerFragment,"search_medicine_pager_frag")
     }
 
     override fun onViewCartClicked() {
@@ -105,17 +116,13 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
 
 
     override fun onCheckOutBtnClicked() {
-        if(UserDeliveryAddressStorage.userDeliveryAddress.isEmpty()){
-            Toast.makeText(this,"empty saved address list",Toast.LENGTH_SHORT).show()
+        setFragmentTransitionWithAddToBackStack(userSavedDeliveryAddressesFragment,"user_saved_delivery_addresses_frag")
+        if(userMedicineDeliveryAddressUseCases.getAllAddresses().isEmpty()){
             setFragmentTransitionWithAddToBackStack(userDeliveryAddressFragment,"user_delivery_address_frag")
-       }else {
-            setFragmentTransitionWithAddToBackStack(userSavedDeliveryAddressesFragment,"user_saved_delivery_addresses_frag")
         }
     }
 
     override fun onSaveButtonClicked() {
-        //setFragmentTransition(userSavedDeliveryAddressesFragment)
-        //setFragmentTransitionWithAddToBackStack(userSavedDeliveryAddressesFragment,"user_saved_delivery_addresses_frag")
         supportFragmentManager.popBackStack("user_delivery_address_frag",1)
     }
 
@@ -133,5 +140,42 @@ class OrderMedicineActivity : AppCompatActivity(), OnPlaceMedicineOrderListener,
         userDeliveryAddressFragment.editAddressDetails(addressDetails)
         setFragmentTransitionWithAddToBackStack(userDeliveryAddressFragment,"user_delivery_address_frag")
     }
+
+    override fun onPlaceOrderClicked(orderNum: Int) {
+        orderPlacementSuccessFragment = OrderPlacementSuccessFragment.newInstance(orderNum)
+        orderPlacementSuccessFragment.setOrderPlacementSuccessFragmentListener(this)
+        if(supportFragmentManager.backStackEntryCount==4){
+            clearBackStackInclusive("search_medicine_pager_frag")
+            setFragmentTransition(orderPlacementSuccessFragment)
+        }else {
+            clearBackStackInclusive("cart_frag")
+            setFragmentTransition(orderPlacementSuccessFragment)
+        }
+    }
+
+    fun clearBackStackInclusive(tag:String){
+        supportFragmentManager.popBackStack(tag,FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    override fun onViewMyOrdersButtonClicked() {
+        setFragmentTransition(medicineOrderFragment)
+    }
+
+    override fun onMedicineOrderItemClicked(orderNum:Int) {
+        medicineOrderStatusFragment = MedicineOrderStatusFragment.newInstance(orderNum)
+        medicineOrderStatusFragment.setMedicineOrderStatusListener(this)
+        setFragmentTransitionWithAddToBackStack(medicineOrderStatusFragment,"med_order_status_frag")
+    }
+
+    override fun onPageRefreshed() {
+        val frag = supportFragmentManager.findFragmentByTag("med_order_status_frag")
+        val ft = supportFragmentManager.beginTransaction()
+        frag?.let {
+            ft.detach(it)
+            ft.attach(it)
+        }
+        ft.commit()
+    }
+
 
 }

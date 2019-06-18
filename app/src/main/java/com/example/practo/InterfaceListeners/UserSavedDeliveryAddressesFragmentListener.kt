@@ -8,4 +8,5 @@ interface UserSavedDeliveryAddressesFragmentListener {
     fun onDeliverHereBtnClicked(addressDetails: UserMedicineDeliveryAddressDetails)
 
     fun onEditAddressClicked(addressDetails:UserMedicineDeliveryAddressDetails)
+
 }

@@ -2,13 +2,16 @@ package com.example.practo.Fragments
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -27,11 +30,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.practo.InterfaceListeners.UserDeliveryAddressFragmentListener
-import com.example.practo.Model.UserDeliveryAddressStorage
 import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 
 import com.example.practo.R
+import com.example.practo.UseCases.UserDeliveryAddressDetailsUseCases
 import com.example.practo.Utils.Validation
+import com.example.practo.Utils.setDialogFragment
+import com.example.practo.Utils.toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -40,6 +45,7 @@ import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import kotlinx.android.synthetic.main.fragment_favorite_list.view.*
 import kotlinx.android.synthetic.main.fragment_user_delivery_address.*
+import java.io.IOException
 import java.util.*
 
 class UserDeliveryAddressFragment : Fragment(){
@@ -74,16 +80,27 @@ class UserDeliveryAddressFragment : Fragment(){
     private var userAddressDetails:UserMedicineDeliveryAddressDetails? = null
     private var editDetails:Boolean=false
 
+    private lateinit var userMedicineDeliveryAddressUseCases:UserDeliveryAddressDetailsUseCases
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_user_delivery_address, container, false)
+        return rootView
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         customizeToolbar()
         initViews()
+        initUseCases()
         initListeners()
-        return rootView
+    }
+
+    fun initUseCases(){
+        userMedicineDeliveryAddressUseCases = UserDeliveryAddressDetailsUseCases(context!!)
     }
 
     override fun onResume() {
@@ -113,8 +130,8 @@ class UserDeliveryAddressFragment : Fragment(){
 
 
     fun customizeToolbar(){
-        var activity = getActivity() as AppCompatActivity
-        var actionBarSupport = activity.supportActionBar
+        val activity = getActivity() as AppCompatActivity
+        val actionBarSupport = activity.supportActionBar
         actionBarSupport?.setTitle("Address")
     }
 
@@ -221,30 +238,27 @@ class UserDeliveryAddressFragment : Fragment(){
     }
 
     fun getUserDetails():UserMedicineDeliveryAddressDetails{
-        var name=userName.text.toString()
-        var mobileNumber = userMobileNumber.text.toString()
-        var pincode = userPostalCode.text.toString()
-        var address = userAddress.text.toString()
-        var locality = userLocality.text.toString()
-        var city = userCity.text.toString()
-        var state = userState.text.toString()
-        var country = userCountry.text.toString()
-        var typeOfAddress =  rootView.findViewById<RadioButton>(typeOfAddress.getCheckedRadioButtonId()).text.toString()
+        val name=userName.text.toString()
+        val mobileNumber = userMobileNumber.text.toString()
+        val pincode = userPostalCode.text.toString()
+        val address = userAddress.text.toString()
+        val locality = userLocality.text.toString()
+        val city = userCity.text.toString()
+        val state = userState.text.toString()
+        val country = userCountry.text.toString()
+        val typeOfAddress =  rootView.findViewById<RadioButton>(typeOfAddress.getCheckedRadioButtonId()).text.toString()
         return UserMedicineDeliveryAddressDetails(name,mobileNumber,pincode,address,locality,city,state,country,typeOfAddress)
 
     }
 
     fun updateUserDetails(){
-        var index =UserDeliveryAddressStorage.userDeliveryAddress.indexOf(userAddressDetails)
-        Toast.makeText(context,index.toString(),Toast.LENGTH_SHORT).show()
-        UserDeliveryAddressStorage.userDeliveryAddress.remove(userAddressDetails)
-        UserDeliveryAddressStorage.userDeliveryAddress.add(index,getUserDetails())
+        userMedicineDeliveryAddressUseCases.updateUserDeliveryAdress(getUserDetails())
     }
 
 
     fun saveUserDetails(){
-        UserDeliveryAddressStorage.userDeliveryAddress.add(getUserDetails())
-        Toast.makeText(context,"Details Saved",Toast.LENGTH_SHORT).show()
+        userMedicineDeliveryAddressUseCases.insertUserAddress(getUserDetails())
+        context?.toast("Details Saved")
     }
 
 
@@ -289,19 +303,16 @@ class UserDeliveryAddressFragment : Fragment(){
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
                 override fun onLocationResult(p0: LocationResult?) {
                     super.onLocationResult(p0)
-                    if (isNetworkConnected()) {
-
-                        address = geoCoder.getFromLocation(p0!!.lastLocation.latitude, p0!!.lastLocation.longitude, 1)
-
-                        userCity.setText(address.get(0).subAdminArea.toString())
-                        userState.setText(address.get(0).adminArea.toString())
-                        userPostalCode.setText(address.get(0).postalCode)
-                        userCountry.setText(address.get(0).countryName)
+                    if (isNetworkConnected()&&p0!=null) {
+                        FetchUserLocationDetails().execute(p0)
+//                        address = geoCoder.getFromLocation(p0.lastLocation.latitude, p0.lastLocation.longitude, 1)
+//                        userCity.setText(address.get(0).subAdminArea.toString())
+//                        userState.setText(address.get(0).adminArea.toString())
+//                        userPostalCode.setText(address.get(0).postalCode)
+//                        userCountry.setText(address.get(0).countryName)
                     } else {
                         setDialogFragment()
-
                     }
-
                 }
             }, Looper.getMainLooper())
         } else {
@@ -336,36 +347,21 @@ class UserDeliveryAddressFragment : Fragment(){
         resetAllUserDetails()
     }
 
-    fun isNetworkConnected():Boolean{
+    fun isNetworkConnected(): Boolean {
         val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
-        val connectionManager : ConnectivityManager
-        if(cm != null){
+        val connectionManager: ConnectivityManager
+        if (cm != null) {
             connectionManager = cm as ConnectivityManager
-        }
-        else{
-            Toast.makeText(context,"Try again",Toast.LENGTH_SHORT).show()
+        } else {
             return false
         }
-        if(connectionManager!=null) {
-            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
-            return activeNetwork?.isConnectedOrConnecting == true
-        } else{
-            Toast.makeText(context,"Try again",Toast.LENGTH_SHORT).show()
-            return false
-        }
-
+        val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+        return activeNetwork?.isConnected == true
     }
 
 
     fun setDialogFragment(){
-        var fragmentTransaction = fragmentManager!!.beginTransaction()
-        var prevDialog = fragmentManager!!.findFragmentByTag("noNetworkConnectionDialogFragment")
-        if(prevDialog!=null){
-            fragmentTransaction.remove(prevDialog)
-        }
-        var dialogFragment = NoNetworkConnectionDialogFragment()
-        dialogFragment.setTargetFragment(this,1)
-        dialogFragment.show(fragmentManager,"noNetworkConnectionDialogFragment")
+        context!!.setDialogFragment(this,fragmentManager,"noNetworkConnectionDialogFragment",NoNetworkConnectionDialogFragment())
     }
 
 
@@ -398,4 +394,33 @@ class UserDeliveryAddressFragment : Fragment(){
         userAddressDetails = addressDetails
     }
 
+    @SuppressLint("StaticFieldLeak")
+    inner class FetchUserLocationDetails : AsyncTask<LocationResult?,Unit,List<Address>>(){
+        val progressDialog = ProgressCustomDialog()
+        override fun onPreExecute() {
+            progressDialog.show(fragmentManager,"ProgressDialog")
+            progressDialog.isCancelable = false
+        }
+
+        override fun doInBackground(vararg params: LocationResult?): List<Address> {
+            val locationResult = params.get(0)
+            locationResult?.let {
+                address = geoCoder.getFromLocation(it.lastLocation.latitude, it.lastLocation.longitude, 1)
+            }
+            Thread.sleep(1500)
+            return address
+        }
+
+        override fun onPostExecute(result: List<Address>?) {
+            progressDialog.dismiss()
+            userCity.setText(address.get(0).subAdminArea.toString())
+            userState.setText(address.get(0).adminArea.toString())
+            userPostalCode.setText(address.get(0).postalCode)
+            userCountry.setText(address.get(0).countryName)
+        }
+
+
+
+
+    }
 }

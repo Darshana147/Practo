@@ -1,9 +1,9 @@
 package com.example.practo.Fragments
 
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -11,27 +11,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import com.example.practo.Adapters.HealthArticleRecylerAdapter
 import com.example.practo.Adapters.MedicineOrderListRecyclerAdapter
-import com.example.practo.InterfaceListeners.OnPlaceMedicineOrderListener
-import com.example.practo.Model.ArticlesSupplier
-import com.example.practo.Model.MedicineOrderSupplier
+import com.example.practo.InterfaceListeners.MedicineOrderListRecyclerViewListener
+import com.example.practo.InterfaceListeners.OnMedicineOrderListener
 
 import com.example.practo.R
-import kotlinx.android.synthetic.main.activity_main.view.*
+import com.example.practo.UseCases.MedicineOrderUseCases
 
 
-class MedicineOrderFragment : Fragment() {
+class MedicineOrderFragment : Fragment(),MedicineOrderListRecyclerViewListener{
+
     private lateinit var rootView: View
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager:LinearLayoutManager
     private lateinit var recyclerViewAdapter:MedicineOrderListRecyclerAdapter
-    private lateinit var placeOrderButton:Button
-    private lateinit var mMedicineOrderButtonListener:OnPlaceMedicineOrderListener
-    private var orderCount=0
+    private lateinit var orderMedicines:Button
+    private lateinit var mMedicineOrderListener:OnMedicineOrderListener
+    private lateinit var medicineOrderUsecases:MedicineOrderUseCases
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +36,12 @@ class MedicineOrderFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.fragment_medicine_order, container, false)
-        var noOrdersPlacedLinearLayout = rootView.findViewById<LinearLayout>(R.id.no_orders_placed_linear_layout)
-        var orderPlacedLinearLayout = rootView.findViewById<LinearLayout>(R.id.order_placed_linear_layout)
+        customizeToolbar()
+        initUseCases()
+        val noOrdersPlacedLinearLayout = rootView.findViewById<LinearLayout>(R.id.no_orders_placed_linear_layout)
+        val orderPlacedLinearLayout = rootView.findViewById<LinearLayout>(R.id.order_placed_linear_layout)
 
-        if(orderCount==0){
+        if(medicineOrderUsecases.getAllOrders().isEmpty()){
             orderPlacedLinearLayout.visibility = View.GONE
             noOrdersPlacedLinearLayout.visibility = View.VISIBLE
         } else {
@@ -53,12 +52,23 @@ class MedicineOrderFragment : Fragment() {
             bindRecyclerViewWithLayoutManager()
         }
 
-        placeOrderButton = rootView.findViewById(R.id.place_order_button)
-        placeOrderButton.setOnClickListener {
-            mMedicineOrderButtonListener.onPlaceMedicineOrderButtonClicked()
+        orderMedicines = rootView.findViewById(R.id.order_medicines_button)
+        orderMedicines.setOnClickListener {
+            mMedicineOrderListener.onOrderMedicinesButtonClicked()
         }
 
         return rootView
+    }
+
+    fun initUseCases(){
+        medicineOrderUsecases = MedicineOrderUseCases(context!!)
+    }
+
+    fun customizeToolbar(){
+        val activity = getActivity() as AppCompatActivity
+        val actionBarSupport = activity.supportActionBar
+        actionBarSupport?.setTitle("My Orders")
+
     }
 
     fun initRecyclerView(){
@@ -74,13 +84,17 @@ class MedicineOrderFragment : Fragment() {
     fun bindRecyclerViewWithLayoutManager(){
         recyclerView.layoutManager = layoutManager
         recyclerViewAdapter = MedicineOrderListRecyclerAdapter(this.context!!,
-            MedicineOrderSupplier.orders)
+            medicineOrderUsecases.getAllOrders(),this)
         recyclerView.adapter = recyclerViewAdapter
     }
 
 
-    fun setMedicineOrderButtonListener(mMedicineOrderListener: OnPlaceMedicineOrderListener){
-        this.mMedicineOrderButtonListener = mMedicineOrderListener
+    fun setMedicineOrderButtonListener(mMedicineOrderListener: OnMedicineOrderListener){
+        this.mMedicineOrderListener = mMedicineOrderListener
+    }
+
+    override fun onMedicineOrderItemClicked(orderNum: Int) {
+        mMedicineOrderListener.onMedicineOrderItemClicked(orderNum)
     }
 
 

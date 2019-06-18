@@ -31,7 +31,7 @@ class MedicineOrderSummaryRecyclerAdapter(val context:Context,var cartMedicinesL
             itemView.order_item_medicine_description_txv.text = medicineCartItem.medicine.medicineDescription
             itemView.order_item_medicine_price_txv.text = medicineCartItem.medicine.medicinePrice.toString()
             itemView.order_item_medicine_qty.text = "Qty "+medicineCartItem.medicineQuantity.toString()
-            itemView.order_item_medicine_total_price.text = (medicineCartItem.medicine.medicinePrice*medicineCartItem.medicineQuantity).toString()
+            itemView.order_item_medicine_total_price.text = (Math.round(medicineCartItem.medicine.medicinePrice*medicineCartItem.medicineQuantity*100.0)/100.0).toString()
 
             if(medicineCartItem.medicine.medicineType.equals("tablet")){
                 itemView.order_medicine_imv.setImageResource(R.drawable.tablet)
@@ -40,7 +40,7 @@ class MedicineOrderSummaryRecyclerAdapter(val context:Context,var cartMedicinesL
             } else if(medicineCartItem.medicine.medicineType.equals("cream")){
                 itemView.order_medicine_imv.setImageResource(R.drawable.cream)
             } else{
-                itemView.order_medicine_imv.setImageResource(R.drawable.capsule)
+                itemView.order_medicine_imv.setImageResource(R.drawable.liquid_medicine)
             }
 
         }

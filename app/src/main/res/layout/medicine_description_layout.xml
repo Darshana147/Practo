@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:paddingBottom="10dp"
+        android:minWidth="400dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:background="#E4F7F7"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/med_name_txv"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:text="Crocin 650 MG Tablet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <ImageView
+                    android:id="@+id/close_dialog"
+                    android:src="@drawable/cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="Manufactured By"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/med_company_name_txv"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="start"
+                    android:text="Glaxosmithkline Pharmaceuticals Ltd."
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="Contains"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/med_ingredient_txv"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="start"
+                    android:text="Paracetamol"
+                    android:textColor="@color/colorAccent"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+            android:background="#EBE9E9"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <TextView
+                    android:text="Description"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/med_description_txv"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#000000"
+                    android:text="Crocin 650 MG Tablet is used to temporarily relieve fever and mild to moderate pain...."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#EBE9E9"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"/>
+
+            <TextView
+                    android:text="Side effects"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/med_side_effects_txv"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:text="Crocin 650 MG Tablet is used to temporarily relieve fever and mild to moderate pain...."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#EBE9E9"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"/>
+
+            <TextView
+                    android:text="Prescribed For"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/med_prescribed_for_txv"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:text="Crocin 650 MG Tablet is used to temporarily relieve fever and mild to moderate pain...."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#EBE9E9"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"/>
+
+
+            <LinearLayout
+                    android:id="@+id/dosage_linear_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:text="Dosage"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:text="@string/filled_bullet"
+                            android:textColor="#000000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:layout_marginLeft="2dp"
+                            android:text="Missed Dose"
+                            android:textColor="#000000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/missed_dose_txv"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#000000"
+                        android:text="Crocin 650 MG Tablet is used to temporarily relieve fever and mild to moderate pain...."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:text="@string/filled_bullet"
+                            android:textColor="#000000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:layout_marginLeft="2dp"
+                            android:text="Over Dose"
+                            android:textColor="#000000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/over_dose_txv"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#000000"
+                        android:text="Crocin 650 MG Tablet is used to temporarily relieve fever and mild to moderate pain...."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <View
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="#EBE9E9"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                    android:text="General Instructions"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/med_general_instructions"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#000000"
+                    android:text="Crocin 650 MG Tablet is used to temporarily relieve fever and mild to moderate pain...."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+        </LinearLayout>
