@@ -7,7 +7,7 @@ import com.example.practo.Model.Dosage
 import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineDescription
 
-class MedicineDAO(context: Context){
+class MedicineDAO(val context: Context){
     private val tableName: String
     private val column_medicine_id:String
     private val column_medicine_name:String
@@ -24,7 +24,6 @@ class MedicineDAO(context: Context){
     private val column_medicine_general_instructions:String
     private val createTableQuery:String
     private val dropTableQuery:String
-    private val dbHelper:DbSqliteOpenHelper
 
 
     init{
@@ -49,12 +48,12 @@ class MedicineDAO(context: Context){
                 "$column_medicine_over_dose_details TEXT, $column_medicine_general_instructions TEXT)"
         dropTableQuery = "DROP TABLE IF EXISTS $tableName"
 
-        dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
     }
 
 
     fun getAllMedicines():ArrayList<Medicine>{
-        val readableObject = dbHelper.getReadableDatabaseObject()
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
+        val readableObject = dbHelper.readableDatabase
         val sqlSelect:Array<String> = arrayOf(column_medicine_id,column_medicine_name,column_medicine_description,column_medicine_price,column_medicine_type,column_medicine_contains,column_medicine_manufacturer,column_medicine_detailed_description,column_medicine_side_effects,column_medicine_prescribed_for,column_medicine_missed_dose_details,column_medicine_over_dose_details,column_medicine_general_instructions)
         val result:ArrayList<Medicine> = ArrayList()
         val cursor:Cursor = readableObject.query(tableName,sqlSelect,null,null,null,null,column_medicine_name)
@@ -89,12 +88,14 @@ class MedicineDAO(context: Context){
         }
         cursor.close()
         readableObject.close()
+        dbHelper.close()
         return result
     }
 
 
     fun getMedicineById(medicineId:Int):Medicine{
-        val readableObject = dbHelper.getReadableDatabaseObject()
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
+        val readableObject = dbHelper.readableDatabase
         var sqlSelect:Array<String> = arrayOf(column_medicine_id,column_medicine_name,column_medicine_description,column_medicine_price,column_medicine_description)
         var result:Medicine?=null
         val cursor:Cursor = readableObject.rawQuery("SELECT * FROM $tableName WHERE $column_medicine_id = $medicineId",null)
@@ -122,6 +123,7 @@ class MedicineDAO(context: Context){
                 dosage,medGeneralInstructions))
         }
         cursor.close()
+        dbHelper
         return result!!
     }
 

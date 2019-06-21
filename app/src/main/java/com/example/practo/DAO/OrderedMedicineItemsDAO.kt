@@ -16,7 +16,6 @@ class OrderedMedicineItemsDAO(var context: Context) {
 
     private val createTableQuery:String
     private val dropTableQuery:String
-    private val dbHelper: DbSqliteOpenHelper
 
     init {
         tableName = "orderedMedicineItems"
@@ -28,12 +27,10 @@ class OrderedMedicineItemsDAO(var context: Context) {
         createTableQuery = "CREATE TABLE $tableName($column_order_id INTEGER, $column_user_id INTEGER, $column_med_id INTEGER, $column_med_qty INTEGER)"
 
         dropTableQuery = "DROP TABLE IF EXISTS $tableName"
-
-
-        dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
     }
 
     fun addOrderedItem(userId:Int,orderId:Int,cartItem:MedicineCartItem){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_user_id,userId)
@@ -42,10 +39,12 @@ class OrderedMedicineItemsDAO(var context: Context) {
         values.put(column_med_qty,cartItem.medicineQuantity)
         writableObject.insert(tableName,null,values)
         writableObject.close()
+        dbHelper.close()
     }
 
     fun getAllOrderedItems(userId:Int,orderId:Int):ArrayList<MedicineCartItem>{
         val medDAO = MedicineDAO(context)
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val readableObject = dbHelper.readableDatabase
         val result:ArrayList<MedicineCartItem> = ArrayList()
         val cursor: Cursor = readableObject.rawQuery("SELECT $column_med_id, $column_med_qty FROM $tableName WHERE $column_user_id == $userId AND $column_order_id == $orderId",null)
@@ -59,6 +58,18 @@ class OrderedMedicineItemsDAO(var context: Context) {
         }
         readableObject.close()
         cursor.close()
+        dbHelper.close()
         return result
+    }
+
+    fun deleteOrder(orderId: Int):Int{
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
+        val writableObject = dbHelper.writableDatabase
+        val cursor =writableObject.rawQuery("DELETE FROM $tableName WHERE $column_order_id = $orderId",null)
+        val count = cursor.count
+        cursor.close()
+        writableObject.close()
+        dbHelper.close()
+        return count
     }
 }

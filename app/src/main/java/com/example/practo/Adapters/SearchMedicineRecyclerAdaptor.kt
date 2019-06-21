@@ -54,9 +54,6 @@ class SearchMedicineRecyclerAdaptor(
                     1,
                     medicineList.get(p1).medicineId
                 )
-
-//                val tempMed = medicineList.removeAt(p1)
-//                medicineList.add(medicineList.lastIndex, tempMed)
                 medicineList = sortMedicineListAsPerFavorites()
                 notifyDataSetChanged()
 
@@ -67,11 +64,8 @@ class SearchMedicineRecyclerAdaptor(
                         R.color.favorite_ic_color
                     )
                 )
-//                p0.itemView.favorite_medicine.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_item))
                 context.toast("Item added to Favorite List")
                 favoriteMedicineUseCases.addMedicineToFavoriteList(1, medicineList.get(p1).medicineId)
-//                val tempMed = medicineList.removeAt(p1)
-//                medicineList.add(0, tempMed)
                 medicineList = sortMedicineListAsPerFavorites()
                 notifyDataSetChanged()
             }
@@ -137,7 +131,6 @@ class SearchMedicineRecyclerAdaptor(
     }
 
     fun sortMedicineListAsPerFavorites(medList: ArrayList<Medicine> = this.medList): ArrayList<Medicine> {
-//        var medicineList = arrayListOf<Medicine>()
         val medicineList = getFavoriteMedicinesFromList(medList)
         for (medicine in medList) {
             if (!(favoriteMedicineUseCases.isPresentInFavoriteList(medicine.medicineId))) {

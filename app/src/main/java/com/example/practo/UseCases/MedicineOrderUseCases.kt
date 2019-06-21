@@ -1,12 +1,10 @@
 package com.example.practo.UseCases
 
 import android.content.Context
-import android.util.Log
 import com.example.practo.DAO.MedicineOrderDetailsDAO
 import com.example.practo.Model.MedicineCartItem
 import com.example.practo.Model.MedicineOrder
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,7 +25,20 @@ class MedicineOrderUseCases(context: Context){
     }
 
     fun getAllOrders():ArrayList<MedicineOrder>{
-        return medicineOrderDetailsDAO.getAllUserOrders(1)
+        val  medOrders = medicineOrderDetailsDAO.getAllUserOrders(1)
+        return updateDeliveredOrders(medOrders)
+    }
+
+    fun updateDeliveredOrders(medicineOrders:ArrayList<MedicineOrder>):ArrayList<MedicineOrder>{
+        val updatedMedOrders:ArrayList<MedicineOrder> = arrayListOf()
+        for(medOrder in medicineOrders){
+            if(isMedicineDelivered(medOrder.deliveryDate)){
+                updateMedicineOrderDelivered(medOrder.orderId)
+                medOrder.isDelivered = true
+            }
+            updatedMedOrders.add(medOrder)
+        }
+        return updatedMedOrders
     }
 
     fun cancelOrder(orderId:Int){
@@ -38,7 +49,7 @@ class MedicineOrderUseCases(context: Context){
         return medicineOrderDetailsDAO.getOrderedItemsByOrderid(1,orderId)
     }
 
-    fun getOrderByOrderid(orderId: Int):MedicineOrder?{
+    fun getOrderByOrderid(orderId: Int):MedicineOrder?{  //medOrderStatus 67, order placement success 75
         return medicineOrderDetailsDAO.getOrderByOrderId(1,orderId)
     }
 
@@ -53,7 +64,6 @@ class MedicineOrderUseCases(context: Context){
     }
 
     fun getOutOfDeliveryDate(orderedDate: String):Date{
-        val sdf = SimpleDateFormat("dd MMMM YYYY hh:mm:ss",Locale.getDefault())
         val ordDate = convertStringToDate(orderedDate)
         val myCal = Calendar.getInstance()
         myCal.time = ordDate
@@ -64,12 +74,12 @@ class MedicineOrderUseCases(context: Context){
 
     fun isShipped(orderedDate:String):Boolean{
         val curDate = convertStringToDate(SimpleDateFormat("dd MMMM yyyy hh:mm:ss", Locale.getDefault()).format(Date()))
-        return curDate.before(getOutOfDeliveryDate(orderedDate))&&curDate.after(convertStringToDate(orderedDate))
+        return curDate.before(getOutOfDeliveryDate(orderedDate))&&curDate.after(getShippedDate(orderedDate))
     }
 
     fun isOutForDelivery(orderedDate: String,deliveryDate: String):Boolean{
         val curDate = convertStringToDate(SimpleDateFormat("dd MMMM yyyy hh:mm:ss", Locale.getDefault()).format(Date()))
-        return curDate.after(getShippedDate(orderedDate))&&curDate.before(convertStringToDate(deliveryDate))
+        return curDate.after(getOutOfDeliveryDate(orderedDate))&&curDate.before(convertStringToDate(deliveryDate))
     }
 
     fun isMedicineDelivered(deliveryDate:String):Boolean{
@@ -85,8 +95,29 @@ class MedicineOrderUseCases(context: Context){
         return dateObj
     }
 
-    fun updateMedicineOrder(orderId: Int,isDelivered:String){
+    fun updateMedicineOrderDelivered(orderId: Int){
         medicineOrderDetailsDAO.updateOrder(orderId,"yes")
     }
+
+    fun getDeliveredOrders(medOrders:ArrayList<MedicineOrder>):ArrayList<MedicineOrder>{
+        val deliveredOrders:ArrayList<MedicineOrder> = arrayListOf()
+        for(order in medOrders){
+            if(order.isDelivered){
+                deliveredOrders.add(order)
+            }
+        }
+        return deliveredOrders
+    }
+
+    fun getCurrentOrders(medOrders:ArrayList<MedicineOrder>):ArrayList<MedicineOrder>{
+        val currentOrders:ArrayList<MedicineOrder> = arrayListOf()
+        for(order in medOrders){
+            if(!order.isDelivered){
+                currentOrders.add(order)
+            }
+        }
+        return currentOrders
+    }
+
 
 }

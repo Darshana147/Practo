@@ -3,15 +3,13 @@ package com.example.practo.Utils
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.util.Log
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.widget.TextView
 import android.widget.Toast
-import com.example.practo.Fragments.NoNetworkConnectionDialogFragment
 import com.example.practo.R
 
 fun Context.toast(msg:String,duration:Int = Toast.LENGTH_SHORT){
@@ -20,7 +18,8 @@ fun Context.toast(msg:String,duration:Int = Toast.LENGTH_SHORT){
     val toastView = toast.view
     val toastMessage = toastView.findViewById<TextView>(android.R.id.message)
     toastMessage.setTextColor(Color.WHITE)
-    toastView.getBackground().setColorFilter(resources.getColor(R.color.gray), PorterDuff.Mode.SRC_IN);
+//    toastView.getBackground().setColorFilter(resources.getColor(R.color.gray), PorterDuff.Mode.SRC_IN)
+    toastView.background.setColorFilter(ContextCompat.getColor(applicationContext!!, R.color.gray),PorterDuff.Mode.SRC_IN)
     toast.show()
 }
 

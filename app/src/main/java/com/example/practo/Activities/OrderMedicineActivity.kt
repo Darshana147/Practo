@@ -4,16 +4,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.util.Log
 import android.view.MenuItem
 import com.example.practo.Fragments.*
 import com.example.practo.InterfaceListeners.*
-import com.example.practo.Model.MedicineOrder
+import com.example.practo.Model.MedicineCart
+import com.example.practo.Model.MedicineCartItem
 import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 import com.example.practo.R
+import com.example.practo.UseCases.MedicineCartUseCases
 import com.example.practo.UseCases.UserDeliveryAddressDetailsUseCases
-
 import kotlinx.android.synthetic.main.activity_order_medicine.*
-
 
 class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSearchFragmentToolbarMenuListener,
     ViewCartFragmentListener,UserDeliveryAddressFragmentListener,UserSavedDeliveryAddressesFragmentListener,OrderPlacementListener, OrderPlacementSuccessFragmentListener,MedicineOrderStatusListener{
@@ -27,6 +28,7 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
     private lateinit var searchMedicinePagerFragment: SearchMedicinePagerFragment
     private lateinit var orderPlacementSuccessFragment:OrderPlacementSuccessFragment
     private lateinit var userMedicineDeliveryAddressUseCases:UserDeliveryAddressDetailsUseCases
+    private lateinit var medicineCartUseCases:MedicineCartUseCases
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +37,13 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
         initFragments()
         initUseCases()
         setFragmentListeners()
-        setFragmentTransition(medicineOrderFragment)
         getIntentDetails()
         customizeToolbar()
     }
 
     fun initUseCases(){
         userMedicineDeliveryAddressUseCases = UserDeliveryAddressDetailsUseCases(applicationContext)
+        medicineCartUseCases = MedicineCartUseCases(applicationContext)
     }
 
     fun getIntentDetails(){
@@ -50,10 +52,12 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
             val fragment = intent?.extras?.getString("fragment")
             when (fragment) {
                 "searchMedicineFragment" -> {
-                    setFragmentTransition(searchMedicinePagerFragment)
+                    setFragmentTransition(searchMedicinePagerFragment,"search_medicine_pager_frag")
                 }
             }
 
+        } else {
+            setFragmentTransition(medicineOrderFragment,"med_order_frag")
         }
     }
 
@@ -89,8 +93,8 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
         return false
     }
 
-    fun setFragmentTransition(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.order_medicine_fragment_container, fragment).commit()
+    fun setFragmentTransition(fragment: Fragment,tag:String) {
+        supportFragmentManager.beginTransaction().replace(R.id.order_medicine_fragment_container,fragment,tag).commit()
     }
 
     fun setFragmentTransitionWithAddToBackStack(fragment: Fragment,key:String) {
@@ -99,7 +103,6 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
     }
 
     override fun onOrderMedicinesButtonClicked() {
-//        setFragmentTransition(searchMedicinePagerFragment)
         setFragmentTransitionWithAddToBackStack(searchMedicinePagerFragment,"search_medicine_pager_frag")
     }
 
@@ -111,7 +114,7 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
 
     override fun onAddMedicinesBtnFromEmptyCartClicked() {
         supportFragmentManager.popBackStack("cart_frag",1)
-          setFragmentTransition(searchMedicinePagerFragment)
+        setFragmentTransition(searchMedicinePagerFragment,"search_medicine_pager_frag")
     }
 
 
@@ -144,13 +147,16 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
     override fun onPlaceOrderClicked(orderNum: Int) {
         orderPlacementSuccessFragment = OrderPlacementSuccessFragment.newInstance(orderNum)
         orderPlacementSuccessFragment.setOrderPlacementSuccessFragmentListener(this)
-        if(supportFragmentManager.backStackEntryCount==4){
-            clearBackStackInclusive("search_medicine_pager_frag")
-            setFragmentTransition(orderPlacementSuccessFragment)
-        }else {
-            clearBackStackInclusive("cart_frag")
-            setFragmentTransition(orderPlacementSuccessFragment)
-        }
+//        if(supportFragmentManager.backStackEntryCount==4){
+//            clearBackStackInclusive("search_medicine_pager_frag")
+//            setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
+//        }else {
+//            clearBackStackInclusive("cart_frag")
+//            setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
+//        }
+
+        clearBackStackInclusive("cart_frag")
+        setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
     }
 
     fun clearBackStackInclusive(tag:String){
@@ -158,7 +164,14 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
     }
 
     override fun onViewMyOrdersButtonClicked() {
-        setFragmentTransition(medicineOrderFragment)
+        val fragmentManager = supportFragmentManager
+        if(fragmentManager.backStackEntryCount==1){
+            val frag = fragmentManager.findFragmentByTag("order_placement_success_frag")
+            fragmentManager.beginTransaction().remove(frag!!).commit()
+            fragmentManager.popBackStack("search_medicine_pager_frag",1)
+        }else {
+            setFragmentTransition(medicineOrderFragment, "med_order_frag")
+        }
     }
 
     override fun onMedicineOrderItemClicked(orderNum:Int) {
@@ -177,5 +190,27 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
         ft.commit()
     }
 
+    override fun onMedicineOrderListPageRefreshed() {
+        val frag = supportFragmentManager.findFragmentByTag("med_order_frag")
+        val ft = supportFragmentManager.beginTransaction()
+        frag?.let {
+            ft.detach(it)
+            ft.attach(it)
+        }
+        ft.commit()
+    }
+
+    override fun onMedicineOrderCanceled() {
+        supportFragmentManager.popBackStack("med_order_status_frag",1)
+    }
+
+    override fun onMedicineReorderClicked(medCartItems: ArrayList<MedicineCartItem>) {
+       for(medItem in medCartItems){
+           medicineCartUseCases.addMedicineToCart(medItem)
+       }
+        supportFragmentManager.popBackStack("med_order_status_frag",1)
+        setFragmentTransitionWithAddToBackStack(searchMedicinePagerFragment,"search_medicine_pager_frag")
+        setFragmentTransitionWithAddToBackStack(viewCartFragment,"cart_frag")
+    }
 
 }

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DbSqliteOpenHelper(context:Context,var createTableQuery:String,var dropTableQuery:String):SQLiteOpenHelper(context,DATABASE_NAME,null,DATABASE_VERSION) {
+class DbSqliteOpenHelper(context:Context,var createTableQuery:String,var dropTableQuery:String):SQLiteOpenHelper(context.applicationContext,DATABASE_NAME,null,DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
         Log.d("table",createTableQuery)
         db?.execSQL(createTableQuery)
@@ -22,11 +22,5 @@ class DbSqliteOpenHelper(context:Context,var createTableQuery:String,var dropTab
         private val DATABASE_VERSION = 2
     }
 
-    fun getReadableDatabaseObject():SQLiteDatabase{
-        return readableDatabase
-    }
 
-    fun getWritableDatabaseObject():SQLiteDatabase{
-        return writableDatabase
-    }
 }

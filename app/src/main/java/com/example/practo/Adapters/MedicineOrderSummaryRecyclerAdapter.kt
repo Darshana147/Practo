@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.example.practo.Model.MedicineCartItem
 import com.example.practo.R
 import kotlinx.android.synthetic.main.cart_item_list_card_view.view.*
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.medicine_order_summary_card_layout.view.*
 
 class MedicineOrderSummaryRecyclerAdapter(val context:Context,var cartMedicinesList:ArrayList<MedicineCartItem>):RecyclerView.Adapter<MedicineOrderSummaryRecyclerAdapter.MyViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
-        var view:View = LayoutInflater.from(context).inflate(R.layout.medicine_order_summary_card_layout,p0,false)
+        val view:View = LayoutInflater.from(context).inflate(R.layout.medicine_order_summary_card_layout,p0,false)
         return MyViewHolder(view)
     }
 
@@ -21,7 +22,7 @@ class MedicineOrderSummaryRecyclerAdapter(val context:Context,var cartMedicinesL
     }
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
-        var cartItem = cartMedicinesList.get(p1)
+        val cartItem = cartMedicinesList.get(p1)
         p0.setData(cartItem,p1)
     }
 

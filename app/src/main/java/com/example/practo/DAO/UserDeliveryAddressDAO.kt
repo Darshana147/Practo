@@ -4,10 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import com.example.practo.Database.DbSqliteOpenHelper
-import com.example.practo.Model.Medicine
 import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 
-class UserDeliveryAddressDAO(context: Context) {
+class UserDeliveryAddressDAO(val context: Context) {
     private val tableName:String
     private val column_user_address_id:String
     private val column_user_id:String
@@ -23,8 +22,6 @@ class UserDeliveryAddressDAO(context: Context) {
 
     private val createTableQuery:String
     private val dropTableQuery:String
-    private val dbHelper: DbSqliteOpenHelper
-
 
     init {
         tableName = "userDeliveryAddress"
@@ -46,13 +43,12 @@ class UserDeliveryAddressDAO(context: Context) {
                 "$column_type_of_address TEXT, FOREIGN KEY($column_user_id) REFERENCES user($column_user_id))"
 
         dropTableQuery = "DROP TABLE IF EXISTS $tableName"
-
-        dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
     }
 
 
     fun getAllAddresses(userId:Int):ArrayList<UserMedicineDeliveryAddressDetails>{
-        val readableObject = dbHelper.getReadableDatabaseObject()
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
+        val readableObject = dbHelper.readableDatabase
         val sqlSelect:Array<String> = arrayOf(column_user_address_id,column_user_name,column_user_mobile_number,column_user_pin_code,column_address,column_locality,column_city,column_state,column_country,column_type_of_address)
         val result:ArrayList<UserMedicineDeliveryAddressDetails> = ArrayList()
         val cursor: Cursor = readableObject.query(tableName,sqlSelect,"$column_user_id = $userId",null,null,null,null)
@@ -73,11 +69,13 @@ class UserDeliveryAddressDAO(context: Context) {
         }
         readableObject.close()
         cursor.close()
+        dbHelper.close()
         return result
     }
 
     fun getAddressByAddressId(userAddressId:Int):UserMedicineDeliveryAddressDetails?{
-        val readableObject = dbHelper.getReadableDatabaseObject()
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
+        val readableObject = dbHelper.readableDatabase
         val sqlSelect:Array<String> = arrayOf(column_user_name,column_user_mobile_number,column_user_pin_code,column_address,column_locality,column_city,column_state,column_country,column_type_of_address)
         var result:UserMedicineDeliveryAddressDetails? = null
         val cursor: Cursor = readableObject.query(tableName,sqlSelect,"$column_user_address_id = $userAddressId",null,null,null,null)
@@ -96,10 +94,12 @@ class UserDeliveryAddressDAO(context: Context) {
         }
         readableObject.close()
         cursor.close()
+        dbHelper.close()
         return result
     }
 
     fun insertUserDeliveryAddress(userId: Int,userMedicineDeliveryAddressDetails: UserMedicineDeliveryAddressDetails){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_user_id,userId)
@@ -115,10 +115,12 @@ class UserDeliveryAddressDAO(context: Context) {
 
         writableObject.insert(tableName,null,values)
         writableObject.close()
+        dbHelper.close()
     }
 
 
     fun updateUserDeliveryAddressDetails(userId:Int,userMedicineDeliveryAddressDetails: UserMedicineDeliveryAddressDetails){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_user_name,userMedicineDeliveryAddressDetails.userName)
@@ -132,12 +134,15 @@ class UserDeliveryAddressDAO(context: Context) {
         values.put(column_type_of_address,userMedicineDeliveryAddressDetails.typeOfAddress)
         writableObject.update(tableName,values,"$column_user_id = $userId",null)
         writableObject.close()
+        dbHelper.close()
     }
 
     fun deleteDeliveryAddressRecord(userId:Int,addressId:Int){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         writableObject.delete(tableName,"$column_user_id == $userId AND $column_user_address_id == $addressId",null)
         writableObject.close()
+        dbHelper.close()
     }
 
 }

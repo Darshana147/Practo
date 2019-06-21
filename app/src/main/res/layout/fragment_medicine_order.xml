@@ -7,23 +7,28 @@
         android:orientation="vertical"
         tools:context=".Fragments.MedicineOrderFragment">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/medicine_order_list_recycler_view_swipe_refresh_layout"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <ScrollView
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp">
 
+    <ScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
 
         <RelativeLayout
                 android:id="@+id/layout_container"
                 android:layout_width="match_parent"
-                android:padding="15dp"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp">
 
             <LinearLayout
                     android:id="@+id/no_orders_placed_linear_layout"
+                    android:visibility="invisible"
+                    android:layout_margin="15dp"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -59,27 +64,32 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                    android:visibility="invisible"
-                    android:id="@+id/order_placed_linear_layout"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-
-                <android.support.v7.widget.RecyclerView
-                        android:id="@+id/medicine_order_recycler_view"
+                <LinearLayout
+                        android:visibility="invisible"
+                        android:id="@+id/order_placed_linear_layout"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                </android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                            android:background="@color/section_gray"
+                            android:nestedScrollingEnabled="false"
+                            android:id="@+id/medicine_order_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
 
 
-            </LinearLayout>
+                </LinearLayout>
 
         </RelativeLayout>
 
-        </ScrollView>
+    </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <View
             android:background="@color/light_gray"
@@ -101,7 +111,6 @@
             android:layout_marginBottom="8dp"
 
     />
-
 
 
 </LinearLayout>

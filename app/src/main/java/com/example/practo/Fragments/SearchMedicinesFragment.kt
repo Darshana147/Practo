@@ -18,6 +18,7 @@ import com.example.practo.Model.*
 import com.example.practo.UseCases.FavoriteMedicineUseCases
 import com.example.practo.UseCases.MedicineCartUseCases
 import com.example.practo.Utils.setDialogFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_search_medicines.*
 import kotlinx.android.synthetic.main.fragment_search_medicines.view.*
 
@@ -34,6 +35,7 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     private lateinit var medicineCartUseCases: MedicineCartUseCases
     private lateinit var medicineDAO: MedicineDAO
     private lateinit var fragmentListener:IFragmentListener
+    private var allMedicines:ArrayList<Medicine> = arrayListOf()
     private var itemView:View? = null
 
 
@@ -87,21 +89,22 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     }
 
     fun bindRecyclerViewWithAdapter() {
+        allMedicines = medicineDAO.getAllMedicines()
         recyclerView.layoutManager = layoutManager
         recyclerViewAdaptor =
-            SearchMedicineRecyclerAdaptor(this.context!!, medicineDAO.getAllMedicines(), this, favoriteMedicineUseCases,medicineCartUseCases)
+            SearchMedicineRecyclerAdaptor(this.context!!, allMedicines, this, favoriteMedicineUseCases,medicineCartUseCases)
         recyclerView.adapter = recyclerViewAdaptor
     }
 
     override fun onSearched(text: String?) {
         text?.let {
-            filter(text)
+            filter(it)
         }
     }
 
     fun filter(text: String) {
         val filteredList: ArrayList<Medicine> = ArrayList()
-        for (medicine in medicineDAO.getAllMedicines()) {
+        for (medicine in allMedicines) {
             if (medicine.medicineName.toLowerCase().trim().contains(text.toLowerCase().trim()) || (medicine.medicineDescription.trim().toLowerCase().contains(
                     text.toLowerCase().trim()
                 ))
@@ -141,7 +144,6 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
 
     override fun getQtyEntered(qty: Int) {
         itemView?.visibility = View.VISIBLE
-//        Toast.makeText(context, "Item added to Cart", Toast.LENGTH_SHORT).show()
         customAddedToCartToast("Item added to Cart")
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine, qty))
         (parentFragment as SearchMedicinePagerFragment).setUpBadge()

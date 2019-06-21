@@ -26,7 +26,7 @@ class MedicineOrderListRecyclerAdapter(val context: Context,val medicineOrderLis
         val medicineOrder = medicineOrderList.get(p1)
         p0.setData(medicineOrder,p1)
 
-        p0.itemView.setOnClickListener{
+        p0.itemView.med_order_linear_layout.setOnClickListener{
             mMedicineOrderListRecyclerViewListener.onMedicineOrderItemClicked(medicineOrderList.get(p1).orderId)
         }
     }
@@ -34,7 +34,7 @@ class MedicineOrderListRecyclerAdapter(val context: Context,val medicineOrderLis
     inner class MyViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
         fun setData(medicineOrder:MedicineOrder,position: Int){
             itemView.delivery_date_order_list.text = medicineOrder.deliveryDate
-            itemView.order_no_txv.text = "#${medicineOrder.orderId.toString()}"
+            itemView.order_no_txv.text = "#PRAC-M${medicineOrder.orderId.toString()}"
             itemView.order_quantity_txv.text = medicineOrder.medicineCart.totalNumOfItems.toString()
             itemView.order_total_amount_txv.text = medicineOrder.medicineCart.totalPrice.toString()
             val userLocality = medicineOrder.deliveryAddressDetails.userLocality

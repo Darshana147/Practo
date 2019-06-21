@@ -7,7 +7,7 @@ import com.example.practo.Database.DbSqliteOpenHelper
 import com.example.practo.Model.Medicine
 import com.example.practo.Model.MedicineCartItem
 
-class MedicineCartItemDetailsDAO(context: Context) {
+class MedicineCartItemDetailsDAO(val context: Context) {
     private val tableName:String
     private val column_cart_id:String
     private val column_medicine_id:String
@@ -15,7 +15,6 @@ class MedicineCartItemDetailsDAO(context: Context) {
 
     private val createTableQuery:String
     private val dropTableQuery:String
-    private val dbHelper:DbSqliteOpenHelper
 
     init {
         tableName = "medicineCartItemDetails"
@@ -28,10 +27,10 @@ class MedicineCartItemDetailsDAO(context: Context) {
 
         dropTableQuery = "DROP TABLE IF EXISTS $tableName"
 
-        dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
     }
 
     fun insertMedicineItemIntoCart(medicineCartItem:MedicineCartItem){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_cart_id,1)
@@ -40,9 +39,11 @@ class MedicineCartItemDetailsDAO(context: Context) {
 
         writableObject.insert(tableName,null,values)
         writableObject.close()
+        dbHelper.close()
     }
 
     fun getAllCartItems():ArrayList<MedicineCartItem>{
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val readableObject=dbHelper.readableDatabase
         val sqlSelect:Array<String> = arrayOf(column_cart_id,column_medicine_id,column_medicine_quantity)
         val result:ArrayList<MedicineCartItem> = ArrayList()
@@ -59,28 +60,35 @@ class MedicineCartItemDetailsDAO(context: Context) {
         }
         readableObject.close()
         cursor.close()
+        dbHelper.close()
         return result
     }
 
     fun changeMedicineQuantityByMedicineId(medicineId:Int,medicineQuantity:Int){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_medicine_quantity,medicineQuantity)
         writableObject.update(tableName,values,"$column_medicine_id = $medicineId",null)
         writableObject.close()
+        dbHelper.close()
     }
 
 
 
      fun removeMedicineItemFromCart(medicineId:Int){
+         val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
          val writableObject = dbHelper.writableDatabase
          writableObject.delete(tableName,"$column_medicine_id = $medicineId",null)
          writableObject.close()
+         dbHelper.close()
      }
 
     fun removeItemsFromCart(cartId:Int){
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         writableObject.delete(tableName,"$column_cart_id = $cartId",null)
         writableObject.close()
+        dbHelper.close()
     }
 }

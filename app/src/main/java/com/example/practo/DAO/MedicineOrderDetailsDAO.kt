@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class MedicineOrderDetailsDAO(context:Context){
+class MedicineOrderDetailsDAO(val context:Context){
     private val orderedMedicineItemsDAO:OrderedMedicineItemsDAO
     private val userDeliveryAddressDAO:UserDeliveryAddressDAO
     private val tableName:String
@@ -28,7 +28,6 @@ class MedicineOrderDetailsDAO(context:Context){
 
     private val createTableQuery:String
     private val dropTableQuery:String
-    private val dbHelper: DbSqliteOpenHelper
 
     init{
         orderedMedicineItemsDAO = OrderedMedicineItemsDAO(context)
@@ -51,12 +50,10 @@ class MedicineOrderDetailsDAO(context:Context){
 
         dropTableQuery = "DROP TABLE IF EXISTS $tableName"
 
-        dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
-
     }
 
     fun addNewOrder(userId:Int,medicineOrder:MedicineOrder):Int{
-
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_user_id,userId)
@@ -68,7 +65,7 @@ class MedicineOrderDetailsDAO(context:Context){
         values.put(column_is_delivered,medicineOrder.isDelivered)
         writableObject.insert(tableName,null,values)
         writableObject.close()
-
+        dbHelper.close()
         val lastId = getLastId()
         for(cartItem in medicineOrder.medicineCart.medicineCartItems){
             orderedMedicineItemsDAO.addOrderedItem(userId,lastId,cartItem)
@@ -78,6 +75,7 @@ class MedicineOrderDetailsDAO(context:Context){
 
     fun getLastId():Int{
         var lastId = 0
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val readableObject = dbHelper.readableDatabase
         val cursor = readableObject.rawQuery("SELECT $column_order_id FROM $tableName",null)
         if(cursor.moveToFirst()){
@@ -85,10 +83,12 @@ class MedicineOrderDetailsDAO(context:Context){
             lastId = cursor.getInt(cursor.getColumnIndex(column_order_id))
         }
         cursor.close()
+        dbHelper.close()
         return lastId
     }
 
-    fun getAllUserOrders(userId:Int): ArrayList<MedicineOrder>{ //get orderItemsDao, bind and send medicineOrderObject
+    fun getAllUserOrders(userId:Int): ArrayList<MedicineOrder>{
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val readableObject = dbHelper.readableDatabase
         val sqlSelect:Array<String> = arrayOf(column_order_id,column_user_address_id,column_delivery_date,column_ordered_date,column_total_price,column_total_quantity,column_is_delivered)
         val result:ArrayList<MedicineOrder> = arrayListOf()
@@ -119,11 +119,13 @@ class MedicineOrderDetailsDAO(context:Context){
         }
         readableObject.close()
         cursor.close()
+        dbHelper.close()
         return result
     }
 
 
     fun getOrderByOrderId(userId: Int,orderId:Int):MedicineOrder?{
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val readableObject = dbHelper.readableDatabase
         val sqlSelect:Array<String> = arrayOf(column_user_address_id,column_delivery_date,column_ordered_date,column_total_price,column_total_quantity,column_is_delivered)
         var result:MedicineOrder? = null
@@ -148,6 +150,7 @@ class MedicineOrderDetailsDAO(context:Context){
         }
         readableObject.close()
         cursor.close()
+        dbHelper.close()
         return result
     }
 
@@ -157,18 +160,24 @@ class MedicineOrderDetailsDAO(context:Context){
     }
 
     fun removeOrder(orderId:Int){ //cancel order
+        val count = orderedMedicineItemsDAO.deleteOrder(orderId)
+        Log.d("abcd","$count == $orderId")
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         writableObject.delete(tableName,"$column_order_id == $orderId",null)
         writableObject.close()
+        dbHelper.close()
     }
 
 
     fun updateOrder(orderId:Int,isDelivered:String){ //isDeliveredOrNot
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(column_is_delivered,isDelivered)
         writableObject.update(tableName,values,"$column_order_id = $orderId",null)
         writableObject.close()
+        dbHelper.close()
     }
 
 

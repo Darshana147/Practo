@@ -305,11 +305,6 @@ class UserDeliveryAddressFragment : Fragment(){
                     super.onLocationResult(p0)
                     if (isNetworkConnected()&&p0!=null) {
                         FetchUserLocationDetails().execute(p0)
-//                        address = geoCoder.getFromLocation(p0.lastLocation.latitude, p0.lastLocation.longitude, 1)
-//                        userCity.setText(address.get(0).subAdminArea.toString())
-//                        userState.setText(address.get(0).adminArea.toString())
-//                        userPostalCode.setText(address.get(0).postalCode)
-//                        userCountry.setText(address.get(0).countryName)
                     } else {
                         setDialogFragment()
                     }
@@ -361,7 +356,7 @@ class UserDeliveryAddressFragment : Fragment(){
 
 
     fun setDialogFragment(){
-        context!!.setDialogFragment(this,fragmentManager,"noNetworkConnectionDialogFragment",NoNetworkConnectionDialogFragment())
+        context?.setDialogFragment(this,fragmentManager,"noNetworkConnectionDialogFragment",NoNetworkConnectionDialogFragment())
     }
 
 

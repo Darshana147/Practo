@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +19,15 @@ import com.example.practo.Model.MedicineOrder
 import com.example.practo.R
 import com.example.practo.UseCases.MedicineOrderUseCases
 import com.example.practo.Utils.setDialogFragment
+import com.example.practo.Utils.toast
 import com.vinay.stepview.models.Step
 import kotlinx.android.synthetic.main.fragment_medicine_order_status.*
 
 private const val ORDER_NUMBER = "param1"
 
 
-class MedicineOrderStatusFragment : Fragment() {
+class MedicineOrderStatusFragment : Fragment(),CancelOrderCustomDialog.CancelOrderCustomDialogListener{
+
     private lateinit var rootView: View
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdaptor: MedicineOrderSummaryRecyclerAdapter
@@ -51,18 +55,26 @@ class MedicineOrderStatusFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        customizeToolbar()
         initUseCases()
-        initListeners()
         setAllValues()
+        initListeners()
         setStepView()
         initRecyclerView()
         initLayoutManager()
         bindRecyclerViewWithAdapter()
     }
 
+    fun customizeToolbar(){
+        val activity = getActivity() as AppCompatActivity
+        val actionBarSupport = activity.supportActionBar
+        actionBarSupport?.setTitle("Order Status")
+
+    }
+
     fun setAllValues(){
         orderNum?.let {
-            order_id_order_status.text = "#${it.toString()}"
+            order_id_order_status.text = "#PRAC-M${it.toString()}"
             medOrder = medicineOrderUseCases.getOrderByOrderid(it)
         }
         medOrder?.let {
@@ -77,10 +89,10 @@ class MedicineOrderStatusFragment : Fragment() {
         }
 
         if(medicineOrderUseCases.isMedicineDelivered(medOrder?.deliveryDate!!)){
-            cancel_medicine_order_button.setText("Re-Order")
-            medicineOrderUseCases.updateMedicineOrder(orderNum!!,"yes")
+            medicine_order_status_button.setText("Re-Order")
+            medicineOrderUseCases.updateMedicineOrderDelivered(orderNum!!)
         } else {
-            cancel_medicine_order_button.setText("Cancel Order")
+            medicine_order_status_button.setText("Cancel Order")
         }
     }
 
@@ -89,8 +101,13 @@ class MedicineOrderStatusFragment : Fragment() {
     }
 
     fun initListeners(){
-        cancel_medicine_order_button.setOnClickListener {
-            context!!.setDialogFragment(this,fragmentManager,"Cancel_Order_Req_Dialog",CancelOrderCustomDialog())
+
+        medicine_order_status_button.setOnClickListener {
+            if(!medOrder?.isDelivered!!) {
+                context?.setDialogFragment(this, fragmentManager, "Cancel_Order_Req_Dialog", CancelOrderCustomDialog())
+            } else {
+                mMedicineOrderStatusListener.onMedicineReorderClicked(medOrder?.medicineCart!!.medicineCartItems)
+            }
         }
 
         swipe_refresh_order_status.setOnRefreshListener {
@@ -174,5 +191,10 @@ class MedicineOrderStatusFragment : Fragment() {
             }
     }
 
+    override fun onOrderCanceled() {
+        medicineOrderUseCases.cancelOrder(orderNum!!)
+        context?.toast("orderCanceled")
+        mMedicineOrderStatusListener.onMedicineOrderCanceled()
+    }
 
 }
