@@ -123,7 +123,7 @@ class MedicineDAO(val context: Context){
                 dosage,medGeneralInstructions))
         }
         cursor.close()
-        dbHelper
+        dbHelper.close()
         return result!!
     }
 

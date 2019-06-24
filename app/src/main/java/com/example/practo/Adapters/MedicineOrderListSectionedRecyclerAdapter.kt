@@ -32,7 +32,7 @@ class MedicineOrderListSectionedRecyclerAdapter(val context:Context,val medicine
         p0.itemView.medicine_order_list_recycler_view.isNestedScrollingEnabled = false
         val linearLayoutManager = LinearLayoutManager(context,LinearLayout.VERTICAL,false)
         p0.itemView.medicine_order_list_recycler_view.layoutManager = linearLayoutManager
-        val adapter = MedicineOrderListRecyclerAdapter(context,medSectionList.get(p1).orderList,this)
+        val adapter = MedicineOrderListRecyclerAdapter(context,medSectionList.get(p1).orderList,this,medSectionList.get(p1).sectionLabel)
         p0.itemView.medicine_order_list_recycler_view.adapter = adapter
 
         p0.setData(medSectionList.get(p1).sectionLabel)

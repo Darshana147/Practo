@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import com.example.practo.Adapters.SearchMedicineRecyclerAdaptor
 import com.example.practo.DAO.MedicineDAO
@@ -60,15 +61,15 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-            fragmentListener = parentFragment as IFragmentListener
-            fragmentListener.addFragmentSearchContext(this)
-            fragmentListener.addSearchMedicinesFragmentListenerContext(this)
+        fragmentListener = parentFragment as IFragmentListener
+        fragmentListener.addFragmentSearchContext(this)
+        fragmentListener.addSearchMedicinesFragmentListenerContext(this)
     }
 
 
     override fun onDetach() {
         super.onDetach()
-            fragmentListener.removeFragmentSearchContext(this)
+        fragmentListener.removeFragmentSearchContext(this)
     }
 
 
@@ -125,10 +126,18 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     }
 
 
-
-    override fun onAddToCartClicked(medicine: Medicine,itemView:View) {
+    override fun onAddToCartClicked(medicine: Medicine, itemView: View) {
         this.itemView = itemView
-        context?.setDialogFragment(this,fragmentManager,"AddToCartFragment",AddToCartCustomDialog.newInstance(medicine.medicinePrice))
+        if ((itemView as TextView).text.toString().equals("ADD TO CART")) {
+            context?.setDialogFragment(
+                this,
+                fragmentManager,
+                "AddToCartFragment",
+                AddToCartCustomDialog.newInstance(medicine.medicinePrice)
+            )
+        } else {
+            (parentFragment as SearchMedicinePagerFragment).onViewCartClicked()
+        }
         this.medicine = medicine
     }
 
@@ -143,7 +152,7 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     }
 
     override fun getQtyEntered(qty: Int) {
-        itemView?.visibility = View.VISIBLE
+        (itemView as TextView).text = "VIEW CART"
         customAddedToCartToast("Item added to Cart")
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine, qty))
         (parentFragment as SearchMedicinePagerFragment).setUpBadge()

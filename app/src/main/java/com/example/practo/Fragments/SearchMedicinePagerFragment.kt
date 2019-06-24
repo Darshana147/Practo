@@ -198,7 +198,8 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.view_cart_menu_item -> {
-                mSearchFragmentToolbarMenuListener.onViewCartClicked()
+//                mSearchFragmentToolbarMenuListener.onViewCartClicked()
+                onViewCartClicked()
                 return true
             }
             else -> {
@@ -206,6 +207,10 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
             }
         }
 
+    }
+
+    fun onViewCartClicked(){
+        mSearchFragmentToolbarMenuListener.onViewCartClicked()
     }
 
     override fun onAddMedicinesBtnFromEmptyFavListClicked() {
@@ -260,9 +265,5 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
     fun notifyChangesInFavoriteList() {
         mFavoriteMedicineListListener?.notifyChangesInMedicineFavoriteList()
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewPager.setCurrentItem(0)
-    }
+    
 }

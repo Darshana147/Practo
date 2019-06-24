@@ -27,7 +27,7 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
     }
 
     override fun getItemCount(): Int {
-       return medicineWishList.size
+        return medicineWishList.size
     }
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
@@ -37,18 +37,19 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
                 context,
                 R.color.favorite_ic_color
             ))
-        p0.itemView.added_to_cart_from_fav_status_txv.visibility = View.INVISIBLE
+        //p0.itemView.added_to_cart_from_fav_status_txv.visibility = View.INVISIBLE
+        p0.itemView.favoriteList_add_to_cart_txv.text = "ADD TO CART"
         p0.setData(medicine,p1)
 
-       p0.itemView.favorite_medicine_linear_layout.setOnClickListener {
-           listener.onFavoriteMedicineClicked(medicineWishList.get(p1).medicineId)
-       }
+        p0.itemView.favorite_medicine_linear_layout.setOnClickListener {
+            listener.onFavoriteMedicineClicked(medicineWishList.get(p1).medicineId)
+        }
 
         p0.itemView.remove_item_from_favoriteList.setOnClickListener {
             listener.onRemoveMedicineFromFavoriteListListener(medicineWishList.get(p1).medicineId)
         }
         p0.itemView.favoriteList_add_to_cart_txv.setOnClickListener {
-            listener.onAddToCartClicked(medicineWishList.get(p1).medicineId,p0.itemView.added_to_cart_from_fav_status_txv)
+            listener.onAddToCartClicked(medicineWishList.get(p1).medicineId,p0.itemView.favoriteList_add_to_cart_txv)
         }
     }
 
@@ -67,7 +68,8 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
                 itemView.favoriteList_medicine_imv.setImageResource(R.drawable.liquid_medicine)
             }
             if(medicineCartUseCases.isPresentInMedicineCart(medicine.medicineId)){
-                itemView.added_to_cart_from_fav_status_txv.visibility = View.VISIBLE
+                //itemView.added_to_cart_from_fav_status_txv.visibility = View.VISIBLE
+                itemView.favoriteList_add_to_cart_txv.text = "VIEW CART"
             }
         }
 

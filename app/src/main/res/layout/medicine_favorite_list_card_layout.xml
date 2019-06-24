@@ -17,6 +17,7 @@
         <ImageView
                 android:layout_margin="10dp"
                 android:id="@+id/favoriteList_medicine_imv"
+                android:layout_gravity="center"
                 android:src="@mipmap/ic_launcher"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"/>
@@ -67,45 +68,57 @@
                         android:layout_marginTop="5dp"
                         android:src="@drawable/rupee"
                         android:layout_width="12dp"
-                        android:layout_height="10dp"/>
-
-
-                <TextView
-                        android:text="120"
-                        android:id="@+id/favoriteList_medicine_price_txv"
-                        android:gravity="start"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <TextView
-                        android:visibility="invisible"
-                        android:id="@+id/added_to_cart_from_fav_status_txv"
-                        android:textSize="14dp"
-                        android:text="Added to Cart"
-                        android:textStyle="bold"
-                        android:gravity="center|start"
-                        android:layout_weight="1"
-                        android:textColor="#C0C0BE"
-                        android:layout_width="0dp"
                         android:layout_height="match_parent"/>
 
-            <TextView
-                    android:layout_weight="1"
-                    android:text="ADD TO CART"
-                    android:id="@+id/favoriteList_add_to_cart_txv"
-                    android:textColor="@color/colorAccent"
-                    android:padding="5dp"
-                    android:gravity="end"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:text="2214353"
+                        android:layout_weight="2"
+                        android:id="@+id/favoriteList_medicine_price_txv"
+                        android:gravity="start"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                android:layout_weight="1"
+                android:text="ADD TO CART"
+                android:id="@+id/favoriteList_add_to_cart_txv"
+                android:textColor="@color/colorAccent"
+                android:padding="5dp"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             </LinearLayout>
+
+            <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                        <!--android:visibility="invisible"-->
+                        <!--android:id="@+id/added_to_cart_from_fav_status_txv"-->
+                        <!--android:textSize="14dp"-->
+                        <!--android:text="Added to Cart"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:gravity="center|start"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:textColor="#C0C0BE"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="match_parent"/>-->
+
+            <!--<TextView-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="ADD TO CART"-->
+                    <!--android:id="@+id/favoriteList_add_to_cart_txv"-->
+                    <!--android:textColor="@color/colorAccent"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:gravity="end"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"/>-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 

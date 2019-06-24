@@ -12,7 +12,7 @@ import com.example.practo.R
 import kotlinx.android.synthetic.main.medicine_order_card_view.view.*
 import java.text.FieldPosition
 
-class MedicineOrderListRecyclerAdapter(val context: Context,val medicineOrderList:List<MedicineOrder>,val mMedicineOrderListRecyclerViewListener: MedicineOrderListRecyclerViewListener):RecyclerView.Adapter<MedicineOrderListRecyclerAdapter.MyViewHolder>(){
+class MedicineOrderListRecyclerAdapter(val context: Context,val medicineOrderList:List<MedicineOrder>,val mMedicineOrderListRecyclerViewListener: MedicineOrderListRecyclerViewListener,val medStatus:String):RecyclerView.Adapter<MedicineOrderListRecyclerAdapter.MyViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         val view:View = LayoutInflater.from(context).inflate(R.layout.medicine_order_card_view,p0,false)
         return MyViewHolder(view)
@@ -37,11 +37,15 @@ class MedicineOrderListRecyclerAdapter(val context: Context,val medicineOrderLis
             itemView.order_no_txv.text = "#PRAC-M${medicineOrder.orderId.toString()}"
             itemView.order_quantity_txv.text = medicineOrder.medicineCart.totalNumOfItems.toString()
             itemView.order_total_amount_txv.text = medicineOrder.medicineCart.totalPrice.toString()
-            val userLocality = medicineOrder.deliveryAddressDetails.userLocality
-            val userCity = medicineOrder.deliveryAddressDetails.userCity
-            val userState = medicineOrder.deliveryAddressDetails.userState
-            val userCountry = medicineOrder.deliveryAddressDetails.userCountry
-            itemView.delivery_address_order.text = "$userLocality, $userCity, $userState, $userCountry"
+            if(medStatus.toLowerCase().equals("delivered orders"))
+              itemView.order_status.text = "Order has been delivered"
+            else
+                itemView.order_status.text = "Order has been confirmed"
+//            val userLocality = medicineOrder.deliveryAddressDetails.userLocality
+//            val userCity = medicineOrder.deliveryAddressDetails.userCity
+//            val userState = medicineOrder.deliveryAddressDetails.userState
+//            val userCountry = medicineOrder.deliveryAddressDetails.userCountry
+//            itemView.delivery_address_order.text = "$userLocality, $userCity, $userState, $userCountry"
         }
     }
 }

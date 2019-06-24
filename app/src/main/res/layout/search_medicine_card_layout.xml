@@ -20,6 +20,7 @@
 
         <ImageView
                 android:layout_margin="10dp"
+                android:layout_gravity="center"
                 android:id="@+id/medicine_imv"
                 android:src="@mipmap/ic_launcher"
                 android:layout_width="wrap_content"
@@ -77,30 +78,14 @@
 
                 <TextView
                         android:text="Medicine Price"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
                         android:id="@+id/medicine_price_txv"
                         android:textColor="#000000"
                         android:textStyle="bold"
                         android:gravity="start"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <TextView
-                        android:visibility="invisible"
-                        android:id="@+id/added_to_cart_status_txv"
-                        android:textSize="14dp"
-                        android:text="Added to Cart"
-                        android:textStyle="bold"
-                        android:gravity="center|start"
-                        android:layout_weight="1"
-                        android:textColor="#C0C0BE"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"/>
 
                 <TextView
                         android:text="ADD TO CART"
@@ -109,10 +94,38 @@
                         android:textColor="@color/colorAccent"
                         android:gravity="end"
                         android:padding="5dp"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-
             </LinearLayout>
+
+            <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:visibility="invisible"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:id="@+id/added_to_cart_status_txv"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:textSize="14dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:text="Added to Cart"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:textStyle="bold"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:gravity="center|start"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:textColor="#C0C0BE"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                        <!--&lt;!&ndash;android:layout_height="match_parent"/>&ndash;&gt;-->
+
+                <!--<TextView-->
+                        <!--android:text="ADD TO CART"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:id="@+id/add_to_cart_txv"-->
+                        <!--android:textColor="@color/colorAccent"-->
+                        <!--android:gravity="end"-->
+                        <!--android:padding="5dp"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"/>-->
+
+            <!--</LinearLayout>-->
 
 
 

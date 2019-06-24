@@ -400,6 +400,7 @@ class UserDeliveryAddressFragment : Fragment(){
         override fun doInBackground(vararg params: LocationResult?): List<Address> {
             val locationResult = params.get(0)
             locationResult?.let {
+
                 address = geoCoder.getFromLocation(it.lastLocation.latitude, it.lastLocation.longitude, 1)
             }
             Thread.sleep(1500)

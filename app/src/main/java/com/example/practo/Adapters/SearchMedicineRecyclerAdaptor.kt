@@ -42,7 +42,8 @@ class SearchMedicineRecyclerAdaptor(
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
         p0.itemView.favorite_medicine.setColorFilter(null)
-        p0.itemView.added_to_cart_status_txv.visibility = View.INVISIBLE
+        //p0.itemView.added_to_cart_status_txv.visibility = View.INVISIBLE
+        p0.itemView.add_to_cart_txv.text = "ADD TO CART"
         val medicine = medicineList.get(p1)
         p0.setData(medicine, p1)
 
@@ -88,9 +89,7 @@ class SearchMedicineRecyclerAdaptor(
             val medDetailedDescription = medicineList.get(p1).medicineDetailedDescription
 
             listener.onAddToCartClicked(
-                Medicine(medId, medName, medDescription, medPrice, medType,medDetailedDescription),
-                p0.itemView.added_to_cart_status_txv
-            )
+                Medicine(medId, medName, medDescription, medPrice, medType,medDetailedDescription), p0.itemView.add_to_cart_txv)
         }
     }
 
@@ -113,7 +112,8 @@ class SearchMedicineRecyclerAdaptor(
                 itemView.favorite_medicine.setColorFilter(ContextCompat.getColor(context, R.color.favorite_ic_color))
             }
             if (medicineCartUseCases.isPresentInMedicineCart(medicine.medicineId)) {
-                itemView.added_to_cart_status_txv.visibility = View.VISIBLE
+                //itemView.added_to_cart_status_txv.visibility = View.VISIBLE
+                itemView.add_to_cart_txv.text = "VIEW CART"
             }
 
         }

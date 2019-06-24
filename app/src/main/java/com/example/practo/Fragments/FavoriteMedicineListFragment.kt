@@ -117,7 +117,7 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
 
     fun initOnSelectListeners(){
         addMedicinesToFavListBtn.setOnClickListener {
-          mFavoriteMedicinesFragmentListener.onAddMedicinesBtnFromEmptyFavListClicked()
+            mFavoriteMedicinesFragmentListener.onAddMedicinesBtnFromEmptyFavListClicked()
         }
     }
 
@@ -161,10 +161,19 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         (parentFragment as SearchMedicinePagerFragment).notifyChangesToSearchMedicinesFragment()
     }
 
-    override fun onAddToCartClicked(medicineId: Int,view: TextView) {
-        textViewItem  = view
-        this.medicineId=medicineId
-        context!!.setDialogFragment(this,fragmentManager,"AddToCartFragment",AddToCartCustomDialog.newInstance(medicineCartUseCases.getMedicineById(medicineId).medicinePrice))
+    override fun onAddToCartClicked(medicineId: Int, view: TextView) {
+        textViewItem = view
+        this.medicineId = medicineId
+        if ((textViewItem as TextView).text.toString().equals("ADD TO CART")) {
+            context!!.setDialogFragment(
+                this,
+                fragmentManager,
+                "AddToCartFragment",
+                AddToCartCustomDialog.newInstance(medicineCartUseCases.getMedicineById(medicineId).medicinePrice)
+            )
+        } else {
+            (parentFragment as SearchMedicinePagerFragment).onViewCartClicked()
+        }
     }
 
 
@@ -173,14 +182,15 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     }
 
     override fun getQtyEntered(qty: Int) {
-        textViewItem?.visibility = View.VISIBLE
+//        textViewItem?.visibility = View.VISIBLE
+        (textViewItem as TextView).text = "VIEW CART"
         customAddedToCartToast("Item added to cart")
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicineCartUseCases.getMedicineById(medicineId),qty))
         (parentFragment as SearchMedicinePagerFragment).setUpBadge()
     }
 
     override fun onFavoriteMedicineClicked(medicineId: Int) {
-      context!!.setDialogFragment(this,fragmentManager,"MedicineDescription",MedicineDescriptionCustomDialog.newInstance(medicineCartUseCases.getMedicineById(medicineId)))
+        context!!.setDialogFragment(this,fragmentManager,"MedicineDescription",MedicineDescriptionCustomDialog.newInstance(medicineCartUseCases.getMedicineById(medicineId)))
     }
 
     fun customAddedToCartToast(msg:String, duration:Int = Toast.LENGTH_SHORT){
