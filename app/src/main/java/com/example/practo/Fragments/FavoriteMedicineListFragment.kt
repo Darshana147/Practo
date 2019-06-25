@@ -2,7 +2,6 @@ package com.example.practo.Fragments
 
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -39,6 +38,7 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     private lateinit var medicineCartUseCases:MedicineCartUseCases
     private lateinit var addMedicinesToFavListBtn:Button
     private lateinit var mFavoriteMedicinesFragmentListener: FavoriteMedicinesFragmentListener
+    private var cartItemsHashSet = hashSetOf<Int>()
     private lateinit var fragmentListener: IFragmentListener
     private var textViewItem:TextView? =null
     private var medicineId: Int=0
@@ -58,10 +58,19 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         super.onActivityCreated(savedInstanceState)
         initUseCases()
         initViews()
+        setFavoriteMedicinesFragmentListener()
         initOnSelectListeners()
+        getValuesFromDb()
         initRecyclerView()
         initLayoutManager()
         viewDisplay()
+    }
+
+    fun getValuesFromDb(){
+        cartItemsHashSet.clear()
+        for(cartItem in medicineCartUseCases.getMedicineItemsFromCart()){
+            cartItemsHashSet.add(cartItem.medicine.medicineId)
+        }
     }
 
     override fun onAttach(context: Context?) {
@@ -132,19 +141,20 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         layoutManager.orientation = LinearLayoutManager.VERTICAL
     }
 
-    fun bindRecyclerViewWithAdapter(){
+    fun bindRecyclerViewWithAdapter(favMedicines:ArrayList<Medicine>){
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdaper = MedicineFavoriteListRecyclerAdapter(this.context!!,favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1),this,medicineCartUseCases)
+        recyclerViewAdaper = MedicineFavoriteListRecyclerAdapter(this.context!!,favMedicines,this,cartItemsHashSet)
         recyclerView.adapter = recyclerViewAdaper
     }
 
     fun viewDisplay(){
-        if(favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1).isEmpty()){
+        val favMedicines = favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1)
+        if(favMedicines.isEmpty()){
             favoriteListNotEmpty.visibility = View.GONE
             favoriteListEmpty.visibility = View.VISIBLE
         } else {
             favoriteListEmpty.visibility = View.GONE
-            bindRecyclerViewWithAdapter()
+            bindRecyclerViewWithAdapter(favMedicines)
             favoriteListNotEmpty.visibility= View.VISIBLE
         }
     }
@@ -153,12 +163,12 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         viewDisplay()
     }
 
-    override fun onRemoveMedicineFromFavoriteListListener(medicineId: Int) {
-        favoriteMedicineUseCases.removeMedicineFromFavoriteList(1,medicineId)
+    override fun onRemoveMedicineFromFavoriteListListener(medicine: Medicine) {
+        favoriteMedicineUseCases.removeMedicineFromFavoriteList(1,medicine.medicineId)
         context?.toast("Item Removed")
-        viewDisplay()
-        recyclerViewAdaper.setChangedFavoriteList(favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1))
-        (parentFragment as SearchMedicinePagerFragment).notifyChangesToSearchMedicinesFragment()
+//        viewDisplay()
+        recyclerViewAdaper.favoriteListDataSetChanged(medicine)
+        (parentFragment as SearchMedicinePagerFragment).notifyChangesToSearchMedicinesFragment(medicine.medicineId,getString(R.string.remove_favorite))
     }
 
     override fun onAddToCartClicked(medicineId: Int, view: TextView) {
@@ -177,16 +187,16 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     }
 
 
-    fun setFavoriteMedicinesFragmentListener(mFavoriteMedicinesFragmentListener: FavoriteMedicinesFragmentListener){
-        this.mFavoriteMedicinesFragmentListener=mFavoriteMedicinesFragmentListener
+    fun setFavoriteMedicinesFragmentListener(){
+        this.mFavoriteMedicinesFragmentListener=parentFragment as FavoriteMedicinesFragmentListener
     }
 
     override fun getQtyEntered(qty: Int) {
-//        textViewItem?.visibility = View.VISIBLE
         (textViewItem as TextView).text = "VIEW CART"
         customAddedToCartToast("Item added to cart")
         medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicineCartUseCases.getMedicineById(medicineId),qty))
         (parentFragment as SearchMedicinePagerFragment).setUpBadge()
+        (parentFragment as SearchMedicinePagerFragment).notifyChangesToSearchMedicinesFragment(medicineId,getString(R.string.add_to_cart))
     }
 
     override fun onFavoriteMedicineClicked(medicineId: Int) {
@@ -199,6 +209,11 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
         val toastLayout = layoutInflater.inflate(R.layout.custom_added_to_cart_toast_layout,null)
         toast.view = toastLayout
         toast.show()
+    }
+
+
+    override fun notifyItemAddedToCart(medId: Int) {
+        recyclerViewAdaper.notifyItemAddedToCart(medId)
     }
 
 

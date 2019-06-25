@@ -19,7 +19,7 @@ import com.example.practo.Model.*
 import com.example.practo.UseCases.FavoriteMedicineUseCases
 import com.example.practo.UseCases.MedicineCartUseCases
 import com.example.practo.Utils.setDialogFragment
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.example.practo.Utils.toast
 import kotlinx.android.synthetic.main.fragment_search_medicines.*
 import kotlinx.android.synthetic.main.fragment_search_medicines.view.*
 
@@ -37,6 +37,8 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     private lateinit var medicineDAO: MedicineDAO
     private lateinit var fragmentListener:IFragmentListener
     private var allMedicines:ArrayList<Medicine> = arrayListOf()
+    private var favMedicines:ArrayList<Medicine> = arrayListOf()
+    private var cartMedicines:ArrayList<MedicineCartItem> = arrayListOf()
     private var itemView:View? = null
 
 
@@ -54,9 +56,16 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
         super.onActivityCreated(savedInstanceState)
         medicineDAO = MedicineDAO(this.context!!)
         initUseCases()
+        getValuesFromDb()
         initRecyclerView()
         initLayoutManager()
         bindRecyclerViewWithAdapter()
+    }
+
+    fun getValuesFromDb(){
+        allMedicines = medicineDAO.getAllMedicines()
+        favMedicines = favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1)
+        cartMedicines = medicineCartUseCases.getMedicineItemsFromCart()
     }
 
     override fun onAttach(context: Context?) {
@@ -90,11 +99,27 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     }
 
     fun bindRecyclerViewWithAdapter() {
-        allMedicines = medicineDAO.getAllMedicines()
         recyclerView.layoutManager = layoutManager
         recyclerViewAdaptor =
-            SearchMedicineRecyclerAdaptor(this.context!!, allMedicines, this, favoriteMedicineUseCases,medicineCartUseCases)
+            SearchMedicineRecyclerAdaptor(this.context!!, allMedicines,getFavMedicineHashSet(favMedicines),getCartMedicineHashSet(cartMedicines),this, favoriteMedicineUseCases)
         recyclerView.adapter = recyclerViewAdaptor
+    }
+
+    fun getFavMedicineHashSet(favMedicines:ArrayList<Medicine>):HashSet<Int>{
+        val favMedicineHashSet = hashSetOf<Int>()
+        for(favMedicine in favMedicines){
+            favMedicineHashSet.add(favMedicine.medicineId)
+        }
+
+        return favMedicineHashSet
+    }
+
+    fun getCartMedicineHashSet(cartMedicineItems:ArrayList<MedicineCartItem>):HashSet<Int>{
+        val cartMedicineHashSet = hashSetOf<Int>()
+        for(cartItem in cartMedicineItems){
+            cartMedicineHashSet.add(cartItem.medicine.medicineId)
+        }
+        return cartMedicineHashSet
     }
 
     override fun onSearched(text: String?) {
@@ -147,15 +172,25 @@ class SearchMedicinesFragment : Fragment(), OnSearchMedicinesFragmentListener, A
     }
 
 
-    override fun onNotifyDataSetChanged() {
-        recyclerViewAdaptor.dataSetChanged()
+    override fun onNotifyDataSetChanged(medicineId:Int,str:String) {  //check
+        when(str){
+            getString(R.string.remove_favorite)->{
+                recyclerViewAdaptor.notifyItemRemovedFromFavList(medicineId)
+            }
+            getString(R.string.add_to_cart)->{
+                recyclerViewAdaptor.notifyItemAddedToCart(medicineId)
+            }
+        }
+
     }
 
     override fun getQtyEntered(qty: Int) {
         (itemView as TextView).text = "VIEW CART"
         customAddedToCartToast("Item added to Cart")
-        medicineCartUseCases.addMedicineToCart(MedicineCartItem(medicine, qty))
+        val medCartItem = MedicineCartItem(medicine,qty)
+        medicineCartUseCases.addMedicineToCart(medCartItem)
         (parentFragment as SearchMedicinePagerFragment).setUpBadge()
+        (parentFragment as SearchMedicinePagerFragment).notifyFavoriteMedicinesFragmentItemAddedToCart(medicine.medicineId)
     }
 
     override fun onMedicineClicked(medicine: Medicine) {

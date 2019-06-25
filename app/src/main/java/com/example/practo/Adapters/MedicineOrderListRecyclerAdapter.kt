@@ -41,11 +41,7 @@ class MedicineOrderListRecyclerAdapter(val context: Context,val medicineOrderLis
               itemView.order_status.text = "Order has been delivered"
             else
                 itemView.order_status.text = "Order has been confirmed"
-//            val userLocality = medicineOrder.deliveryAddressDetails.userLocality
-//            val userCity = medicineOrder.deliveryAddressDetails.userCity
-//            val userState = medicineOrder.deliveryAddressDetails.userState
-//            val userCountry = medicineOrder.deliveryAddressDetails.userCountry
-//            itemView.delivery_address_order.text = "$userLocality, $userCity, $userState, $userCountry"
+
         }
     }
 }

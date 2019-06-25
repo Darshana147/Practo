@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,8 @@ import kotlinx.android.synthetic.main.medicine_favorite_list_card_layout.view.*
 import kotlinx.android.synthetic.main.search_medicine_card_layout.view.*
 
 
-class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:ArrayList<Medicine>,var listener:FavoriteMedicineListListener,var medicineCartUseCases: MedicineCartUseCases):RecyclerView.Adapter<MedicineFavoriteListRecyclerAdapter.MyViewHolder>() {
-    var medicineWishList = medWishList
+class MedicineFavoriteListRecyclerAdapter(var context: Context, var medicineWishList:ArrayList<Medicine>,var listener:FavoriteMedicineListListener,var medicineCartHashSet:HashSet<Int>):RecyclerView.Adapter<MedicineFavoriteListRecyclerAdapter.MyViewHolder>() {
+//    var medicineWishList = medWishList
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         val view:View = LayoutInflater.from(context).inflate(com.example.practo.R.layout.medicine_favorite_list_card_layout,p0,false)
         return MyViewHolder(view)
@@ -37,7 +38,6 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
                 context,
                 R.color.favorite_ic_color
             ))
-        //p0.itemView.added_to_cart_from_fav_status_txv.visibility = View.INVISIBLE
         p0.itemView.favoriteList_add_to_cart_txv.text = "ADD TO CART"
         p0.setData(medicine,p1)
 
@@ -46,7 +46,8 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
         }
 
         p0.itemView.remove_item_from_favoriteList.setOnClickListener {
-            listener.onRemoveMedicineFromFavoriteListListener(medicineWishList.get(p1).medicineId)
+            listener.onRemoveMedicineFromFavoriteListListener(medicineWishList.get(p1))
+            Log.d("abcd","here size ${medicineWishList.size}")
         }
         p0.itemView.favoriteList_add_to_cart_txv.setOnClickListener {
             listener.onAddToCartClicked(medicineWishList.get(p1).medicineId,p0.itemView.favoriteList_add_to_cart_txv)
@@ -67,21 +68,26 @@ class MedicineFavoriteListRecyclerAdapter(var context: Context, var medWishList:
             } else{
                 itemView.favoriteList_medicine_imv.setImageResource(R.drawable.liquid_medicine)
             }
-            if(medicineCartUseCases.isPresentInMedicineCart(medicine.medicineId)){
-                //itemView.added_to_cart_from_fav_status_txv.visibility = View.VISIBLE
+            if(medicineCartHashSet.contains(medicine.medicineId)){
                 itemView.favoriteList_add_to_cart_txv.text = "VIEW CART"
             }
         }
 
     }
 
-    fun setChangedFavoriteList(changedFavList:ArrayList<Medicine>){
-        medicineWishList=changedFavList
+//    fun favoriteListDataSetChanged(changedFavList:ArrayList<Medicine>)
+     fun favoriteListDataSetChanged(medicine:Medicine){
+        medicineWishList.remove(medicine)
         notifyDataSetChanged()
     }
 
     fun filterList(filteredList: ArrayList<Medicine>) {
         medicineWishList = filteredList
+        notifyDataSetChanged()
+    }
+
+    fun notifyItemAddedToCart(medicineId:Int){
+        medicineCartHashSet.add(medicineId)
         notifyDataSetChanged()
     }
 

@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.example.practo.Adapters.MedicineFavoriteListRecyclerAdapter
 import com.example.practo.Adapters.SearchMedicinesTabAdapter
 import com.example.practo.InterfaceListeners.*
+import com.example.practo.Model.Medicine
 import com.example.practo.R
 import com.example.practo.UseCases.FavoriteMedicineUseCases
 import com.example.practo.UseCases.MedicineCartUseCases
@@ -65,7 +66,7 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
 
 
     fun setListeners() {
-        favoriteListFragment.setFavoriteMedicinesFragmentListener(this)
+         //favoriteListFragment.setFavoriteMedicinesFragmentListener(this)
     }
 
     fun initFragment() {
@@ -99,6 +100,7 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
         tabLayout = rootView.findViewById<TabLayout>(R.id.searchMedicineTabLayout)
         viewPager.adapter = tabAdapter
         tabLayout.setupWithViewPager(viewPager)
+        viewPager.offscreenPageLimit = 2
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(p0: Int) {
             }
@@ -112,13 +114,15 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
                 when (p0) {
                     0 -> {
                         enableSearchBar()
-                        search_medicine_recycler_view.adapter?.notifyDataSetChanged()
+                        //search_medicine_recycler_view.adapter?.notifyDataSetChanged()
                     }
-                    1 -> if (isNoFavoriteMedicines()) {
-                        disableSearchBar()
-                    } else {
-                        enableSearchBar()
-                        favorite_list_recycler_view.adapter?.notifyDataSetChanged()
+                    1 -> {
+                        if (isNoFavoriteMedicines()) {
+                            disableSearchBar()
+                        } else {
+                            enableSearchBar()
+                        }
+                        //favorite_list_recycler_view.adapter?.notifyDataSetChanged()
                     }
                 }
             }
@@ -198,7 +202,6 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.view_cart_menu_item -> {
-//                mSearchFragmentToolbarMenuListener.onViewCartClicked()
                 onViewCartClicked()
                 return true
             }
@@ -209,7 +212,7 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
 
     }
 
-    fun onViewCartClicked(){
+    fun onViewCartClicked() {
         mSearchFragmentToolbarMenuListener.onViewCartClicked()
     }
 
@@ -237,12 +240,12 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
     }
 
 
-    fun notifyChangesToSearchMedicinesFragment() {
+    fun notifyChangesToSearchMedicinesFragment(medId:Int,str:String) {
         val item = activity?.activity_order_medicine_toolbar?.menu?.findItem(R.id.search_menu_item)
         if (isNoFavoriteMedicines() && viewPager.currentItem == 1) {
             disableSearchBar()
         }
-        mSearchMedicinesFragmentListener?.onNotifyDataSetChanged()
+        mSearchMedicinesFragmentListener?.onNotifyDataSetChanged(medId,str)
     }
 
     override fun addFragmentSearchContext(iSearch: ISearch) {
@@ -265,5 +268,9 @@ class SearchMedicinePagerFragment : Fragment(), FavoriteMedicinesFragmentListene
     fun notifyChangesInFavoriteList() {
         mFavoriteMedicineListListener?.notifyChangesInMedicineFavoriteList()
     }
-    
+
+    fun notifyFavoriteMedicinesFragmentItemAddedToCart(medicineId:Int) {
+        mFavoriteMedicineListListener?.notifyItemAddedToCart(medicineId)
+    }
+
 }

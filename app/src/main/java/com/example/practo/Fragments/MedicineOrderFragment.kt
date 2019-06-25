@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,25 +22,29 @@ import com.example.practo.UseCases.MedicineOrderUseCases
 import kotlinx.android.synthetic.main.fragment_medicine_order.view.*
 
 
-
-class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapter.MedicineOrderListSectionedRecyclerViewListener{
+class MedicineOrderFragment : Fragment(),
+    MedicineOrderListSectionedRecyclerAdapter.MedicineOrderListSectionedRecyclerViewListener {
 
     private lateinit var rootView: View
     private lateinit var recyclerView: RecyclerView
-    private lateinit var layoutManager:LinearLayoutManager
-    private lateinit var recyclerViewAdapter:MedicineOrderListSectionedRecyclerAdapter
-    private lateinit var orderMedicines:Button
-    private lateinit var mMedicineOrderListener:OnMedicineOrderListener
-    private lateinit var medicineOrderUsecases:MedicineOrderUseCases
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var recyclerViewAdapter: MedicineOrderListSectionedRecyclerAdapter
+    private lateinit var orderMedicines: Button
+    private lateinit var mMedicineOrderListener: OnMedicineOrderListener
+    private lateinit var medicineOrderUsecases: MedicineOrderUseCases
+    private var allOrders: ArrayList<MedicineOrder> = arrayListOf()
+    private var sectionModelOrderList:ArrayList<SectionModel> = arrayListOf()
+    var isOrderListChanged = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        rootView=inflater.inflate(R.layout.fragment_medicine_order, container, false)
+        rootView = inflater.inflate(R.layout.fragment_medicine_order, container, false)
         return rootView
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -47,23 +52,25 @@ class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapt
         customizeToolbar()
         initUseCases()
         initListener()
-        SetViewDisplay().execute(rootView)
+        if(isOrderListChanged==true) {
+            SetViewDisplay().execute(rootView)
+            isOrderListChanged = false
+        } else {
+            viewDisplay(rootView,allOrders,sectionModelOrderList)
+        }
 //        viewDisplayThread(rootView)
 
     }
 
-    fun viewDisplay(rootView: View) {
-        val allMedicineOrders = medicineOrderUsecases.getAllOrders()
-        if (allMedicineOrders.isEmpty()) {
-            Thread.sleep(500)
-            setVisibility(View.VISIBLE,View.INVISIBLE)
+    fun viewDisplay(rootView: View,allOrders:ArrayList<MedicineOrder>,medicineOrderSectionList: ArrayList<SectionModel>) {
+        if (allOrders.isEmpty()) {
+            setVisibility(View.VISIBLE, View.INVISIBLE)
 
         } else {
-            setVisibility(View.INVISIBLE,View.VISIBLE)
-//            Thread.sleep(300)
+            setVisibility(View.INVISIBLE, View.VISIBLE)
+            Thread.sleep(100)
             initRecyclerView(rootView)
             initLayoutManager()
-            val medicineOrderSectionList = getMedicineSectionModel(allMedicineOrders)
             activity?.runOnUiThread(object : Runnable {
                 override fun run() {
                     bindRecyclerViewWithLayoutManager(medicineOrderSectionList)
@@ -73,7 +80,7 @@ class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapt
         }
     }
 
-    fun setVisibility(noOrderPlacedView:Int, orderPlacedView:Int){
+    fun setVisibility(noOrderPlacedView: Int, orderPlacedView: Int) {
         activity?.runOnUiThread(object : Runnable {
             override fun run() {
                 rootView.no_orders_placed_linear_layout.visibility = noOrderPlacedView
@@ -83,7 +90,7 @@ class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapt
         })
     }
 
-    fun initListener(){
+    fun initListener() {
         rootView.medicine_order_list_recycler_view_swipe_refresh_layout.setOnRefreshListener {
             reloadFragment()
             rootView.medicine_order_list_recycler_view_swipe_refresh_layout.isRefreshing = false
@@ -93,53 +100,53 @@ class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapt
         }
     }
 
-    fun reloadFragment(){
+    fun reloadFragment() {
         mMedicineOrderListener.onMedicineOrderListPageRefreshed()
     }
 
-    fun initUseCases(){
+    fun initUseCases() {
         medicineOrderUsecases = MedicineOrderUseCases(context!!)
     }
 
-    fun customizeToolbar(){
+    fun customizeToolbar() {
         val activity = getActivity() as AppCompatActivity
         val actionBarSupport = activity.supportActionBar
         actionBarSupport?.setTitle("My Orders")
 
     }
 
-    fun initRecyclerView(rootView: View){
+    fun initRecyclerView(rootView: View) {
         recyclerView = rootView.findViewById<RecyclerView>(R.id.medicine_order_recycler_view)
         recyclerView.setHasFixedSize(true);
     }
 
-    fun initLayoutManager(){
+    fun initLayoutManager() {
         layoutManager = LinearLayoutManager(activity)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
     }
 
-    fun bindRecyclerViewWithLayoutManager(medicineOrderSectionList:ArrayList<SectionModel>){
+    fun bindRecyclerViewWithLayoutManager(medicineOrderSectionList: ArrayList<SectionModel>) {
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdapter = MedicineOrderListSectionedRecyclerAdapter(context!!,medicineOrderSectionList,this)
+        recyclerViewAdapter = MedicineOrderListSectionedRecyclerAdapter(context!!, medicineOrderSectionList, this)
         recyclerView.adapter = recyclerViewAdapter
 
     }
 
-    fun getMedicineSectionModel(medOrders:ArrayList<MedicineOrder>):ArrayList<SectionModel>{
-        val medicineOrdersSectionModelList:ArrayList<SectionModel> = arrayListOf()
+    fun getMedicineSectionModel(medOrders: ArrayList<MedicineOrder>): ArrayList<SectionModel> {
+        val medicineOrdersSectionModelList: ArrayList<SectionModel> = arrayListOf()
         val deliveredOrders = medicineOrderUsecases.getDeliveredOrders(medOrders)
         val currentOrders = medicineOrderUsecases.getCurrentOrders(medOrders)
-        if(!currentOrders.isEmpty()){
-            medicineOrdersSectionModelList.add(SectionModel("CURRENT ORDERS",currentOrders))
+        if (!currentOrders.isEmpty()) {
+            medicineOrdersSectionModelList.add(SectionModel("CURRENT ORDERS", currentOrders))
         }
-        if(!deliveredOrders.isEmpty()){
-            medicineOrdersSectionModelList.add(SectionModel("DELIVERED ORDERS",deliveredOrders))
+        if (!deliveredOrders.isEmpty()) {
+            medicineOrdersSectionModelList.add(SectionModel("DELIVERED ORDERS", deliveredOrders))
         }
         return medicineOrdersSectionModelList
     }
 
 
-    fun setMedicineOrderButtonListener(mMedicineOrderListener: OnMedicineOrderListener){
+    fun setMedicineOrderButtonListener(mMedicineOrderListener: OnMedicineOrderListener) {
         this.mMedicineOrderListener = mMedicineOrderListener
     }
 
@@ -148,16 +155,17 @@ class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapt
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class SetViewDisplay : AsyncTask<View, Unit, Unit>(){
+    inner class SetViewDisplay : AsyncTask<View, Unit, Unit>() {
         val progressDialog = ProgressCustomDialog()
         override fun onPreExecute() {
-            progressDialog.show(fragmentManager,"ProgressDialog")
+            progressDialog.show(fragmentManager, "ProgressDialog")
             progressDialog.isCancelable = false
         }
 
         override fun doInBackground(vararg params: View?) {
-            viewDisplay(params.get(0)!!)
-            Thread.sleep(200)
+            allOrders = medicineOrderUsecases.getAllOrders()
+            sectionModelOrderList = getMedicineSectionModel(allOrders)
+            viewDisplay(params.get(0)!!,allOrders,sectionModelOrderList)
         }
 
         override fun onPostExecute(result: Unit?) {
@@ -165,10 +173,11 @@ class MedicineOrderFragment : Fragment(),MedicineOrderListSectionedRecyclerAdapt
         }
     }
 
-    fun viewDisplayThread(rootView: View){
-        Thread(object:Runnable{
+
+    fun viewDisplayThread(rootView: View) {
+        Thread(object : Runnable {
             override fun run() {
-                viewDisplay(rootView)
+                viewDisplay(rootView,allOrders,sectionModelOrderList)
             }
 
         }).start()

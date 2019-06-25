@@ -68,11 +68,9 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
         userDeliveryAddressFragment.setUserDeliveryAddressFragmentListener(this)
         userSavedDeliveryAddressesFragment.setUserSavedDeliveryAddressFragmentListener(this)
         medicineOrderPlacementFragment.setOrderPlacementListener(this)
-//        orderPlacementSuccessFragment.setOrderPlacementSuccessFragmentListener(this)
     }
 
     fun initFragments() {
-//        orderPlacementSuccessFragment = OrderPlacementSuccessFragment.newInstance(0)
         searchMedicinePagerFragment= SearchMedicinePagerFragment()
         medicineOrderFragment = MedicineOrderFragment()
         viewCartFragment = ViewCartFragment()
@@ -147,13 +145,13 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
     override fun onPlaceOrderClicked(orderNum: Int) {
         orderPlacementSuccessFragment = OrderPlacementSuccessFragment.newInstance(orderNum)
         orderPlacementSuccessFragment.setOrderPlacementSuccessFragmentListener(this)
-//        if(supportFragmentManager.backStackEntryCount==4){
-//            clearBackStackInclusive("search_medicine_pager_frag")
-//            setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
-//        }else {
-//            clearBackStackInclusive("cart_frag")
-//            setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
-//        }
+        if(supportFragmentManager.backStackEntryCount==4){
+            clearBackStackInclusive("search_medicine_pager_frag")
+            setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
+        }else {
+            clearBackStackInclusive("cart_frag")
+            setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
+        }
 
         clearBackStackInclusive("cart_frag")
         setFragmentTransition(orderPlacementSuccessFragment,"order_placement_success_frag")
@@ -164,14 +162,17 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
     }
 
     override fun onViewMyOrdersButtonClicked() {
-        val fragmentManager = supportFragmentManager
-        if(fragmentManager.backStackEntryCount==1){
-            val frag = fragmentManager.findFragmentByTag("order_placement_success_frag")
-            fragmentManager.beginTransaction().remove(frag!!).commit()
-            fragmentManager.popBackStack("search_medicine_pager_frag",1)
-        }else {
-            setFragmentTransition(medicineOrderFragment, "med_order_frag")
-        }
+        medicineOrderFragment.isOrderListChanged = true
+//        val fragmentManager = supportFragmentManager
+//        if(fragmentManager.backStackEntryCount==1){
+//            val frag = fragmentManager.findFragmentByTag("order_placement_success_frag")
+//            fragmentManager.beginTransaction().remove(frag!!).commit()
+//            fragmentManager.popBackStack("search_medicine_pager_frag",1)
+//            fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("med_order_frag")!!).commit()
+//        }else {
+//            setFragmentTransition(medicineOrderFragment, "med_order_frag")
+//        }
+        setFragmentTransition(medicineOrderFragment, "med_order_frag")
     }
 
     override fun onMedicineOrderItemClicked(orderNum:Int) {
@@ -197,10 +198,12 @@ class OrderMedicineActivity : AppCompatActivity(), OnMedicineOrderListener, OnSe
             ft.detach(it)
             ft.attach(it)
         }
+        medicineOrderFragment.isOrderListChanged = true
         ft.commit()
     }
 
     override fun onMedicineOrderCanceled() {
+        medicineOrderFragment.isOrderListChanged = true
         supportFragmentManager.popBackStack("med_order_status_frag",1)
     }
 

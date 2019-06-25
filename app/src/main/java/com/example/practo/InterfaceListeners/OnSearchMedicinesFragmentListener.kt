@@ -10,5 +10,5 @@ interface OnSearchMedicinesFragmentListener {
 
     fun onMedicineClicked(medicine:Medicine)
 
-    fun onNotifyDataSetChanged()
+    fun onNotifyDataSetChanged(medicineId:Int,str:String)
 }
