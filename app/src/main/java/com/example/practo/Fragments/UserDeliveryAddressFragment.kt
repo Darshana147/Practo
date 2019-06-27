@@ -46,6 +46,7 @@ import com.nabinbhandari.android.permissions.Permissions
 import kotlinx.android.synthetic.main.fragment_favorite_list.view.*
 import kotlinx.android.synthetic.main.fragment_user_delivery_address.*
 import java.io.IOException
+import java.lang.Exception
 import java.util.*
 
 class UserDeliveryAddressFragment : Fragment(){
@@ -55,7 +56,7 @@ class UserDeliveryAddressFragment : Fragment(){
     private lateinit var locationRequest:LocationRequest
     private lateinit var geoCoder:Geocoder
     private lateinit var mUserDeliveryAddressFragmentListener: UserDeliveryAddressFragmentListener
-    private lateinit var address: List<Address>
+    private lateinit  var address: List<Address>
     private lateinit var userCity:TextInputEditText
     private lateinit var userState:TextInputEditText
     private lateinit var userPostalCode:TextInputEditText
@@ -399,20 +400,28 @@ class UserDeliveryAddressFragment : Fragment(){
 
         override fun doInBackground(vararg params: LocationResult?): List<Address> {
             val locationResult = params.get(0)
-            locationResult?.let {
-
-                address = geoCoder.getFromLocation(it.lastLocation.latitude, it.lastLocation.longitude, 1)
+            try{
+                locationResult?.let {
+                    address = geoCoder.getFromLocation(it.lastLocation.latitude, it.lastLocation.longitude, 1)
+                    Thread.sleep(500)
+                }
+            }catch (e:Exception){
+                address = listOf()
             }
-            Thread.sleep(1500)
+
             return address
         }
 
         override fun onPostExecute(result: List<Address>?) {
             progressDialog.dismiss()
-            userCity.setText(address.get(0).subAdminArea.toString())
-            userState.setText(address.get(0).adminArea.toString())
-            userPostalCode.setText(address.get(0).postalCode)
-            userCountry.setText(address.get(0).countryName)
+            if(!address.isEmpty()){
+                userCity.setText(address.get(0).subAdminArea.toString())
+                userState.setText(address.get(0).adminArea.toString())
+                userPostalCode.setText(address.get(0).postalCode)
+                userCountry.setText(address.get(0).countryName)
+            } else {
+                context?.toast("unable to access location, no network access")
+            }
         }
 
 

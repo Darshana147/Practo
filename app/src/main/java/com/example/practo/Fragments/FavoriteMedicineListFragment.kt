@@ -166,7 +166,7 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     override fun onRemoveMedicineFromFavoriteListListener(medicine: Medicine) {
         favoriteMedicineUseCases.removeMedicineFromFavoriteList(1,medicine.medicineId)
         context?.toast("Item Removed")
-//        viewDisplay()
+        viewDisplay()
         recyclerViewAdaper.favoriteListDataSetChanged(medicine)
         (parentFragment as SearchMedicinePagerFragment).notifyChangesToSearchMedicinesFragment(medicine.medicineId,getString(R.string.remove_favorite))
     }
@@ -212,8 +212,8 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     }
 
 
-    override fun notifyItemAddedToCart(medId: Int) {
-        recyclerViewAdaper.notifyItemAddedToCart(medId)
+    override fun notifyItemAddedToCart(medicineId: Int) {
+        recyclerViewAdaper.notifyItemAddedToCart(medicineId)
     }
 
 

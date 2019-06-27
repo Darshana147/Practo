@@ -112,7 +112,6 @@ class MedicineOrderFragment : Fragment(),
         val activity = getActivity() as AppCompatActivity
         val actionBarSupport = activity.supportActionBar
         actionBarSupport?.setTitle("My Orders")
-
     }
 
     fun initRecyclerView(rootView: View) {

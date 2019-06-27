@@ -7,6 +7,7 @@ import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.example.practo.Activities.MainActivity
 import com.example.practo.Adapters.SliderAdapter
 import com.example.practo.InterfaceListeners.PharmacyListener
 
@@ -47,10 +49,17 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_home, container, false)
         initViews()
+        customizeToolbar()
         handler = Handler()
         setSlider()
         setListeners()
         return rootView
+    }
+
+    fun customizeToolbar() {
+        val activity = getActivity() as AppCompatActivity
+        val actionBarSupport = activity.supportActionBar
+        actionBarSupport?.setTitle("Practo")
     }
 
 
@@ -60,7 +69,7 @@ class HomeFragment : Fragment() {
         imageList= arrayListOf(R.drawable.image1,R.drawable.image3,R.drawable.image2)
         viewPager.adapter = SliderAdapter(this.context!!,textList,imageList)
         indicator.setupWithViewPager(viewPager,true)
-        var timer = Timer()
+        val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(),3000,5000)
 
     }

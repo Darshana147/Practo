@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -17,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.example.practo.InterfaceListeners.PharmacyListener
 import com.example.practo.InterfaceListeners.ReadAboutHealthFragmentListener
 import com.example.practo.R
+import com.example.practo.Utils.toast
+import kotlinx.android.synthetic.main.activity_order_medicine.*
 import kotlinx.android.synthetic.main.navigation_header.*
 
 
@@ -27,12 +30,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var homeFragment: HomeFragment
     private lateinit var reminderFragment: ReminderFragment
     private lateinit var readAboutHealthFragment: ReadAboutHealthFragment
+    private var mToolBarNavigationListenerRegistered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        activity_main_toolbar.setTitle("Practo")
-        setSupportActionBar(activity_main_toolbar)
+//        activity_main_toolbar.setTitle("Practo")
+//        setSupportActionBar(activity_main_toolbar)
+        customizeToolbar()
         initFragmentManager()
         initFragments()
         setFragmentListeners()
@@ -44,6 +49,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setFragmentTransaction(homeFragment)
         nav_view.setNavigationItemSelectedListener(this)
 
+    }
+
+    fun customizeToolbar() {
+        activity_main_toolbar.setTitle("Practo")
+        setSupportActionBar(activity_main_toolbar)
     }
 
 
@@ -60,6 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
+        drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
     }
 
@@ -81,11 +92,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
-            R.id.homeMenuItem-> setFragmentTransaction(homeFragment)
+            R.id.homeMenuItem->{
+                setFragmentTransaction(homeFragment)
+            }
 
-            R.id.readAboutHealthMenuItem -> setFragmentTransaction(readAboutHealthFragment)
+            R.id.readAboutHealthMenuItem -> {
+                setFragmentTransaction(readAboutHealthFragment)
+            }
 
-            R.id.reminderMenuItem -> setFragmentTransaction(reminderFragment)
+            R.id.reminderMenuItem ->{
+                setFragmentTransaction(reminderFragment)
+            }
 
             R.id.orderMedicineMenuItem -> {
 
@@ -93,11 +110,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
 
             }
+            R.id.myDoctorsMenuItem -> {
+                val intent = Intent(this, MyDoctorsActivity::class.java)
+                startActivity(intent)
+            }
 
         }
         drawer_layout.closeDrawers()
         return true
     }
+
+
 
     fun setFragmentTransaction(fragment: Fragment) {
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -124,6 +147,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //        val userImage = headerLayout.findViewById<de.hdodenhof.circleimageview.CircleImageView>(R.id.user_image)
 //        userImage.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.capsule,null))
 //    }
+
+
+//    fun enableBackArrow(enable:Boolean){
+//        if(enable){
+//            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+//            toggle.isDrawerIndicatorEnabled = false
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            if(!mToolBarNavigationListenerRegistered){
+//                toggle.setToolbarNavigationClickListener {
+//                    onBackPressed()
+//                }
+//                mToolBarNavigationListenerRegistered = true
+//            }
+//
+//        } else {
+//            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+//            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+//            toggle.isDrawerIndicatorEnabled = true
+//            toggle.syncState()
+//            toggle.toolbarNavigationClickListener=null
+//            mToolBarNavigationListenerRegistered = false
+//        }
+//    }
+
 
 
 }

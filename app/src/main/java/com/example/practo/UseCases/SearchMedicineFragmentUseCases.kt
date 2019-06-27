@@ -1,10 +1,10 @@
-//package com.example.practo.UseCases
+//package com.example.practo.db.UseCases
 
 //import android.content.Context
-//import com.example.practo.DAO.MedicineDAO
-//import com.example.practo.Model.Dosage
-//import com.example.practo.Model.Medicine
-//import com.example.practo.Model.MedicineDescription
+//import com.example.practo.db.DAO.MedicineDAO
+//import com.example.practo.db.Model.Dosage
+//import com.example.practo.db.Model.Medicine
+//import com.example.practo.db.Model.MedicineDescription
 
 
 //class SearchMedicineFragmentUseCases(context: Context) {

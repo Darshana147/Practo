@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="none"
-           android:id="@+id/activitiesGroup">
+
+    <group android:checkableBehavior="single"
+           android:id="@+id/fragmentsGroup">
+
         <item android:id="@+id/homeMenuItem"
               android:icon="@drawable/home"
               android:title="Home">
 
         </item>
+
+        <item android:id="@+id/readAboutHealthMenuItem"
+              android:icon="@drawable/health_article"
+              android:title="Read about health">
+
+        </item>
+        <item android:id="@+id/reminderMenuItem"
+              android:icon="@drawable/reminder"
+              android:title="Reminder">
+
+        </item>
+
+        <!--<item android:id="@+id/medicalRecordsMenuItem"-->
+              <!--android:icon="@drawable/medical_records"-->
+              <!--android:title="Medical Records">-->
+
+        <!--</item>-->
+    </group>
+
+    <group android:checkableBehavior="none"
+           android:id="@+id/activitiesGroup">
+
         <item android:id="@+id/orderMedicineMenuItem"
               android:icon="@drawable/medicine_order"
               android:title="Medicine Orders">
@@ -25,33 +49,12 @@
 
         </item>
 
-        <item android:id="@+id/appointmentsMenuItem"
+        <item android:id="@+id/myDoctorsMenuItem"
               android:icon="@drawable/appointment"
-              android:title="Appointments">
+              android:title="My Doctors">
 
         </item>
 
-    </group>
-
-
-    <group android:checkableBehavior="single"
-           android:id="@+id/fragmentsGroup">
-        <item android:id="@+id/readAboutHealthMenuItem"
-              android:icon="@drawable/health_article"
-              android:title="Read about health">
-
-        </item>
-        <item android:id="@+id/reminderMenuItem"
-              android:icon="@drawable/reminder"
-              android:title="Reminder">
-
-        </item>
-
-        <item android:id="@+id/medicalRecordsMenuItem"
-              android:icon="@drawable/medical_records"
-              android:title="Medical Records">
-
-        </item>
     </group>
 
 </menu>
