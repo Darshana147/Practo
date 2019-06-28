@@ -12,7 +12,10 @@ import android.view.ViewGroup
 import com.example.practo.Adapters.SearchDoctorRecyclerAdapter
 import com.example.practo.InterfaceListeners.SearchDoctorFragmentListener
 import com.example.practo.InterfaceListeners.SearchDoctorsAdapterListener
+import com.example.practo.Model.DoctorDetailsSupplier
 import com.example.practo.R
+import com.example.practo.UseCases.DoctorDetailsUsecases
+import java.io.Serializable
 
 
 class SearchDoctorsFragment : Fragment(),SearchDoctorsAdapterListener{
@@ -24,7 +27,7 @@ class SearchDoctorsFragment : Fragment(),SearchDoctorsAdapterListener{
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var mSearchDoctorsFragmentListener:SearchDoctorFragmentListener
     private val specialistsList = arrayListOf<String>("Child Specialist","Dental care","General Physician","Ear Nose Throat","Bone and Joints","Eye Specialist","Ayurveda","Heart","Lungs and Breathing","Cancer")
-    private val imageList = arrayListOf<Int>(R.drawable.child_specialist_icon,R.drawable.ic_tooth,R.drawable.ic_stethoscope,R.drawable.ent_icon,R.drawable.knee_joint_icon,R.drawable.ic_eye,R.drawable.ic_ayurvedic,R.drawable.ic_cardiogram,R.drawable.ic_lungs,R.drawable.ic_cancer)
+    private val imageList = arrayListOf<Int>(R.drawable.child_specialist_icon,R.drawable.ic_tooth,R.drawable.ic_stethoscope,R.drawable.ent_icon,R.drawable.knee_joint_icon,R.drawable.ic_visibility,R.drawable.ic_ayurvedic,R.drawable.ic_cardiogram,R.drawable.ic_lungs,R.drawable.ic_cancer)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +35,9 @@ class SearchDoctorsFragment : Fragment(),SearchDoctorsAdapterListener{
     ): View? {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_search_doctors, container, false)
+        if(DoctorDetailsSupplier.doctorDetailsList.isEmpty()) {
+            DoctorDetailsUsecases(context!!).getAllDoctorDetails()
+        }
         return rootView
     }
 
@@ -72,7 +78,6 @@ class SearchDoctorsFragment : Fragment(),SearchDoctorsAdapterListener{
     override fun onSpecializationFieldSelected(specialization:String) {
        mSearchDoctorsFragmentListener.onSpecializationFieldSelected(specialization)
     }
-
 
 
 }

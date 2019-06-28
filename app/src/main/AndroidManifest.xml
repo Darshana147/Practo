@@ -16,6 +16,16 @@
             android:theme="@style/AppTheme">
         <activity android:name=".Activities.MyDoctorsActivity"
           android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.DIAL"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="telo"/>
+            </intent-filter>
+
         </activity>
         <activity
                 android:name=".Activities.OrderMedicineActivity"

@@ -52,7 +52,7 @@
                             <ImageView
                                     android:layout_gravity="center"
                                     android:layout_weight="2"
-                                    android:id="@+id/doctor_image"
+                                    android:id="@+id/doctor_image_info"
                                     android:src="@drawable/ic_doctor_m"
                                     android:layout_width="250dp"
                                     android:layout_height="100dp"/>
@@ -69,7 +69,7 @@
                                     android:layout_height="wrap_content">
 
                                 <TextView
-                                        android:id="@+id/doctor_name"
+                                        android:id="@+id/doctor_name_info"
                                         android:textColor="@color/black"
                                         android:textSize="18sp"
                                         android:paddingBottom="5dp"
@@ -78,7 +78,7 @@
                                         android:layout_height="wrap_content"/>
 
                                 <TextView
-                                        android:id="@+id/doctor_specialization"
+                                        android:id="@+id/doctor_specialization_info"
                                         android:text="Child Specialist"
                                         android:textColor="@color/colorPrimary"
                                         android:textSize="15sp"
@@ -100,6 +100,7 @@
                                             android:layout_height="wrap_content"/>
 
                                     <TextView
+                                            android:id="@+id/doctor_experience_info"
                                             android:textColor="@color/black"
                                             android:textSize="16sp"
                                             android:paddingLeft="2dp"
@@ -128,7 +129,9 @@
                                             android:text="@string/rupee"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"/>
+
                                     <TextView
+                                            android:id="@+id/doctor_consultation_fees_info"
                                             android:textColor="@color/black"
                                             android:paddingLeft="2dp"
                                             android:textSize="16sp"
@@ -173,7 +176,7 @@
                                     android:layout_height="wrap_content">
 
                                 <TextView
-                                        android:id="@+id/hospital_name"
+                                        android:id="@+id/hospital_name_info"
                                         android:text="Rangpur General Hospital"
                                         android:layout_marginBottom="5dp"
                                         android:textSize="15sp"
@@ -183,14 +186,14 @@
 
                                 <TextView
                                         android:text="Address, Locality, City, State, Country,Pincode"
-                                        android:id="@+id/user_delivery_address_order"
+                                        android:id="@+id/hospital_address_info"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="5dp"/>
 
                                 <TextView
                                         android:text="Mobile Number"
-                                        android:id="@+id/user_mobile_number_order"
+                                        android:id="@+id/hospital_contact_number_info"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"/>
 
@@ -243,6 +246,7 @@
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
                             android:paddingBottom="10dp"
+                            android:id="@+id/doctor_qualification_info"
                             android:text="MBBS, DCh Mrcp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -280,6 +284,7 @@
 
                     <TextView
                             android:text="3 Years of Experience"
+                            android:id="@+id/doctor_work_experience_information"
                             android:textColor="@color/black"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
@@ -289,6 +294,7 @@
                             android:layout_height="wrap_content"/>
 
                     <TextView
+                            android:id="@+id/doctor_past_experiences"
                             android:textColor="@color/black"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
@@ -330,6 +336,7 @@
                             android:layout_height="wrap_content"/>
 
                     <TextView
+                            android:id="@+id/doctor_services_info"
                             android:textColor="@color/black"
                             android:text="1. Growth and Development Evaluation\n2. Vaccination\n3. Immunization and Bronchial Asthma Treatment"
                             android:paddingLeft="15dp"
@@ -363,6 +370,7 @@
         <Button
                 android:layout_marginRight="2dp"
                 android:text="call"
+                android:id="@+id/call_button_doctor_info"
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@drawable/button_with_border"
                 android:layout_weight="1"
@@ -370,6 +378,7 @@
                 android:layout_height="wrap_content"/>
 
         <Button
+                android:id="@+id/book_doctor_button"
                 android:layout_weight="1"
                 android:layout_marginLeft="2dp"
                 android:textColor="@color/white"

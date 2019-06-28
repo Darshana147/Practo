@@ -10,12 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.practo.InterfaceListeners.MyDoctorsListener
-
 import com.example.practo.R
 import kotlinx.android.synthetic.main.fragment_my_doctors.*
 
 
-class MyDoctorsFragment : Fragment() {
+
+class MyDoctorsFragment : Fragment(){
 
     private lateinit var mMyDoctorsListener:MyDoctorsListener
 

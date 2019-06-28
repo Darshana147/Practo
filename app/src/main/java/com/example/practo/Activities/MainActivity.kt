@@ -6,25 +6,20 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
-import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.practo.Fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
-import com.example.practo.InterfaceListeners.PharmacyListener
+import com.example.practo.InterfaceListeners.HomePageListener
 import com.example.practo.InterfaceListeners.ReadAboutHealthFragmentListener
 import com.example.practo.R
-import com.example.practo.Utils.toast
-import kotlinx.android.synthetic.main.activity_order_medicine.*
-import kotlinx.android.synthetic.main.navigation_header.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ReadAboutHealthFragmentListener,PharmacyListener {
+    ReadAboutHealthFragmentListener,HomePageListener{
+
     private lateinit var fragmentManager: FragmentManager
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var homeFragment: HomeFragment
@@ -137,6 +132,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         intent.putExtra("fragment","searchMedicineFragment")
         startActivity(intent)
     }
+
+    override fun onDoctorClicked() {
+        val intent = Intent(this,MyDoctorsActivity::class.java)
+        intent.putExtra("fragment","search_doctors_frag")
+        startActivity(intent)
+    }
+
 
     fun setFragmentListeners(){
         homeFragment.setPharmacyListener(this)

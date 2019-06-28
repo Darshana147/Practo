@@ -1,7 +1,6 @@
 package com.example.practo.Fragments
 
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
@@ -9,17 +8,11 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import com.example.practo.Activities.MainActivity
 import com.example.practo.Adapters.SliderAdapter
-import com.example.practo.InterfaceListeners.PharmacyListener
+import com.example.practo.InterfaceListeners.HomePageListener
 
 
 import com.example.practo.R
@@ -38,7 +31,7 @@ class HomeFragment : Fragment() {
     private lateinit var pharmacyCardView: CardView
     private lateinit var chatCardView: CardView
     private lateinit var diagnosticCardView: CardView
-    private lateinit var mPharmacyListener: PharmacyListener
+    private lateinit var mHomePageListener: HomePageListener
 
 
 
@@ -102,8 +95,7 @@ class HomeFragment : Fragment() {
 
     fun setListeners(){
         doctorCardView.setOnClickListener {
-//            Toast.makeText(context,"Doctor Clicked",Toast.LENGTH_SHORT).show()
-            context?.toast("Doctor Clicked")
+            mHomePageListener.onDoctorClicked()
         }
 
         chatCardView.setOnClickListener {
@@ -112,7 +104,7 @@ class HomeFragment : Fragment() {
         }
 
         pharmacyCardView.setOnClickListener {
-            mPharmacyListener.onPharmacyClicked()
+            mHomePageListener.onPharmacyClicked()
         }
 
         diagnosticCardView.setOnClickListener {
@@ -121,8 +113,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setPharmacyListener(mPharmacyListener: PharmacyListener){
-        this.mPharmacyListener = mPharmacyListener
+    fun setPharmacyListener(mHomePageListener: HomePageListener){
+        this.mHomePageListener = mHomePageListener
     }
 
 }

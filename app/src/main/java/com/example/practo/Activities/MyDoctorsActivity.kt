@@ -15,6 +15,7 @@ import com.example.practo.Model.Doctor
 import com.example.practo.R
 import kotlinx.android.synthetic.main.activity_my_doctors.*
 
+
 class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFragmentListener,DoctorListFragmentListener{
 
     private lateinit var myDoctorsFragment: MyDoctorsFragment
@@ -58,9 +59,9 @@ class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFr
         if (intent.hasExtra("fragment")) {
             val fragment = intent?.extras?.getString("fragment")
             when (fragment) {
-//                "searchMedicineFragment" -> {
-//                    setFragmentTransition(searchMedicinePagerFragment,"search_medicine_pager_frag")
-//                }
+                "search_doctors_frag" -> {
+                    setFragmentTransition(searchDoctorsFragment,searchDoctorsFragment.Tag_SEARCH_DOCTORS)
+                }
             }
 
         } else {
@@ -86,7 +87,8 @@ class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFr
     }
 
     override fun onSpecializationFieldSelected(specialization:String) {
-        doctorListFragment = DoctorListFragment.newInstance(specialization,this)
+        doctorListFragment = DoctorListFragment.newInstance(specialization)
+        doctorListFragment.setDoctorListFragmentListener(this)
         setFragmentTransitionWithAddToBackStack(doctorListFragment,doctorListFragment.TAG_DOCTOR_LIST_FRAGMENT)
     }
 

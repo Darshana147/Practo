@@ -19,9 +19,8 @@ import com.example.practo.UseCases.DoctorDetailsUsecases
 import kotlinx.android.synthetic.main.fragment_doctor_list.*
 
 private const val SPECIALIZATION = "specialization"
-private const val LISTENER = "listener"
 
-class DoctorListFragment : Fragment(),DoctorListAdapterListener {
+class DoctorListFragment : Fragment(),DoctorListAdapterListener{
 
     val TAG_DOCTOR_LIST_FRAGMENT = "doctor_list_frag"
     private var specialization: String? =null
@@ -33,7 +32,6 @@ class DoctorListFragment : Fragment(),DoctorListAdapterListener {
         super.onCreate(savedInstanceState)
         arguments?.let {
             specialization = it.getString(SPECIALIZATION)
-            mDoctorListFragmentListener = it.getSerializable(LISTENER) as DoctorListFragmentListener
         }
     }
 
@@ -83,12 +81,15 @@ class DoctorListFragment : Fragment(),DoctorListAdapterListener {
        mDoctorListFragmentListener.onDoctorSelectedFromList(doctor)
     }
 
+    fun setDoctorListFragmentListener(listener: DoctorListFragmentListener){
+        mDoctorListFragmentListener = listener
+    }
+
     companion object{
         @JvmStatic
-        fun newInstance(specialization:String,listener: DoctorListFragmentListener) = DoctorListFragment().apply {
+        fun newInstance(specialization:String) = DoctorListFragment().apply {
             arguments = Bundle().apply {
                 putString(SPECIALIZATION,specialization)
-                putSerializable(LISTENER,listener)
             }
         }
     }

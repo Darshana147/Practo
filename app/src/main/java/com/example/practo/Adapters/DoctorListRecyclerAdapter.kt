@@ -37,7 +37,7 @@ class DoctorListRecyclerAdapter(
             itemView.doctor_name.text = doctorDetail.name
             itemView.doctor_specialization.text = doctorDetail.specialization
             itemView.hospital_name.text = doctorDetail.hospitalDetails.hospitalName
-            itemView.hospital_location.text = "${doctorDetail.hospitalDetails.hospitalAddress}"
+            itemView.hospital_location.text = "${doctorDetail.hospitalDetails.hospitalAddress.city}, ${doctorDetail.hospitalDetails.hospitalAddress.state}, ${doctorDetail.hospitalDetails.hospitalAddress.country}"
             if (doctorDetail.gender.equals("male")) {
                 itemView.doctor_image.setImageResource(R.drawable.ic_doctor_m)
             } else {
