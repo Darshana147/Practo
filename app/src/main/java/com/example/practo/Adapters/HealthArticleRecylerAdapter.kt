@@ -13,7 +13,6 @@ import com.example.practo.Model.HealthArticle
 import com.example.practo.R
 import kotlinx.android.synthetic.main.health_article_list_card_layout.view.*
 
-
 class HealthArticleRecylerAdapter(
     val context: Context,
     val healthArticles:List<HealthArticle>,

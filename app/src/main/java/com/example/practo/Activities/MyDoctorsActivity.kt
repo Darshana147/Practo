@@ -4,19 +4,23 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.MenuItem
+import com.example.practo.Fragments.DoctorInformationFragment
 import com.example.practo.Fragments.DoctorListFragment
 import com.example.practo.Fragments.MyDoctorsFragment
 import com.example.practo.Fragments.SearchDoctorsFragment
+import com.example.practo.InterfaceListeners.DoctorListFragmentListener
 import com.example.practo.InterfaceListeners.MyDoctorsListener
 import com.example.practo.InterfaceListeners.SearchDoctorFragmentListener
+import com.example.practo.Model.Doctor
 import com.example.practo.R
 import kotlinx.android.synthetic.main.activity_my_doctors.*
 
-class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFragmentListener{
+class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFragmentListener,DoctorListFragmentListener{
 
     private lateinit var myDoctorsFragment: MyDoctorsFragment
     private lateinit var searchDoctorsFragment: SearchDoctorsFragment
     private lateinit var doctorListFragment:DoctorListFragment
+    private lateinit var doctorInformationFragment:DoctorInformationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +35,6 @@ class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFr
     fun initFragments(){
         myDoctorsFragment = MyDoctorsFragment()
         searchDoctorsFragment = SearchDoctorsFragment()
-        doctorListFragment = DoctorListFragment()
     }
 
     fun setFragmentListeners(){
@@ -83,7 +86,13 @@ class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFr
     }
 
     override fun onSpecializationFieldSelected(specialization:String) {
+        doctorListFragment = DoctorListFragment.newInstance(specialization,this)
         setFragmentTransitionWithAddToBackStack(doctorListFragment,doctorListFragment.TAG_DOCTOR_LIST_FRAGMENT)
+    }
+
+    override fun onDoctorSelectedFromList(doctor: Doctor) {
+        doctorInformationFragment = DoctorInformationFragment.newInstance(doctor)
+        setFragmentTransitionWithAddToBackStack(doctorInformationFragment,doctorInformationFragment.TAG_DOCTOR_INFO_FRAGMENT)
     }
 
 
