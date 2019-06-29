@@ -7,8 +7,10 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.example.practo.Fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,9 +18,10 @@ import com.example.practo.InterfaceListeners.HomePageListener
 import com.example.practo.InterfaceListeners.ReadAboutHealthFragmentListener
 import com.example.practo.R
 
+private var request = 0
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ReadAboutHealthFragmentListener,HomePageListener{
+    ReadAboutHealthFragmentListener, HomePageListener {
 
     private lateinit var fragmentManager: FragmentManager
     private lateinit var toggle: ActionBarDrawerToggle
@@ -87,27 +90,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
-            R.id.homeMenuItem->{
+            R.id.homeMenuItem -> {
                 setFragmentTransaction(homeFragment)
             }
-
-            R.id.readAboutHealthMenuItem -> {
-                setFragmentTransaction(readAboutHealthFragment)
-            }
-
-            R.id.reminderMenuItem ->{
-                setFragmentTransaction(reminderFragment)
-            }
-
             R.id.orderMedicineMenuItem -> {
+                request = 1
+                drawerClosed(R.id.orderMedicineMenuItem)
 
-                val intent = Intent(this, OrderMedicineActivity::class.java)
-                startActivity(intent)
 
             }
             R.id.myDoctorsMenuItem -> {
-                val intent = Intent(this, MyDoctorsActivity::class.java)
-                startActivity(intent)
+                request = 2
+                drawerClosed(R.id.myDoctorsMenuItem)
             }
 
         }
@@ -115,6 +109,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+
+    fun drawerClosed(itemId: Int) {
+        drawer_layout.closeDrawer(GravityCompat.START)
+        drawer_layout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerClosed(drawerView: View) {
+                when (itemId) {
+                    R.id.myDoctorsMenuItem -> {
+                        if (request == 2) {
+                            val intent = Intent(applicationContext, MyDoctorsActivity::class.java)
+                            startActivity(intent)
+                            request = 0
+                        }
+                    }
+
+                    R.id.orderMedicineMenuItem -> {
+                        if (request == 1) {
+                            val intent = Intent(applicationContext, OrderMedicineActivity::class.java)
+                            startActivity(intent)
+                            request = 0
+                        }
+                    }
+
+                }
+                super.onDrawerClosed(drawerView)
+            }
+
+        })
+    }
 
 
     fun setFragmentTransaction(fragment: Fragment) {
@@ -128,21 +150,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onPharmacyClicked() {
-       val intent = Intent(this,OrderMedicineActivity::class.java)
-        intent.putExtra("fragment","searchMedicineFragment")
+        val intent = Intent(this, OrderMedicineActivity::class.java)
+        intent.putExtra("fragment", "searchMedicineFragment")
         startActivity(intent)
     }
 
     override fun onDoctorClicked() {
-        val intent = Intent(this,MyDoctorsActivity::class.java)
-        intent.putExtra("fragment","search_doctors_frag")
+        val intent = Intent(this, MyDoctorsActivity::class.java)
+        intent.putExtra("fragment", "search_doctors_frag")
         startActivity(intent)
     }
 
-
-    fun setFragmentListeners(){
+    fun setFragmentListeners() {
         homeFragment.setPharmacyListener(this)
     }
+
 
 //    fun setUpHeader(){
 //        val headerLayout = layoutInflater.inflate(R.layout.navigation_header,null,false)
@@ -172,7 +194,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //            mToolBarNavigationListenerRegistered = false
 //        }
 //    }
-
 
 
 }

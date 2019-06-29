@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="6dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="2dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+
+    <LinearLayout
+            android:id="@+id/doctor_list_linear_layout"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+
+                    android:layout_weight="1"
+                    android:id="@+id/bookmarked_doctor_image"
+                    android:src="@drawable/ic_doctor_m"
+                    android:layout_width="250dp"
+                    android:layout_height="100dp"/>
+
+
+            <LinearLayout
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="25dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/bookmarked_doctor_name"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:paddingBottom="5dp"
+                        android:text="Dr. A B M Rashedul Amir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/bookmarked_doctor_specialization"
+                        android:text="Child Specialist"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp"
+                        android:paddingBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/bookmarked_doctor_hospital_name"
+                        android:text="Rangpur General Hospital"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                <TextView
+                        android:id="@+id/bookmarked_doctor_hospital_location"
+                        android:text="Dhap, Rangpur"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <CheckBox
+                    android:id="@+id/booked_doctor_checkBox"
+                    android:gravity="top|right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

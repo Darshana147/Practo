@@ -95,4 +95,39 @@ class DoctorDetailsDAO(val context: Context) {
         dbHelper.close()
         return result
     }
+
+    fun getDoctorById(doctorId:Int):Doctor{
+        val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
+        val readableObject = dbHelper.readableDatabase
+        var result:Doctor?=null
+        val cursor:Cursor = readableObject.rawQuery("SELECT * FROM $tableName WHERE $column_doctor_id = $doctorId",null)
+
+        if(cursor.moveToFirst()){
+                val docId = cursor.getInt(cursor.getColumnIndex(column_doctor_id))
+                val doctorName = cursor.getString(cursor.getColumnIndex(column_doctor_name))
+                val gender = cursor.getString(cursor.getColumnIndex(column_gender))
+                val qualification = cursor.getString(cursor.getColumnIndex(column_qualification))
+                val specialization = cursor.getString(cursor.getColumnIndex(column_specialization))
+                val experience = cursor.getString(cursor.getColumnIndex(column_experience))
+                val consultationFees = cursor.getDouble(cursor.getColumnIndex(column_consultationFees))
+                val hospitalName = cursor.getString(cursor.getColumnIndex(column_hospitalName))
+                val hospitalAddress = cursor.getString(cursor.getColumnIndex(column_hospitalAddress))
+                val hospitalCity = cursor.getString(cursor.getColumnIndex(column_hospitalCity))
+                val hospitalState = cursor.getString(cursor.getColumnIndex(column_hospitalState))
+                val hospitalCountry = cursor.getString(cursor.getColumnIndex(column_hospitalCountry))
+                val hospitalPincode = cursor.getString(cursor.getColumnIndex(column_hospitalPincode))
+                val hospitalContactNumber = cursor.getString(cursor.getColumnIndex(column_hospitalContactNumber))
+                val doctorServices = cursor.getString(cursor.getColumnIndex(column_doctorServices))
+                val doctorPastExperiences = cursor.getString(cursor.getColumnIndex(column_doctorPastExperiences))
+
+                result = Doctor(doctorId,doctorName,gender,qualification,specialization,experience,consultationFees,
+                    Hospital(hospitalName, HospitalAddress(hospitalAddress,hospitalCity,hospitalState,hospitalCountry,hospitalPincode),hospitalContactNumber),
+                    doctorServices,doctorPastExperiences
+                )
+        }
+        cursor.close()
+        readableObject.close()
+        dbHelper.close()
+        return result!!
+    }
 }

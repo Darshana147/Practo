@@ -54,7 +54,7 @@ class DoctorListFragment : Fragment(),DoctorListAdapterListener{
     fun customizeToolbar(){
         val activity = getActivity() as AppCompatActivity
         val actionBarSupport = activity.supportActionBar
-        actionBarSupport?.setTitle("Specialization")
+        actionBarSupport?.setTitle(specialization)
     }
 
     fun initRecyclerView() {

@@ -3,6 +3,7 @@ package com.example.practo.Activities
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.MenuItem
 import com.example.practo.Fragments.DoctorInformationFragment
 import com.example.practo.Fragments.DoctorListFragment
@@ -14,6 +15,7 @@ import com.example.practo.InterfaceListeners.SearchDoctorFragmentListener
 import com.example.practo.Model.Doctor
 import com.example.practo.R
 import kotlinx.android.synthetic.main.activity_my_doctors.*
+import com.example.practo.InterfaceListeners.BackPressedListener
 
 
 class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFragmentListener,DoctorListFragmentListener{
@@ -95,6 +97,20 @@ class MyDoctorsActivity : AppCompatActivity(), MyDoctorsListener, SearchDoctorFr
     override fun onDoctorSelectedFromList(doctor: Doctor) {
         doctorInformationFragment = DoctorInformationFragment.newInstance(doctor)
         setFragmentTransitionWithAddToBackStack(doctorInformationFragment,doctorInformationFragment.TAG_DOCTOR_INFO_FRAGMENT)
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.my_doctors_fragment_container)
+          if(fragment is BackPressedListener){
+              (fragment as? BackPressedListener)?.let{
+                  if(!it.onBackPressed()){
+                      Log.d("abcd","returned false")
+                      super.onBackPressed()
+                  }
+              }
+          } else {
+              super.onBackPressed()
+          }
     }
 
 

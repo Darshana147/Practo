@@ -32,6 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var chatCardView: CardView
     private lateinit var diagnosticCardView: CardView
     private lateinit var mHomePageListener: HomePageListener
+    private lateinit var timer:Timer
 
 
 
@@ -62,7 +63,7 @@ class HomeFragment : Fragment() {
         imageList= arrayListOf(R.drawable.image1,R.drawable.image3,R.drawable.image2)
         viewPager.adapter = SliderAdapter(this.context!!,textList,imageList)
         indicator.setupWithViewPager(viewPager,true)
-        val timer = Timer()
+        timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(),3000,5000)
 
     }
@@ -115,6 +116,11 @@ class HomeFragment : Fragment() {
 
     fun setPharmacyListener(mHomePageListener: HomePageListener){
         this.mHomePageListener = mHomePageListener
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 
 }

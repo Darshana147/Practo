@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import com.example.practo.Model.Doctor
@@ -20,8 +19,10 @@ private const val DOCTOR_DETAIL = "doctorDetail"
 class DoctorInformationFragment : Fragment() {
 
     private lateinit var doctorDetail: Doctor
+    private lateinit var doctorDetailsUsecases: DoctorDetailsUsecases
     private var doctorId: Int = 0
     val TAG_DOCTOR_INFO_FRAGMENT = "doctorInformationFragment"
+
     private var userBookMarkedList: HashSet<Int> = hashSetOf()
 
 
@@ -42,9 +43,17 @@ class DoctorInformationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         customizeToolbar()
+        initUseCases()
         setHasOptionsMenu(true)
         setValues()
         setListeners()
+    }
+    fun initUseCases(){
+        doctorDetailsUsecases = DoctorDetailsUsecases(context!!)
+        val doctorDetails = doctorDetailsUsecases.getAllBookmarkedDoctors()
+        for(doctor in doctorDetails){
+           userBookMarkedList.add(doctor.doctorId)
+        }
     }
 
     fun customizeToolbar() {
@@ -64,6 +73,9 @@ class DoctorInformationFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         menu?.clear()
         inflater?.inflate(R.menu.doctor_information_menu, menu)
+        if(userBookMarkedList.contains(doctorId)) {
+            menu?.findItem(R.id.doctor_information_bookmark_menu_item)?.setIcon(R.drawable.ic_bookmark_white)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -74,9 +86,11 @@ class DoctorInformationFragment : Fragment() {
                     item.setIcon(R.drawable.ic_bookmark)
                     userBookMarkedList.remove(doctorId)
                     context?.toast("Removed from 'My Doctors'")
+                    doctorDetailsUsecases.removeDoctorFromMyDoctors(doctorId)
                 }else {
                     context?.toast("Added to 'My Doctors'")
                     userBookMarkedList.add(doctorId)
+                    doctorDetailsUsecases.insertDoctorToMyDoctors(doctorId)
                     item.setIcon(R.drawable.ic_bookmark_white)
                 }
                 return true
@@ -98,12 +112,11 @@ class DoctorInformationFragment : Fragment() {
         val doctInfo:String = "${doctorDetail.name}\nSpecialization: ${doctorDetail.specialization}\n" +
                 "Experience: ${doctorDetail.experience}\nConsultation fees: ${rupee} ${doctorDetail.consultationFee}\n\n" +
                 "Hospital Name: ${doctorDetail.hospitalDetails.hospitalName}\nContact Number: ${doctorDetail.hospitalDetails.hospitalContactNumber}"
-        val intentToShare: Intent = Intent()
-        intentToShare.action = Intent.ACTION_SEND
-        intentToShare.putExtra(Intent.EXTRA_TEXT, doctInfo)
-        intentToShare.type = "text/plain"
+        val shareIntent: Intent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, doctInfo)
 
-        context?.startActivity(Intent.createChooser(intentToShare, "Please select app: "))
+        activity?.startActivity(Intent.createChooser(shareIntent, "Please select an app: "))
     }
 
     fun setValues() {
