@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.CheckBox
 import com.example.practo.Adapters.BookmarkedDoctorsRecyclerAdapter
 import com.example.practo.InterfaceListeners.BackPressedListener
+import com.example.practo.InterfaceListeners.BookmarkedDoctorRecyclerAdapterListener
 import com.example.practo.InterfaceListeners.MyDoctorsListener
 import com.example.practo.Model.Doctor
 import com.example.practo.R
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_my_doctors.*
 import kotlinx.android.synthetic.main.fragment_my_doctors.view.*
 
 
-class MyDoctorsFragment : Fragment(), BackPressedListener {
+class MyDoctorsFragment : Fragment(), BackPressedListener,BookmarkedDoctorRecyclerAdapterListener{
 
     private lateinit var mMyDoctorsListener: MyDoctorsListener
     private lateinit var doctorDetailsUsecases: DoctorDetailsUsecases
@@ -160,7 +161,7 @@ class MyDoctorsFragment : Fragment(), BackPressedListener {
 
     fun bindRecyclerViewWithLayoutManager(bookmarkedDoctorList: ArrayList<Doctor>) {
         recyclerView.layoutManager = layoutManager
-        recyclerViewAdapter = BookmarkedDoctorsRecyclerAdapter(context!!, bookmarkedDoctorList, this)
+        recyclerViewAdapter = BookmarkedDoctorsRecyclerAdapter(context!!, bookmarkedDoctorList, this,this)
         recyclerView.adapter = recyclerViewAdapter
 
     }
@@ -213,6 +214,11 @@ class MyDoctorsFragment : Fragment(), BackPressedListener {
             return false
         }
     }
+
+    override fun onDoctorClicked(doctor: Doctor) {
+        mMyDoctorsListener.onBookmarkedDoctorClicked(doctor)
+    }
+
 
 
 }

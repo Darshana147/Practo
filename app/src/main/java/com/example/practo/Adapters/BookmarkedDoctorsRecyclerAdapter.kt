@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.practo.Fragments.MyDoctorsFragment
+import com.example.practo.InterfaceListeners.BookmarkedDoctorRecyclerAdapterListener
 import com.example.practo.Model.Doctor
 import com.example.practo.R
 import kotlinx.android.synthetic.main.bookmarked_doctors_card_layout.view.*
-import kotlinx.android.synthetic.main.doctor_list_card_layout.view.*
 
-class BookmarkedDoctorsRecyclerAdapter(val context:Context,var doctorList:ArrayList<Doctor>,val myDoctorsFragment:MyDoctorsFragment):RecyclerView.Adapter<BookmarkedDoctorsRecyclerAdapter.MyViewHolder>(){
+class BookmarkedDoctorsRecyclerAdapter(val context:Context,var doctorList:ArrayList<Doctor>,val myDoctorsFragment:MyDoctorsFragment,val listener:BookmarkedDoctorRecyclerAdapterListener):RecyclerView.Adapter<BookmarkedDoctorsRecyclerAdapter.MyViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.bookmarked_doctors_card_layout, p0, false)
@@ -33,6 +33,19 @@ class BookmarkedDoctorsRecyclerAdapter(val context:Context,var doctorList:ArrayL
 
         p0.itemView.booked_doctor_checkBox.setOnClickListener {
             myDoctorsFragment.prepareSelectionList(p0.itemView.booked_doctor_checkBox,p1)
+        }
+
+        p0.itemView.bookmarked_doctor_list_linear_layout.setOnClickListener {
+            if(!myDoctorsFragment.is_in_edit_mode){
+                listener.onDoctorClicked(doctorList.get(p1))
+            } else {
+                if(p0.itemView.booked_doctor_checkBox.isChecked==false) {
+                    p0.itemView.booked_doctor_checkBox.isChecked = true
+                } else {
+                    p0.itemView.booked_doctor_checkBox.isChecked = false
+                }
+                myDoctorsFragment.prepareSelectionList(p0.itemView.booked_doctor_checkBox,p1)
+            }
         }
     }
 

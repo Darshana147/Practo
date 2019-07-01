@@ -58,8 +58,6 @@ class MedicineOrderFragment : Fragment(),
         } else {
             viewDisplay(rootView,allOrders,sectionModelOrderList)
         }
-//        viewDisplayThread(rootView)
-
     }
 
     fun viewDisplay(rootView: View,allOrders:ArrayList<MedicineOrder>,medicineOrderSectionList: ArrayList<SectionModel>) {
@@ -170,16 +168,6 @@ class MedicineOrderFragment : Fragment(),
         override fun onPostExecute(result: Unit?) {
             progressDialog.dismiss()
         }
-    }
-
-
-    fun viewDisplayThread(rootView: View) {
-        Thread(object : Runnable {
-            override fun run() {
-                viewDisplay(rootView,allOrders,sectionModelOrderList)
-            }
-
-        }).start()
     }
 
 }

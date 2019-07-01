@@ -1,206 +1,355 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+<android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:orientation="vertical"
-            tools:context="com.example.practo.Fragments.DoctorInformationFragment">
-
-    <ScrollView
-            android:layout_weight="1"
+              tools:context="com.example.practo.Fragments.DoctorInformationFragment">
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="match_parent">
 
-        <LinearLayout
-                android:orientation="vertical"
+        <ScrollView
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp">
 
-            <FrameLayout
+            <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
-                <View
-                        android:background="@color/colorPrimary"
+                <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="170dp"/>
+                        android:layout_height="match_parent">
+
+                    <View
+                            android:background="@color/colorPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="170dp"/>
+
+                    <android.support.v7.widget.CardView
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:elevation="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <LinearLayout
+                                android:id="@+id/doctor_list_linear_layout"
+                                android:orientation="vertical"
+                                android:paddingTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            <LinearLayout
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="15dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="10dp"
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                <ImageView
+                                        android:layout_gravity="center"
+                                        android:layout_weight="2"
+                                        android:id="@+id/doctor_image_info"
+                                        android:src="@drawable/ic_doctor_m"
+                                        android:layout_width="250dp"
+                                        android:layout_height="100dp"/>
+
+
+                                <LinearLayout
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:paddingTop="5dp"
+                                        android:layout_weight="1"
+                                        android:paddingLeft="25dp"
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                    <TextView
+                                            android:id="@+id/doctor_name_info"
+                                            android:textColor="@color/black"
+                                            android:textSize="18sp"
+                                            android:paddingBottom="5dp"
+                                            android:text="Dr. A B M Rashedul Amir"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                            android:id="@+id/doctor_specialization_info"
+                                            android:text="Child Specialist"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="15sp"
+                                            android:paddingBottom="2dp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"/>
+
+                                    <LinearLayout
+                                            android:orientation="horizontal"
+                                            android:paddingBottom="2dp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
+
+                                        <TextView
+                                                android:textColor="@color/gray"
+                                                android:text="Experience:"
+                                                android:paddingRight="2dp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                                android:id="@+id/doctor_experience_info"
+                                                android:textColor="@color/black"
+                                                android:textSize="16sp"
+                                                android:paddingLeft="2dp"
+                                                android:text="3 years"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"/>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                            android:orientation="horizontal"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
+
+                                        <TextView
+                                                android:textColor="@color/gray"
+                                                android:text="Consultation fees:"
+                                                android:paddingRight="2dp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                                android:textColor="@color/black"
+                                                android:textSize="16sp"
+                                                android:paddingLeft="3dp"
+                                                android:text="@string/rupee"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"/>
+
+                                        <TextView
+                                                android:id="@+id/doctor_consultation_fees_info"
+                                                android:textColor="@color/black"
+                                                android:paddingLeft="2dp"
+                                                android:textSize="16sp"
+                                                android:text="300"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"/>
+
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <View
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@color/light_gray"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"/>
+
+                            <LinearLayout
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                <ImageView
+                                        android:src="@drawable/ic_hospital"
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"/>
+
+                                <LinearLayout
+                                        android:layout_weight="1"
+                                        android:paddingLeft="15dp"
+                                        android:orientation="vertical"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content">
+
+                                    <TextView
+                                            android:id="@+id/hospital_name_info"
+                                            android:text="Rangpur General Hospital"
+                                            android:layout_marginBottom="5dp"
+                                            android:textSize="15sp"
+                                            android:textColor="@color/black"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                            android:text="Address, Locality, City, State, Country,Pincode"
+                                            android:id="@+id/hospital_address_info"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="5dp"/>
+
+                                    <TextView
+                                            android:text="Mobile Number"
+                                            android:id="@+id/hospital_contact_number_info"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"/>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                </FrameLayout>
+
 
                 <android.support.v7.widget.CardView
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
-                        android:elevation="8dp"
+                        android:elevation="6dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                        <TextView
+                                android:background="#3C28318C"
+                                android:textStyle="bold"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:text="Qualification"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+
+                        <TextView
+                                android:textColor="@color/black"
+                                android:paddingTop="5dp"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingBottom="10dp"
+                                android:id="@+id/doctor_qualification_info"
+                                android:text="MBBS, DCh Mrcp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:elevation="6dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                     <LinearLayout
-                            android:id="@+id/doctor_list_linear_layout"
                             android:orientation="vertical"
-                            android:paddingTop="10dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
 
-                        <LinearLayout
+                        <TextView
+                                android:textStyle="bold"
+                                android:background="#3C28318C"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:text="Work Experience"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        <TextView
+                                android:text="3 Years of Experience"
+                                android:id="@+id/doctor_work_experience_information"
+                                android:textColor="@color/black"
                                 android:paddingLeft="15dp"
                                 android:paddingRight="15dp"
                                 android:paddingTop="5dp"
-                                android:paddingBottom="10dp"
-                                android:orientation="horizontal"
+                                android:paddingBottom="5dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content"/>
 
-                            <ImageView
-                                    android:layout_gravity="center"
-                                    android:layout_weight="2"
-                                    android:id="@+id/doctor_image_info"
-                                    android:src="@drawable/ic_doctor_m"
-                                    android:layout_width="250dp"
-                                    android:layout_height="100dp"/>
-
-
-                            <LinearLayout
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:paddingTop="5dp"
-                                    android:layout_weight="1"
-                                    android:paddingLeft="25dp"
-                                    android:orientation="vertical"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
-                                <TextView
-                                        android:id="@+id/doctor_name_info"
-                                        android:textColor="@color/black"
-                                        android:textSize="18sp"
-                                        android:paddingBottom="5dp"
-                                        android:text="Dr. A B M Rashedul Amir"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"/>
-
-                                <TextView
-                                        android:id="@+id/doctor_specialization_info"
-                                        android:text="Child Specialist"
-                                        android:textColor="@color/colorPrimary"
-                                        android:textSize="15sp"
-                                        android:paddingBottom="2dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"/>
-
-                                <LinearLayout
-                                        android:orientation="horizontal"
-                                        android:paddingBottom="2dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-
-                                    <TextView
-                                            android:textColor="@color/gray"
-                                            android:text="Experience:"
-                                            android:paddingRight="2dp"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"/>
-
-                                    <TextView
-                                            android:id="@+id/doctor_experience_info"
-                                            android:textColor="@color/black"
-                                            android:textSize="16sp"
-                                            android:paddingLeft="2dp"
-                                            android:text="3 years"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"/>
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                        android:orientation="horizontal"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-
-                                    <TextView
-                                            android:textColor="@color/gray"
-                                            android:text="Consultation fees:"
-                                            android:paddingRight="2dp"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"/>
-
-                                    <TextView
-                                            android:textColor="@color/black"
-                                            android:textSize="16sp"
-                                            android:paddingLeft="3dp"
-                                            android:text="@string/rupee"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"/>
-
-                                    <TextView
-                                            android:id="@+id/doctor_consultation_fees_info"
-                                            android:textColor="@color/black"
-                                            android:paddingLeft="2dp"
-                                            android:textSize="16sp"
-                                            android:text="300"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"/>
-
-                                </LinearLayout>
-
-
-                            </LinearLayout>
-
-
-                        </LinearLayout>
-
-                        <View
-                                android:layout_marginTop="3dp"
-                                android:layout_marginBottom="3dp"
-                                android:background="@color/light_gray"
+                        <TextView
+                                android:id="@+id/doctor_past_experiences"
+                                android:textColor="@color/black"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingBottom="5dp"
+                                android:text="Working in Rangpur General Hospital since 3 years"
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"/>
+                                android:layout_height="wrap_content"/>
 
-                        <LinearLayout
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:elevation="6dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                                android:textStyle="bold"
+                                android:background="#3C28318C"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
                                 android:paddingTop="10dp"
                                 android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:orientation="horizontal"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:text="Services"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"/>
 
-                            <ImageView
-                                    android:src="@drawable/ic_hospital"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"/>
-
-                            <LinearLayout
-                                    android:layout_weight="1"
-                                    android:paddingLeft="15dp"
-                                    android:orientation="vertical"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content">
-
-                                <TextView
-                                        android:id="@+id/hospital_name_info"
-                                        android:text="Rangpur General Hospital"
-                                        android:layout_marginBottom="5dp"
-                                        android:textSize="15sp"
-                                        android:textColor="@color/black"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"/>
-
-                                <TextView
-                                        android:text="Address, Locality, City, State, Country,Pincode"
-                                        android:id="@+id/hospital_address_info"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginBottom="5dp"/>
-
-                                <TextView
-                                        android:text="Mobile Number"
-                                        android:id="@+id/hospital_contact_number_info"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"/>
-
-
-                            </LinearLayout>
-
-                        </LinearLayout>
+                        <TextView
+                                android:id="@+id/doctor_services_info"
+                                android:textColor="@color/black"
+                                android:text="1. Growth and Development Evaluation\n2. Vaccination\n3. Immunization and Bronchial Asthma Treatment"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
 
 
                     </LinearLayout>
@@ -208,186 +357,43 @@
 
                 </android.support.v7.widget.CardView>
 
-            </FrameLayout>
+            </LinearLayout>
 
+        </ScrollView>
 
-            <android.support.v7.widget.CardView
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:elevation="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+        <View
+                android:background="@color/light_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
 
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+        <LinearLayout
+                android:padding="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+            <Button
+                    android:layout_marginRight="2dp"
+                    android:text="call"
+                    android:id="@+id/call_button_doctor_info"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@drawable/button_with_border"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-                    <TextView
-                            android:background="#3C28318C"
-                            android:textStyle="bold"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:text="Qualification"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-
-                    <TextView
-                            android:textColor="@color/black"
-                            android:paddingTop="5dp"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingBottom="10dp"
-                            android:id="@+id/doctor_qualification_info"
-                            android:text="MBBS, DCh Mrcp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:elevation="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <TextView
-                            android:textStyle="bold"
-                            android:background="#3C28318C"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:text="Work Experience"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    <TextView
-                            android:text="3 Years of Experience"
-                            android:id="@+id/doctor_work_experience_information"
-                            android:textColor="@color/black"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    <TextView
-                            android:id="@+id/doctor_past_experiences"
-                            android:textColor="@color/black"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingBottom="5dp"
-                            android:text="Working in Rangpur General Hospital since 3 years"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:elevation="6dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <TextView
-                            android:textStyle="bold"
-                            android:background="#3C28318C"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:text="Services"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    <TextView
-                            android:id="@+id/doctor_services_info"
-                            android:textColor="@color/black"
-                            android:text="1. Growth and Development Evaluation\n2. Vaccination\n3. Immunization and Bronchial Asthma Treatment"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
+            <Button
+                    android:id="@+id/book_doctor_button"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/white"
+                    android:text="BOOK"
+                    android:textStyle="bold"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
         </LinearLayout>
-
-    </ScrollView>
-
-    <View
-            android:background="@color/light_gray"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-    <LinearLayout
-            android:padding="20dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <Button
-                android:layout_marginRight="2dp"
-                android:text="call"
-                android:id="@+id/call_button_doctor_info"
-                android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/button_with_border"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <Button
-                android:id="@+id/book_doctor_button"
-                android:layout_weight="1"
-                android:layout_marginLeft="2dp"
-                android:textColor="@color/white"
-                android:text="BOOK"
-                android:textStyle="bold"
-                android:background="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
     </LinearLayout>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

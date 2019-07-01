@@ -40,6 +40,7 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     private lateinit var mFavoriteMedicinesFragmentListener: FavoriteMedicinesFragmentListener
     private var cartItemsHashSet = hashSetOf<Int>()
     private lateinit var fragmentListener: IFragmentListener
+    private var noFavMedicines = true
     private var textViewItem:TextView? =null
     private var medicineId: Int=0
 
@@ -150,9 +151,11 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
     fun viewDisplay(){
         val favMedicines = favoriteMedicineUseCases.getMedicinesFromFavoriteMedicineList(1)
         if(favMedicines.isEmpty()){
+            noFavMedicines=true
             favoriteListNotEmpty.visibility = View.GONE
             favoriteListEmpty.visibility = View.VISIBLE
         } else {
+            noFavMedicines=false
             favoriteListEmpty.visibility = View.GONE
             bindRecyclerViewWithAdapter(favMedicines)
             favoriteListNotEmpty.visibility= View.VISIBLE
@@ -213,7 +216,9 @@ class FavoriteMedicineListFragment : Fragment(),FavoriteMedicineListListener,Add
 
 
     override fun notifyItemAddedToCart(medicineId: Int) {
-        recyclerViewAdaper.notifyItemAddedToCart(medicineId)
+        if(noFavMedicines==false) {
+            recyclerViewAdaper.notifyItemAddedToCart(medicineId)
+        }
     }
 
 

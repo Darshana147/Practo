@@ -3,6 +3,7 @@ package com.example.practo.DAO
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import com.example.practo.Database.DbSqliteOpenHelper
 import com.example.practo.Model.UserMedicineDeliveryAddressDetails
 
@@ -19,6 +20,7 @@ class UserDeliveryAddressDAO(val context: Context) {
     private val column_state:String
     private val column_country:String
     private val column_type_of_address:String
+    private val column_removed_address:String
 
     private val createTableQuery:String
     private val dropTableQuery:String
@@ -36,11 +38,12 @@ class UserDeliveryAddressDAO(val context: Context) {
         column_state = "userState"
         column_country = "userCountry"
         column_type_of_address = "userTypeOfAddress"
+        column_removed_address = "removed"
 
         createTableQuery = "CREATE TABLE $tableName($column_user_id INTEGER, $column_user_name TEXT," +
                 "$column_user_mobile_number TEXT, $column_user_pin_code TEXT, $column_address TEXT, " +
                 "$column_locality TEXT, $column_city TEXT, $column_state TEXT, $column_country TEXT," +
-                "$column_type_of_address TEXT, FOREIGN KEY($column_user_id) REFERENCES user($column_user_id))"
+                "$column_type_of_address TEXT, $column_removed_address TEXT DEFAULT 'no', FOREIGN KEY($column_user_id) REFERENCES user($column_user_id))"
 
         dropTableQuery = "DROP TABLE IF EXISTS $tableName"
     }
@@ -49,7 +52,7 @@ class UserDeliveryAddressDAO(val context: Context) {
     fun getAllAddresses(userId:Int):ArrayList<UserMedicineDeliveryAddressDetails>{
         val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val readableObject = dbHelper.readableDatabase
-        val sqlSelect:Array<String> = arrayOf(column_user_address_id,column_user_name,column_user_mobile_number,column_user_pin_code,column_address,column_locality,column_city,column_state,column_country,column_type_of_address)
+        val sqlSelect:Array<String> = arrayOf(column_user_address_id,column_user_name,column_user_mobile_number,column_user_pin_code,column_address,column_locality,column_city,column_state,column_country,column_type_of_address,column_removed_address)
         val result:ArrayList<UserMedicineDeliveryAddressDetails> = ArrayList()
         val cursor: Cursor = readableObject.query(tableName,sqlSelect,"$column_user_id = $userId",null,null,null,null)
         if(cursor.moveToFirst()){
@@ -64,7 +67,23 @@ class UserDeliveryAddressDAO(val context: Context) {
                 val userState = cursor.getString(cursor.getColumnIndex(column_state))
                 val userCountry = cursor.getString(cursor.getColumnIndex(column_country))
                 val userTypeOfAddress = cursor.getString(cursor.getColumnIndex(column_type_of_address))
-                result.add(UserMedicineDeliveryAddressDetails(userAddressId,userName,userMobileNumber,userPinCode,userAddress,userLocality,userCity,userState,userCountry,userTypeOfAddress))
+                val userRemovedAddress = cursor.getString(cursor.getColumnIndex(column_removed_address))
+                if(!userRemovedAddress.equals("yes")) {
+                    result.add(
+                        UserMedicineDeliveryAddressDetails(
+                            userAddressId,
+                            userName,
+                            userMobileNumber,
+                            userPinCode,
+                            userAddress,
+                            userLocality,
+                            userCity,
+                            userState,
+                            userCountry,
+                            userTypeOfAddress
+                        )
+                    )
+                }
             }while(cursor.moveToNext())
         }
         readableObject.close()
@@ -80,6 +99,7 @@ class UserDeliveryAddressDAO(val context: Context) {
         var result:UserMedicineDeliveryAddressDetails? = null
         val cursor: Cursor = readableObject.query(tableName,sqlSelect,"$column_user_address_id = $userAddressId",null,null,null,null)
         if(cursor.moveToFirst()){
+            Log.d("abcd","in here")
             val userName = cursor.getString(cursor.getColumnIndex(column_user_name))
             val userMobileNumber = cursor.getString(cursor.getColumnIndex(column_user_mobile_number))
             val userPinCode = cursor.getString(cursor.getColumnIndex(column_user_pin_code))
@@ -90,7 +110,7 @@ class UserDeliveryAddressDAO(val context: Context) {
             val userCountry = cursor.getString(cursor.getColumnIndex(column_country))
             val userTypeOfAddress = cursor.getString(cursor.getColumnIndex(column_type_of_address))
 
-            result = UserMedicineDeliveryAddressDetails(userName,userMobileNumber,userPinCode,userAddress,userLocality,userCity,userState,userCountry,userTypeOfAddress)
+            result = UserMedicineDeliveryAddressDetails(userAddressId,userName,userMobileNumber,userPinCode,userAddress,userLocality,userCity,userState,userCountry,userTypeOfAddress)
         }
         readableObject.close()
         cursor.close()
@@ -140,7 +160,9 @@ class UserDeliveryAddressDAO(val context: Context) {
     fun deleteDeliveryAddressRecord(userId:Int,addressId:Int){
         val dbHelper = DbSqliteOpenHelper(context,createTableQuery,dropTableQuery)
         val writableObject = dbHelper.writableDatabase
-        writableObject.delete(tableName,"$column_user_id == $userId AND $column_user_address_id == $addressId",null)
+        val values = ContentValues()
+        values.put(column_removed_address,"yes")
+        writableObject.update(tableName,values,"$column_user_id == $userId AND $column_user_address_id == $addressId",null)
         writableObject.close()
         dbHelper.close()
     }

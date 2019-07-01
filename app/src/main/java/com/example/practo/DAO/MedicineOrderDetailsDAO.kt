@@ -97,6 +97,7 @@ class MedicineOrderDetailsDAO(val context:Context){
             do {
                 val orderId = cursor.getInt(cursor.getColumnIndex(column_order_id))
                 val userAddressId = cursor.getInt(cursor.getColumnIndex(column_user_address_id))
+                Log.d("abcd",userAddressId.toString()+" address")
                 val userDeliveryDate = cursor.getString(cursor.getColumnIndex(column_delivery_date))  //need to cast to date
                 val orderedDate = cursor.getString(cursor.getColumnIndex(column_ordered_date))
                 val totalPrice = cursor.getDouble(cursor.getColumnIndex(column_total_price))
@@ -110,10 +111,11 @@ class MedicineOrderDetailsDAO(val context:Context){
                 val medCartItems = getOrderedItemsByOrderid(userId,orderId)
                 val userAddress = userDeliveryAddressDAO.getAddressByAddressId(userAddressId)
                 val medCart = MedicineCart(medCartItems,totalQuantity,totalPrice)
-                val order = MedicineOrder(orderId,medCart,userAddress!!,userDeliveryDate,orderedDate,delivered)
-
-                result.add(order)
-
+                userAddress?.let{
+                    val order = MedicineOrder(orderId,medCart,userAddress,userDeliveryDate,orderedDate,delivered)
+                    result.add(order)
+                }.run{
+                }
 
             } while (cursor.moveToNext())
         }
@@ -141,7 +143,6 @@ class MedicineOrderDetailsDAO(val context:Context){
             if(isDelivered.toLowerCase().equals("yes")){
                 delivered = true
             }
-
             val medCartItems = getOrderedItemsByOrderid(userId,orderId)
             val userAddress = userDeliveryAddressDAO.getAddressByAddressId(userAddressId)
             val medCart = MedicineCart(medCartItems,totalQuantity,totalPrice)

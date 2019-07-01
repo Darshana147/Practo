@@ -33,10 +33,16 @@
                     android:layout_height="wrap_content"/>
 
             <ImageView
+                    android:foreground="?attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:id="@+id/close_dialog"
-                    android:src="@drawable/cancel"
+                    android:paddingLeft="15dp"
+
+                    android:layout_gravity="top|right"
+                    android:src="@drawable/ic_close_black"
                     android:layout_width="wrap_content"
-                    android:layout_height="15dp"/>
+                    android:layout_height="30dp"/>
 
         </LinearLayout>
 

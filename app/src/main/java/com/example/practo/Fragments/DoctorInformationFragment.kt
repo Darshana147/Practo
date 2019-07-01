@@ -4,9 +4,11 @@ package com.example.practo.Fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.*
+import com.example.practo.InterfaceListeners.DoctorInformationFragmentListener
 import com.example.practo.Model.Doctor
 import com.example.practo.R
 import com.example.practo.UseCases.DoctorDetailsUsecases
@@ -20,8 +22,10 @@ class DoctorInformationFragment : Fragment() {
 
     private lateinit var doctorDetail: Doctor
     private lateinit var doctorDetailsUsecases: DoctorDetailsUsecases
+    private lateinit var rootView:View
     private var doctorId: Int = 0
     val TAG_DOCTOR_INFO_FRAGMENT = "doctorInformationFragment"
+    private lateinit var mDoctorInformationFragmentListener:DoctorInformationFragmentListener
 
     private var userBookMarkedList: HashSet<Int> = hashSetOf()
 
@@ -29,7 +33,11 @@ class DoctorInformationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         doctorId = arguments?.getInt(DOCTOR_DETAIL)!!
-        doctorDetail = DoctorDetailsUsecases(context!!).getDoctorById(doctorId)!!
+        doctorDetail = DoctorDetailsUsecases(context!!).getDoctorById(doctorId)
+    }
+
+    fun setDoctorInformationFragmentListener(mDoctorInformationFragmentListener: DoctorInformationFragmentListener){
+       this.mDoctorInformationFragmentListener = mDoctorInformationFragmentListener
     }
 
     override fun onCreateView(
@@ -37,7 +45,8 @@ class DoctorInformationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_doctor_information, container, false)
+        rootView = inflater.inflate(R.layout.fragment_doctor_information, container, false)
+        return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -85,10 +94,28 @@ class DoctorInformationFragment : Fragment() {
                 if(userBookMarkedList.contains(doctorId)){
                     item.setIcon(R.drawable.ic_bookmark)
                     userBookMarkedList.remove(doctorId)
-                    context?.toast("Removed from 'My Doctors'")
+
+                    Snackbar.make(rootView,"Removed from 'MyDoctors'",Snackbar.LENGTH_SHORT)
+                        .setAction("Undo", object:View.OnClickListener{
+                            override fun onClick(v: View?) {
+                                userBookMarkedList.add(doctorId)
+                                doctorDetailsUsecases.insertDoctorToMyDoctors(doctorId)
+                                item.setIcon(R.drawable.ic_bookmark_white)
+                            }
+
+                        }).show()
+
+
                     doctorDetailsUsecases.removeDoctorFromMyDoctors(doctorId)
                 }else {
-                    context?.toast("Added to 'My Doctors'")
+                    Snackbar.make(rootView,"Added to 'MyDoctors'",Snackbar.LENGTH_SHORT)
+                        .setAction("View All",object:View.OnClickListener{
+                            override fun onClick(v: View?) {
+                                mDoctorInformationFragmentListener.onViewAllBookmarkedDoctorsClicked()
+                            }
+
+                        })
+                        .show()
                     userBookMarkedList.add(doctorId)
                     doctorDetailsUsecases.insertDoctorToMyDoctors(doctorId)
                     item.setIcon(R.drawable.ic_bookmark_white)

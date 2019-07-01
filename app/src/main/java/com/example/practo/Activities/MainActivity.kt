@@ -1,6 +1,8 @@
 package com.example.practo.Activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -92,6 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (p0.itemId) {
             R.id.homeMenuItem -> {
                 setFragmentTransaction(homeFragment)
+                drawer_layout.closeDrawer(GravityCompat.START)
             }
             R.id.orderMedicineMenuItem -> {
                 request = 1
@@ -105,7 +108,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
         }
-        drawer_layout.closeDrawers()
+//        drawer_layout.closeDrawers()
         return true
     }
 
@@ -118,7 +121,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     R.id.myDoctorsMenuItem -> {
                         if (request == 2) {
                             val intent = Intent(applicationContext, MyDoctorsActivity::class.java)
-                            startActivity(intent)
+                            startIntent(intent)
                             request = 0
                         }
                     }
@@ -126,7 +129,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     R.id.orderMedicineMenuItem -> {
                         if (request == 1) {
                             val intent = Intent(applicationContext, OrderMedicineActivity::class.java)
-                            startActivity(intent)
+                            startIntent(intent)
                             request = 0
                         }
                     }
@@ -150,19 +153,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onPharmacyClicked() {
-        val intent = Intent(this, OrderMedicineActivity::class.java)
+        val intent = Intent(applicationContext, OrderMedicineActivity::class.java)
         intent.putExtra("fragment", "searchMedicineFragment")
-        startActivity(intent)
+        startIntent(intent)
     }
 
     override fun onDoctorClicked() {
-        val intent = Intent(this, MyDoctorsActivity::class.java)
+        val intent = Intent(applicationContext, MyDoctorsActivity::class.java)
         intent.putExtra("fragment", "search_doctors_frag")
-        startActivity(intent)
+        startIntent(intent)
     }
 
     fun setFragmentListeners() {
         homeFragment.setPharmacyListener(this)
+    }
+
+
+    fun startIntent(intent: Intent) {
+        Thread(object : Runnable {
+            override fun run() {
+                startActivity(intent)
+            }
+
+        }).start()
     }
 
 

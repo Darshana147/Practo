@@ -10,6 +10,9 @@
 
     <LinearLayout
             android:id="@+id/doctor_list_linear_layout"
+            android:foreground="?attr/selectableItemBackground"
+            android:focusable="true"
+            android:clickable="true"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"

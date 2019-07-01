@@ -34,16 +34,16 @@ class DoctorDetailsUsecases(context: Context){
         return doctorDetails
     }
 
-    fun getDoctorById(doctorId:Int):Doctor?{
-        var doctorDetails:Doctor?=null
-        for(doctor in DoctorDetailsSupplier.doctorDetailsList){
-            if(doctorId == doctor.doctorId){
-                doctorDetails = doctor
-                break
-            }
-        }
-        return doctorDetails
-    }
+//    fun getDoctorById(doctorId:Int):Doctor?{
+//        var doctorDetails:Doctor?=null
+//        for(doctor in DoctorDetailsSupplier.doctorDetailsList){
+//            if(doctorId == doctor.doctorId){
+//                doctorDetails = doctor
+//                break
+//            }
+//        }
+//        return doctorDetails
+//    }
 
     fun getAllBookmarkedDoctors():ArrayList<Doctor>{
         val bookmarkedDoctors = arrayListOf<Doctor>()
@@ -51,7 +51,9 @@ class DoctorDetailsUsecases(context: Context){
             val doctor = doctorDetailsDAO.getDoctorById(doctorId)
             bookmarkedDoctors.add(doctor)
         }
-        return bookmarkedDoctors
+        return ArrayList(bookmarkedDoctors.sortedBy {
+                        it.name
+        } )
     }
 
     fun insertDoctorToMyDoctors(doctorId:Int){
@@ -68,14 +70,7 @@ class DoctorDetailsUsecases(context: Context){
         }
     }
 
-//    fun getMedicinesFromFavoriteMedicineList(userId:Int):ArrayList<Medicine>{
-//        val favoriteMedicines:ArrayList<Medicine> = ArrayList()
-//        for(medicineId in favoriteMedicineDAO.getAllFavoriteMedicines(1)){
-//            val medicine = medicineDAO.getMedicineById(medicineId)
-//            favoriteMedicines.add(medicine)
-//        }
-//        return ArrayList(favoriteMedicines.sortedBy {
-//            it.medicineName
-//        } )
-//    }
+    fun getDoctorById(doctorId: Int):Doctor{
+       return  doctorDetailsDAO.getDoctorById(doctorId)
+    }
 }

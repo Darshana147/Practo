@@ -19,9 +19,9 @@ class UserDeliveryAddressDetailsUseCases(context:Context) {
         return userDeliveryAddressDAO.getAllAddresses(1)
     }
 
-    fun getUserAddressById(userAddressId:Int):UserMedicineDeliveryAddressDetails?{
-        return userDeliveryAddressDAO.getAddressByAddressId(userAddressId)
-    }
+//    fun getUserAddressById(userAddressId:Int):UserMedicineDeliveryAddressDetails?{
+//        return userDeliveryAddressDAO.getAddressByAddressId(userAddressId)
+//    }
 
     fun updateUserDeliveryAdress(userMedicineDeliveryAddressDetails: UserMedicineDeliveryAddressDetails){
         userDeliveryAddressDAO.updateUserDeliveryAddressDetails(1,userMedicineDeliveryAddressDetails)
